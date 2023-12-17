@@ -1,4 +1,4 @@
-[gd_scene load_steps=15 format=3 uid="uid://bam21kk1efirk"]
+[gd_scene load_steps=19 format=3 uid="uid://bam21kk1efirk"]
 
 [ext_resource type="Script" path="res://World.gd" id="1_jxrg7"]
 [ext_resource type="PackedScene" uid="uid://dt8pspf6ajxrc" path="res://camera-spring-arm/CameraSpringArm.tscn" id="2_0xycr"]
@@ -6,8 +6,12 @@
 [ext_resource type="Script" path="res://addons/zylann.hterrain/hterrain.gd" id="3_j32i6"]
 [ext_resource type="Resource" path="res://heightmap_data/data.hterrain" id="4_iv71m"]
 [ext_resource type="Script" path="res://addons/zylann.hterrain/hterrain_texture_set.gd" id="5_wkg6r"]
-[ext_resource type="Texture2D" uid="uid://dto0dugv7c7el" path="res://textures/rocky-dunes1-bl/rocky-dunes1_albedo.png" id="7_bja08"]
+[ext_resource type="Texture2D" uid="uid://brjn1ojuebfr5" path="res://textures/ground/SandyDry_S.jpg" id="7_1q7lo"]
+[ext_resource type="Texture2D" uid="uid://dvfs45vj8svim" path="res://textures/ground/SandyDry_N.jpg" id="8_cjh1g"]
 [ext_resource type="Texture2D" uid="uid://qexvr7qodqdf" path="res://textures/rocky-dunes1-bl/rocky-dunes1_normal-ogl.png" id="8_edkoc"]
+[ext_resource type="Script" path="res://addons/zylann.hterrain/hterrain_detail_layer.gd" id="9_iv8ju"]
+[ext_resource type="Texture2D" uid="uid://wj6gaqfjicn4" path="res://textures/ground/ground_pebbles_1318_1625_Small.jpg" id="10_me1ke"]
+[ext_resource type="Texture2D" uid="uid://c56nskk6tp0s" path="res://textures/Billboard_grass/n_grass_diff_0_01.png" id="10_sautv"]
 
 [sub_resource type="FastNoiseLite" id="FastNoiseLite_mi8p7"]
 
@@ -29,7 +33,7 @@ sky = SubResource("Sky_075vd")
 [sub_resource type="Resource" id="Resource_81cvo"]
 script = ExtResource("5_wkg6r")
 mode = 0
-textures = [[ExtResource("7_bja08")], [ExtResource("8_edkoc")]]
+textures = [[ExtResource("7_1q7lo"), ExtResource("10_me1ke")], [ExtResource("8_cjh1g"), ExtResource("8_edkoc")]]
 
 [node name="World" type="Node3D"]
 script = ExtResource("1_jxrg7")
@@ -38,7 +42,7 @@ script = ExtResource("1_jxrg7")
 camera_look_at_point = NodePath("../Player/CameraLookAtPoint")
 
 [node name="Player" parent="." node_paths=PackedStringArray("camera_controller") instance=ExtResource("2_nudr7")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 28.3481, 145.353, -14.7557)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 28.3481, 31.8541, 103.074)
 camera_controller = NodePath("../CameraController")
 
 [node name="CameraLookAtPoint" type="Node3D" parent="Player"]
@@ -52,6 +56,7 @@ transform = Transform3D(-1, 1.08056e-08, -8.67524e-08, 0, 0.992332, 0.123601, 8.
 
 [node name="HTerrain" type="Node3D" parent="."]
 script = ExtResource("3_j32i6")
+ambient_wind = 0.1
 centered = true
 _terrain_data = ExtResource("4_iv71m")
 chunk_size = 32
@@ -68,3 +73,13 @@ shader_params/u_ground_uv_scale = 20
 shader_params/u_depth_blending = true
 shader_params/u_triplanar = null
 shader_params/u_tile_reduction = null
+
+[node name="HTerrainDetailLayer" type="Node3D" parent="HTerrain"]
+script = ExtResource("9_iv8ju")
+texture = ExtResource("10_sautv")
+density = 10.0
+shader_params/u_globalmap_tint_bottom = null
+shader_params/u_globalmap_tint_top = null
+shader_params/u_bottom_ao = null
+shader_params/u_instance_scale = null
+shader_params/u_roughness = null
