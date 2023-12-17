@@ -2,6 +2,7 @@ extends Node3D
 class_name Character
 
 @onready var animation_tree:AnimationTree = $AnimationTree
+@onready var foot_step_sound: AudioStreamPlayer3D = $FootStepSound
 
 enum MotionState{
 	standing,
@@ -19,6 +20,7 @@ func _process(delta):
 	pass
 
 func set_motion(motion_state: MotionState, blend_position:Vector2):
+	
 	var str_motion_state:String = MotionState.find_key(motion_state)
 		
 	var current_motion_direction:Vector2 = animation_tree["parameters/"+str_motion_state+"_motion_direction/blend_position"];
@@ -47,4 +49,7 @@ func jump():
 
 	animation_tree["parameters/standing_jump_direction/blend_position"] = current_motion_direction
 	animation_tree["parameters/standing_jump/request"] = AnimationNodeOneShot.ONE_SHOT_REQUEST_FIRE
-	pass
+	pass	
+
+func foot_step():	
+	print("foot_step")
