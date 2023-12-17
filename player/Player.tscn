@@ -6,7 +6,7 @@
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_srqto"]
 height = 1.85444
 
-[node name="CharacterBody3D" type="CharacterBody3D"]
+[node name="Player" type="CharacterBody3D"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.163022, 0)
 script = ExtResource("1_0cohp")
 
@@ -15,3 +15,6 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.921884, 0)
 shape = SubResource("CapsuleShape3D_srqto")
 
 [node name="Clara" parent="." instance=ExtResource("2_3dql6")]
+
+[node name="FloorRayCast" type="RayCast3D" parent="."]
+target_position = Vector3(0, -0.5, 0)

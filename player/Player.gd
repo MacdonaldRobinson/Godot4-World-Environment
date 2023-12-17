@@ -7,7 +7,9 @@ const JUMP_VELOCITY = 4.5
 var gravity = ProjectSettings.get_setting("physics/3d/default_gravity")
 var current_motion_state:Character.MotionState = Character.MotionState.standing
 
+@onready var floor_ray_cast: RayCast3D = $FloorRayCast as RayCast3D
 @onready var character: Character = $Clara as Character
+@export var camera_controller: CameraController
 
 func _physics_process(delta):
 
@@ -19,11 +21,16 @@ func _physics_process(delta):
 	
 	if character:
 		character.set_motion(current_motion_state, Vector2(input_dir.x, -input_dir.y))
-		velocity = character.animation_tree.get_root_motion_position() / delta
-				
+		rotation.y = camera_controller.rotation.y + deg_to_rad(180)
+		velocity = (character.animation_tree.get_root_motion_position() / delta).rotated(Vector3.UP, rotation.y)
+		
 	# Add the gravity.
 	if not is_on_floor():
 		velocity.y -= (gravity*100) * delta
+		
+		if not floor_ray_cast.is_colliding():
+			character.falling()
+			
 		
 	if Input.is_action_just_pressed("jump"):
 		character.jump()

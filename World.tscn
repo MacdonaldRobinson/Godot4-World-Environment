@@ -34,11 +34,12 @@ textures = [[ExtResource("7_bja08")], [ExtResource("8_edkoc")]]
 [node name="World" type="Node3D"]
 script = ExtResource("1_jxrg7")
 
-[node name="CameraSpringArm" parent="." node_paths=PackedStringArray("camera_look_at_point") instance=ExtResource("2_0xycr")]
+[node name="CameraController" parent="." node_paths=PackedStringArray("camera_look_at_point") instance=ExtResource("2_0xycr")]
 camera_look_at_point = NodePath("../Player/CameraLookAtPoint")
 
-[node name="Player" parent="." instance=ExtResource("2_nudr7")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 155.611, 27.9832, 0)
+[node name="Player" parent="." node_paths=PackedStringArray("camera_controller") instance=ExtResource("2_nudr7")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 28.3481, 145.353, -14.7557)
+camera_controller = NodePath("../CameraController")
 
 [node name="CameraLookAtPoint" type="Node3D" parent="Player"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.061615, 1.86963, 0)

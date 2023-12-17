@@ -5,7 +5,8 @@ class_name Character
 
 enum MotionState{
 	standing,
-	crouching
+	crouching,
+	falling
 }
 
 # Called when the node enters the scene tree for the first time.
@@ -32,14 +33,18 @@ func set_motion(motion_state: MotionState, blend_position:Vector2):
 		animation_tree["parameters/crouching_motion_direction/blend_position"] = new_motion_direction		
 	pass
 	
+	
+func falling():
+	animation_tree["parameters/motion_state/transition_request"] = "falling"			
+	
 func jump():
+	var is_jumping: bool = animation_tree["parameters/standing_jump/active"]
+	
+	if is_jumping:
+		return
+			
 	var current_motion_direction:Vector2 = animation_tree["parameters/standing_motion_direction/blend_position"];
 
-		
 	animation_tree["parameters/standing_jump_direction/blend_position"] = current_motion_direction
 	animation_tree["parameters/standing_jump/request"] = AnimationNodeOneShot.ONE_SHOT_REQUEST_FIRE
-	
-	print(animation_tree["parameters/standing_jump_direction/blend_position"])
-	print($AnimationPlayer.current_animation)
-	
 	pass
