@@ -12,4 +12,4 @@ Shows how to use Root Motion in the Godot 4 game engine:
 - Use CTRL to change motion states i.e crouch or stand
 - SPACE BAR to jump in the direction of the motion ( I could not find a left and right jump animation in miximo so I just used forward )
 
-Demo: https://macdonaldrobinson.github.io/Godot4-Root-Motion/exports/html/Root-Motion-Test.html
+Demo: https://macdonaldrobinson.github.io/Godot4-World-Environment/exports/html/World-Environment-Test.html
