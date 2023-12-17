@@ -1,0 +1,15 @@
+[gd_scene load_steps=3 format=3 uid="uid://dt8pspf6ajxrc"]
+
+[ext_resource type="Script" path="res://camera-spring-arm/CameraSpringArm.gd" id="1_15sah"]
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_o2dqr"]
+
+[node name="CameraSpringArm" type="SpringArm3D"]
+transform = Transform3D(-0.989676, 0, 0.14332, 0, 1, 0, -0.14332, 0, -0.989676, 155.611, 29.553, 0)
+shape = SubResource("SphereShape3D_o2dqr")
+spring_length = 3.0
+script = ExtResource("1_15sah")
+
+[node name="Camera3D" type="Camera3D" parent="."]
+transform = Transform3D(0.999796, 0.0195389, 0.0051593, -0.0201593, 0.982122, 0.187161, -0.00141016, -0.187227, 0.982316, 0.0871811, 0.812727, 3.12257)
+current = true
