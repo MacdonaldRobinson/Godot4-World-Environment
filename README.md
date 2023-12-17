@@ -1,4 +1,5 @@
-# Godot4-Root-Motion
+# Godot4-World-Environment
+
 Shows how to use Root Motion in the Godot 4 game engine:
 - Shows how to use animation tree with AnimationNodeBlendTree
 - Shows how to transition between animation states
