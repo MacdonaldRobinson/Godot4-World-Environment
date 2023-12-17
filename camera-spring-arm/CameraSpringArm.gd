@@ -35,3 +35,4 @@ func _input(event):
 func _process(delta):
 	if camera_look_at_point:		
 		position = lerp(position, camera_look_at_point.global_position, 0.1)
+		#position = lerp(position, camera_look_at_point.global_position, 0.1)

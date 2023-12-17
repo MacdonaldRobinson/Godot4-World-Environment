@@ -62,4 +62,4 @@ func jump():
 	pass	
 
 func foot_step():	
-	print("foot_step")
+	pass
