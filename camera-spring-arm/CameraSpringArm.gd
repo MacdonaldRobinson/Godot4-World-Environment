@@ -8,6 +8,7 @@ class_name CameraController
 
 # Called when the node enters the scene tree for the first time.
 func _ready():	
+	position = camera_look_at_point.global_position
 	pass	
 	
 func get_camera_ray_cast() -> RayCast3D:
@@ -29,7 +30,8 @@ func _input(event):
 		camera.rotation.z = 0
 
 
+
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
-	if camera_look_at_point:
-		position = camera_look_at_point.global_position
+	if camera_look_at_point:		
+		position = lerp(position, camera_look_at_point.global_position, 0.1)

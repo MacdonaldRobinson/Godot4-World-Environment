@@ -21,7 +21,9 @@ func _physics_process(delta):
 	
 	if character:
 		character.set_motion(current_motion_state, Vector2(input_dir.x, -input_dir.y))
-		rotation.y = camera_controller.rotation.y + deg_to_rad(180)
+		if input_dir != Vector2.ZERO:
+			rotation.y = camera_controller.rotation.y + deg_to_rad(180)
+		
 		velocity = (character.animation_tree.get_root_motion_position() / delta).rotated(Vector3.UP, rotation.y)
 		
 	# Add the gravity.
