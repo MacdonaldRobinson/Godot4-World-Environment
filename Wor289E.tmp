@@ -1,0 +1,66 @@
+[gd_scene load_steps=15 format=3 uid="uid://bam21kk1efirk"]
+
+[ext_resource type="Script" path="res://World.gd" id="1_jxrg7"]
+[ext_resource type="PackedScene" uid="uid://dt8pspf6ajxrc" path="res://camera-spring-arm/CameraSpringArm.tscn" id="2_0xycr"]
+[ext_resource type="PackedScene" uid="uid://bt80o0nqyotka" path="res://player/Player.tscn" id="2_nudr7"]
+[ext_resource type="Script" path="res://addons/zylann.hterrain/hterrain.gd" id="3_j32i6"]
+[ext_resource type="Resource" path="res://heightmap_data/data.hterrain" id="4_iv71m"]
+[ext_resource type="Script" path="res://addons/zylann.hterrain/hterrain_texture_set.gd" id="5_wkg6r"]
+[ext_resource type="Texture2D" uid="uid://dto0dugv7c7el" path="res://textures/rocky-dunes1-bl/rocky-dunes1_albedo.png" id="7_bja08"]
+[ext_resource type="Texture2D" uid="uid://qexvr7qodqdf" path="res://textures/rocky-dunes1-bl/rocky-dunes1_normal-ogl.png" id="8_edkoc"]
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_mi8p7"]
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_deh0h"]
+seamless = true
+noise = SubResource("FastNoiseLite_mi8p7")
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_t477f"]
+sky_cover = SubResource("NoiseTexture2D_deh0h")
+
+[sub_resource type="Sky" id="Sky_075vd"]
+sky_material = SubResource("ProceduralSkyMaterial_t477f")
+
+[sub_resource type="Environment" id="Environment_u1vc7"]
+background_mode = 2
+background_energy_multiplier = 0.66
+sky = SubResource("Sky_075vd")
+
+[sub_resource type="Resource" id="Resource_81cvo"]
+script = ExtResource("5_wkg6r")
+mode = 0
+textures = [[ExtResource("7_bja08")], [ExtResource("8_edkoc")]]
+
+[node name="World" type="Node3D"]
+script = ExtResource("1_jxrg7")
+
+[node name="CameraController" parent="." instance=ExtResource("2_0xycr")]
+
+[node name="Player" parent="." node_paths=PackedStringArray("camera_controller") instance=ExtResource("2_nudr7")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 28.3481, 145.353, -14.7557)
+camera_controller = NodePath("../CameraController")
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_u1vc7")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(-1, 1.08056e-08, -8.67524e-08, 0, 0.992332, 0.123601, 8.74228e-08, 0.123601, -0.992332, -0.296527, 3, -4.79848)
+
+[node name="HTerrain" type="Node3D" parent="."]
+script = ExtResource("3_j32i6")
+centered = true
+_terrain_data = ExtResource("4_iv71m")
+chunk_size = 32
+collision_enabled = true
+collision_layer = 1
+collision_mask = 1
+shader_type = "Classic4Lite"
+custom_shader = null
+custom_globalmap_shader = null
+texture_set = SubResource("Resource_81cvo")
+render_layers = 1
+cast_shadow = 1
+shader_params/u_ground_uv_scale = 20
+shader_params/u_depth_blending = true
+shader_params/u_triplanar = null
+shader_params/u_tile_reduction = null

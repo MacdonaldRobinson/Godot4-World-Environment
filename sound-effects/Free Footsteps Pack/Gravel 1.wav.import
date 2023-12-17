@@ -1,0 +1,24 @@
+[remap]
+
+importer="wav"
+type="AudioStreamWAV"
+uid="uid://brlw7j8jk314b"
+path="res://.godot/imported/Gravel 1.wav-23fe361ad68190a060c4e4ef152b8be5.sample"
+
+[deps]
+
+source_file="res://sound-effects/Free Footsteps Pack/Gravel 1.wav"
+dest_files=["res://.godot/imported/Gravel 1.wav-23fe361ad68190a060c4e4ef152b8be5.sample"]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop_mode=0
+edit/loop_begin=0
+edit/loop_end=-1
+compress/mode=0

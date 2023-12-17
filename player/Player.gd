@@ -28,9 +28,8 @@ func _physics_process(delta):
 	if not is_on_floor():
 		velocity.y -= (gravity*100) * delta
 		
-		if not floor_ray_cast.is_colliding():
+		if character and not floor_ray_cast.is_colliding():
 			character.falling()
-			
 		
 	if Input.is_action_just_pressed("jump"):
 		character.jump()

@@ -48,7 +48,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.061615, 1.86963, 0)
 environment = SubResource("Environment_u1vc7")
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
-transform = Transform3D(-1, 0, 0, 0, 0.915234, 0.402922, 0, 0.402922, -0.915234, -0.296527, 3, -4.79848)
+transform = Transform3D(-1, 1.08056e-08, -8.67524e-08, 0, 0.992332, 0.123601, 8.74228e-08, 0.123601, -0.992332, -0.296527, 3, -4.79848)
 
 [node name="HTerrain" type="Node3D" parent="."]
 script = ExtResource("3_j32i6")

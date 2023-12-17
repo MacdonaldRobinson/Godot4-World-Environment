@@ -7,7 +7,8 @@ class_name Character
 enum MotionState{
 	standing,
 	crouching,
-	falling
+	falling,
+	landing
 }
 
 # Called when the node enters the scene tree for the first time.
@@ -34,15 +35,24 @@ func set_motion(motion_state: MotionState, blend_position:Vector2):
 	elif motion_state == MotionState.crouching:
 		animation_tree["parameters/crouching_motion_direction/blend_position"] = new_motion_direction		
 	pass
-	
-	
+
 func falling():
-	animation_tree["parameters/motion_state/transition_request"] = "falling"			
+	animation_tree["parameters/motion_state/transition_request"] = "falling"	
+	
+func landing():
+	animation_tree["parameters/motion_state/transition_request"] = "landing"
+
+func is_falling():
+	var current_state = animation_tree["parameters/motion_state/current_state"];
+	return current_state == "falling"	
+	
+func is_jumping():
+	var is_jumping: bool = animation_tree["parameters/standing_jump/active"]
+	return is_jumping
 	
 func jump():
-	var is_jumping: bool = animation_tree["parameters/standing_jump/active"]
-	
-	if is_jumping:
+
+	if is_jumping():
 		return
 			
 	var current_motion_direction:Vector2 = animation_tree["parameters/standing_motion_direction/blend_position"];
