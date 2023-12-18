@@ -11,7 +11,7 @@
 [ext_resource type="Texture2D" uid="uid://qexvr7qodqdf" path="res://textures/rocky-dunes1-bl/rocky-dunes1_normal-ogl.png" id="8_edkoc"]
 [ext_resource type="Script" path="res://addons/zylann.hterrain/hterrain_detail_layer.gd" id="9_iv8ju"]
 [ext_resource type="Texture2D" uid="uid://wj6gaqfjicn4" path="res://textures/ground/ground_pebbles_1318_1625_Small.jpg" id="10_me1ke"]
-[ext_resource type="Texture2D" uid="uid://c56nskk6tp0s" path="res://textures/Billboard_grass/n_grass_diff_0_01.png" id="10_sautv"]
+[ext_resource type="Texture2D" uid="uid://jfbvra1y56of" path="res://textures/Billboard_grass/n_grass_diff_0_34.png" id="12_os2r8"]
 
 [sub_resource type="FastNoiseLite" id="FastNoiseLite_mi8p7"]
 
@@ -47,7 +47,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 28.3481, 31.8541, 103.074)
 camera_controller = NodePath("../CameraController")
 
 [node name="CameraLookAtPoint" type="Node3D" parent="Player"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.061615, 1.86963, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0711536, 1.45474, 0.113083)
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = SubResource("Environment_u1vc7")
@@ -77,7 +77,7 @@ shader_params/u_tile_reduction = null
 
 [node name="HTerrainDetailLayer" type="Node3D" parent="HTerrain"]
 script = ExtResource("9_iv8ju")
-texture = ExtResource("10_sautv")
+texture = ExtResource("12_os2r8")
 density = 10.0
 shader_params/u_globalmap_tint_bottom = null
 shader_params/u_globalmap_tint_top = null

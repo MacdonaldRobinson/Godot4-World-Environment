@@ -28,11 +28,16 @@ func _input(event):
 		camera.rotation.x = clamp(camera.rotation.x, -0.5, 1)
 		camera.rotation.y = 0
 		camera.rotation.z = 0
-
-
+		
+	if event is InputEventMouseButton:
+		if event.button_index == 4:
+			if spring_length > 1:
+				spring_length -= 0.1
+		elif event.button_index == 5:
+			if spring_length < 10:
+				spring_length += 0.1
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
 	if camera_look_at_point:		
 		position = lerp(position, camera_look_at_point.global_position, 0.1)
-		#position = lerp(position, camera_look_at_point.global_position, 0.1)

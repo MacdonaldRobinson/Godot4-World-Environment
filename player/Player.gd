@@ -27,8 +27,7 @@ func _physics_process(delta):
 		
 		var new_velocity = (character.animation_tree.get_root_motion_position() / delta).rotated(Vector3.UP, rotation.y);
 		velocity = new_velocity
-		
-	print(velocity)
+	
 		
 	# Add the gravity.
 	if not is_on_floor():
