@@ -29,6 +29,7 @@ sky_material = SubResource("ProceduralSkyMaterial_t477f")
 background_mode = 2
 background_energy_multiplier = 0.66
 sky = SubResource("Sky_075vd")
+fog_enabled = true
 
 [sub_resource type="Resource" id="Resource_81cvo"]
 script = ExtResource("5_wkg6r")
