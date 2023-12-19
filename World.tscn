@@ -50,7 +50,7 @@ script = ExtResource("1_jxrg7")
 camera_look_at_point = NodePath("../Player/CameraLookAtPoint")
 
 [node name="Player" parent="." node_paths=PackedStringArray("camera_controller", "canvas_overlays") instance=ExtResource("2_nudr7")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 11.0619, 31.8541, 63.5519)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 199.829, 31.8541, -95.7491)
 camera_controller = NodePath("../CameraController")
 canvas_overlays = NodePath("../CanvasLayer")
 
@@ -78,9 +78,9 @@ custom_globalmap_shader = null
 texture_set = SubResource("Resource_81cvo")
 render_layers = 1
 cast_shadow = 1
-shader_params/u_ground_uv_scale = 20
+shader_params/u_ground_uv_scale = 20.0
 shader_params/u_depth_blending = true
-shader_params/u_triplanar = null
+shader_params/u_triplanar = false
 shader_params/u_tile_reduction = null
 
 [node name="HTerrainDetailLayer" type="Node3D" parent="HTerrain"]
@@ -94,7 +94,7 @@ shader_params/u_instance_scale = null
 shader_params/u_roughness = null
 
 [node name="CSGBox3D" type="CSGBox3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 20.9032, 57.7311)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 188.767, 20.9032, -101.57)
 material_override = SubResource("StandardMaterial3D_pwflx")
 use_collision = true
 size = Vector3(100, 1, 100)
@@ -105,7 +105,13 @@ script = ExtResource("14_kvl5u")
 [node name="DeadOverlay" parent="CanvasLayer" instance=ExtResource("14_reoyo")]
 
 [node name="MiniMap" parent="CanvasLayer" node_paths=PackedStringArray("follow_node") instance=ExtResource("16_uw3t1")]
-offset_left = 943.0
-offset_right = -3.0
-offset_bottom = -439.0
+anchors_preset = 1
+anchor_left = 1.0
+anchor_bottom = 0.0
+offset_left = -180.0
+offset_top = 21.0
+offset_right = -180.0
+offset_bottom = 21.0
+grow_horizontal = 0
+grow_vertical = 1
 follow_node = NodePath("../../Player")
