@@ -3,6 +3,10 @@ class_name Character
 
 @onready var animation_tree:AnimationTree = $AnimationTree
 @onready var foot_step_sound: AudioStreamPlayer3D = $FootStepSound
+@onready var falling_timer: Timer = $FallingTimer
+var is_dead: bool = false
+
+signal OnCharacterDying
 
 enum MotionState{
 	standing,
@@ -21,6 +25,7 @@ func _process(delta):
 	pass
 
 func set_motion(motion_state: MotionState, blend_position:Vector2):
+	falling_timer.stop()
 	
 	var str_motion_state:String = MotionState.find_key(motion_state)
 		
@@ -37,6 +42,9 @@ func set_motion(motion_state: MotionState, blend_position:Vector2):
 	pass
 
 func falling():
+	if not is_dead and falling_timer.is_stopped():
+		falling_timer.start()
+		
 	animation_tree["parameters/motion_state/transition_request"] = "falling"	
 	
 func landing():
@@ -63,3 +71,7 @@ func jump():
 
 func foot_step():	
 	pass
+
+func _on_falling_timer_timeout():
+	is_dead = true
+	emit_signal("OnCharacterDying")
