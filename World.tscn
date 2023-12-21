@@ -1,4 +1,4 @@
-[gd_scene load_steps=24 format=3 uid="uid://bam21kk1efirk"]
+[gd_scene load_steps=26 format=3 uid="uid://bam21kk1efirk"]
 
 [ext_resource type="Script" path="res://World.gd" id="1_jxrg7"]
 [ext_resource type="PackedScene" uid="uid://dt8pspf6ajxrc" path="res://camera-spring-arm/CameraSpringArm.tscn" id="2_0xycr"]
@@ -15,7 +15,9 @@
 [ext_resource type="Texture2D" uid="uid://dto0dugv7c7el" path="res://textures/rocky-dunes1-bl/rocky-dunes1_albedo.png" id="13_0gqpx"]
 [ext_resource type="Script" path="res://canvas-layers/CanvasLayers.gd" id="14_kvl5u"]
 [ext_resource type="PackedScene" uid="uid://jwwqrowp2n5s" path="res://canvas-layers/DeadOverlay/DeadOverlay.tscn" id="14_reoyo"]
-[ext_resource type="PackedScene" uid="uid://ba6wjd1xbqo5a" path="res://canvas-layers/MiniMap/MiniMap.tscn" id="16_uw3t1"]
+[ext_resource type="PackedScene" uid="uid://ba6wjd1xbqo5a" path="res://canvas-layers/MiniMapOverlay/MiniMap.tscn" id="16_uw3t1"]
+[ext_resource type="PackedScene" uid="uid://dj4lu7oeb1sxq" path="res://canvas-layers/InteractOverlay/InteractOverlay.tscn" id="17_gjsrs"]
+[ext_resource type="PackedScene" uid="uid://cspwr8ncana77" path="res://interactables/chair/Chair.tscn" id="17_ue5i0"]
 
 [sub_resource type="FastNoiseLite" id="FastNoiseLite_mi8p7"]
 
@@ -50,7 +52,7 @@ script = ExtResource("1_jxrg7")
 camera_look_at_point = NodePath("../Player/CameraLookAtPoint")
 
 [node name="Player" parent="." node_paths=PackedStringArray("camera_controller", "canvas_overlays") instance=ExtResource("2_nudr7")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 199.829, 31.8541, -95.7491)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 199.667, 21.4784, -98.9448)
 camera_controller = NodePath("../CameraController")
 canvas_overlays = NodePath("../CanvasLayer")
 
@@ -104,7 +106,7 @@ script = ExtResource("14_kvl5u")
 
 [node name="DeadOverlay" parent="CanvasLayer" instance=ExtResource("14_reoyo")]
 
-[node name="MiniMap" parent="CanvasLayer" node_paths=PackedStringArray("follow_node") instance=ExtResource("16_uw3t1")]
+[node name="MiniMapOverlay" parent="CanvasLayer" node_paths=PackedStringArray("follow_node") instance=ExtResource("16_uw3t1")]
 anchors_preset = 1
 anchor_left = 1.0
 anchor_bottom = 0.0
@@ -115,3 +117,10 @@ offset_bottom = 21.0
 grow_horizontal = 0
 grow_vertical = 1
 follow_node = NodePath("../../Player")
+
+[node name="InteractOverly" parent="CanvasLayer" instance=ExtResource("17_gjsrs")]
+
+[node name="Chair" parent="." instance=ExtResource("17_ue5i0")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 200, 21.8773, -100)
+
+[connection signal="OnInteracting" from="Chair" to="Player" method="_on_chair_on_interacting"]

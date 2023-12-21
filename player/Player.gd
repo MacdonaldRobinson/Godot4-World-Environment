@@ -9,14 +9,31 @@ var current_motion_state:Character.MotionState = Character.MotionState.standing
 
 @onready var floor_ray_cast:RayCast3D = $FloorRayCast as RayCast3D
 @onready var character: Character = $Clara as Character
+@onready var currently_interacting_body: Interactable = null
+@onready var collision_shape: CollisionShape3D = $CollisionShape3D
+
 @export var camera_controller: CameraController
 @export var canvas_overlays: CanvasOverlays
+
+func _ready():
+	pass
 
 func _physics_process(delta):
 
 	# Get the input direction and handle the movement/deceleration.
 	# As good practice, you should replace UI actions with custom gameplay actions.
-
+	
+	if Input.is_action_just_pressed("interact"):
+		if currently_interacting_body:
+			currently_interacting_body.interact(self)
+			
+		if character.is_sitting():
+			collision_shape.disabled = false
+			character.sit_to_stand()
+	
+	if character.pause_motion:
+		return
+		
 	var input_dir = Input.get_vector("ui_left", "ui_right", "ui_up", "ui_down")
 	var direction = (transform.basis * Vector3(input_dir.x, 0, input_dir.y)).normalized()
 	
@@ -31,7 +48,7 @@ func _physics_process(delta):
 	
 		
 	velocity.y -= gravity * delta
-	
+		
 	# Add the gravity.	
 	if character and not floor_ray_cast.is_colliding():
 		character.falling()
@@ -44,9 +61,30 @@ func _physics_process(delta):
 		if current_motion_state == Character.MotionState.standing:
 			current_motion_state = Character.MotionState.crouching
 		else:
-			current_motion_state = Character.MotionState.standing
-
+			current_motion_state = Character.MotionState.standing		
+		
 	move_and_slide()
 
 func _on_clara_on_character_dying():
-	canvas_overlays.show_dead_layer()
+	canvas_overlays.dead_overlay.show()
+
+
+func _on_interact_area_body_entered(body):
+	if body is Interactable:
+		currently_interacting_body = body
+		canvas_overlays.interact_overlay.show()
+
+
+func _on_interact_area_body_exited(body):
+	currently_interacting_body = null
+	canvas_overlays.interact_overlay.hide()
+
+func _on_chair_on_interacting(chair: Interactable, interacting_body: Node3D):
+	var angle = interacting_body.global_rotation.angle_to(chair.interaction_point.global_rotation)
+	interacting_body.global_rotation.y = angle
+	interacting_body.global_position = chair.interaction_point.global_position
+	
+	interacting_body.global_position.y -= 0.2
+	collision_shape.disabled = true
+	
+	character.sit();

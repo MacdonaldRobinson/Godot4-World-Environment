@@ -4,6 +4,9 @@ class_name Character
 @onready var animation_tree:AnimationTree = $AnimationTree
 @onready var foot_step_sound: AudioStreamPlayer3D = $FootStepSound
 @onready var falling_timer: Timer = $FallingTimer
+
+var pause_motion:bool = false
+
 var is_dead: bool = false
 
 signal OnCharacterDying
@@ -12,7 +15,9 @@ enum MotionState{
 	standing,
 	crouching,
 	falling,
-	landing
+	landing,
+	sitting,
+	sitting_to_standing
 }
 
 # Called when the node enters the scene tree for the first time.
@@ -26,6 +31,9 @@ func _process(delta):
 
 func set_motion(motion_state: MotionState, blend_position:Vector2):
 	falling_timer.stop()
+	
+	if pause_motion:
+		return
 	
 	var str_motion_state:String = MotionState.find_key(motion_state)
 		
@@ -49,14 +57,27 @@ func falling():
 	
 func landing():
 	animation_tree["parameters/motion_state/transition_request"] = "landing"
+	
+func sit():	
+	pause_motion = true
+	animation_tree["parameters/motion_state/transition_request"] = "sitting"	
 
+func sit_to_stand():	
+	pause_motion = false
+	animation_tree["parameters/motion_state/transition_request"] = "sitting_to_standing"	
+
+
+func is_sitting():
+	var current_state = animation_tree["parameters/motion_state/current_state"];
+	return current_state == "sitting"	
+	
 func is_falling():
 	var current_state = animation_tree["parameters/motion_state/current_state"];
 	return current_state == "falling"	
 	
 func is_jumping():
 	var is_jumping: bool = animation_tree["parameters/standing_jump/active"]
-	return is_jumping
+	return is_jumping	
 	
 func jump():
 

@@ -1,0 +1,126 @@
+[gd_scene load_steps=26 format=3 uid="uid://bam21kk1efirk"]
+
+[ext_resource type="Script" path="res://World.gd" id="1_jxrg7"]
+[ext_resource type="PackedScene" uid="uid://dt8pspf6ajxrc" path="res://camera-spring-arm/CameraSpringArm.tscn" id="2_0xycr"]
+[ext_resource type="PackedScene" uid="uid://bt80o0nqyotka" path="res://player/Player.tscn" id="2_nudr7"]
+[ext_resource type="Script" path="res://addons/zylann.hterrain/hterrain.gd" id="3_j32i6"]
+[ext_resource type="Resource" path="res://heightmap_data/data.hterrain" id="4_iv71m"]
+[ext_resource type="Script" path="res://addons/zylann.hterrain/hterrain_texture_set.gd" id="5_wkg6r"]
+[ext_resource type="Texture2D" uid="uid://brjn1ojuebfr5" path="res://textures/ground/SandyDry_S.jpg" id="7_1q7lo"]
+[ext_resource type="Texture2D" uid="uid://dvfs45vj8svim" path="res://textures/ground/SandyDry_N.jpg" id="8_cjh1g"]
+[ext_resource type="Texture2D" uid="uid://qexvr7qodqdf" path="res://textures/rocky-dunes1-bl/rocky-dunes1_normal-ogl.png" id="8_edkoc"]
+[ext_resource type="Script" path="res://addons/zylann.hterrain/hterrain_detail_layer.gd" id="9_iv8ju"]
+[ext_resource type="Texture2D" uid="uid://wj6gaqfjicn4" path="res://textures/ground/ground_pebbles_1318_1625_Small.jpg" id="10_me1ke"]
+[ext_resource type="Texture2D" uid="uid://jfbvra1y56of" path="res://textures/Billboard_grass/n_grass_diff_0_34.png" id="12_os2r8"]
+[ext_resource type="Texture2D" uid="uid://dto0dugv7c7el" path="res://textures/rocky-dunes1-bl/rocky-dunes1_albedo.png" id="13_0gqpx"]
+[ext_resource type="Script" path="res://canvas-layers/CanvasLayers.gd" id="14_kvl5u"]
+[ext_resource type="PackedScene" uid="uid://jwwqrowp2n5s" path="res://canvas-layers/DeadOverlay/DeadOverlay.tscn" id="14_reoyo"]
+[ext_resource type="PackedScene" uid="uid://ba6wjd1xbqo5a" path="res://canvas-layers/MiniMapOverlay/MiniMap.tscn" id="16_uw3t1"]
+[ext_resource type="PackedScene" uid="uid://dj4lu7oeb1sxq" path="res://canvas-layers/InteractOverlay/InteractOverlay.tscn" id="17_gjsrs"]
+[ext_resource type="PackedScene" uid="uid://cspwr8ncana77" path="res://interactables/chair/Chair.tscn" id="17_ue5i0"]
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_mi8p7"]
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_deh0h"]
+seamless = true
+noise = SubResource("FastNoiseLite_mi8p7")
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_t477f"]
+sky_cover = SubResource("NoiseTexture2D_deh0h")
+
+[sub_resource type="Sky" id="Sky_075vd"]
+sky_material = SubResource("ProceduralSkyMaterial_t477f")
+
+[sub_resource type="Environment" id="Environment_u1vc7"]
+background_mode = 2
+background_energy_multiplier = 0.66
+sky = SubResource("Sky_075vd")
+fog_enabled = true
+
+[sub_resource type="Resource" id="Resource_81cvo"]
+script = ExtResource("5_wkg6r")
+mode = 0
+textures = [[ExtResource("7_1q7lo"), ExtResource("10_me1ke")], [ExtResource("8_cjh1g"), ExtResource("8_edkoc")]]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_pwflx"]
+albedo_texture = ExtResource("13_0gqpx")
+
+[node name="World" type="Node3D"]
+script = ExtResource("1_jxrg7")
+
+[node name="CameraController" parent="." node_paths=PackedStringArray("camera_look_at_point") instance=ExtResource("2_0xycr")]
+camera_look_at_point = NodePath("../Player/CameraLookAtPoint")
+
+[node name="Player" parent="." node_paths=PackedStringArray("camera_controller", "canvas_overlays") instance=ExtResource("2_nudr7")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 199.829, 31.8541, -95.7491)
+camera_controller = NodePath("../CameraController")
+canvas_overlays = NodePath("../CanvasLayer")
+
+[node name="CameraLookAtPoint" type="Node3D" parent="Player"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0711536, 1.45474, 0.113083)
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_u1vc7")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(-1, 1.08056e-08, -8.67524e-08, 0, 0.992332, 0.123601, 8.74228e-08, 0.123601, -0.992332, -0.296527, 3, -4.79848)
+
+[node name="HTerrain" type="Node3D" parent="."]
+script = ExtResource("3_j32i6")
+ambient_wind = 0.1
+centered = true
+_terrain_data = ExtResource("4_iv71m")
+chunk_size = 32
+collision_enabled = true
+collision_layer = 1
+collision_mask = 1
+shader_type = "Classic4Lite"
+custom_shader = null
+custom_globalmap_shader = null
+texture_set = SubResource("Resource_81cvo")
+render_layers = 1
+cast_shadow = 1
+shader_params/u_ground_uv_scale = 20.0
+shader_params/u_depth_blending = true
+shader_params/u_triplanar = false
+shader_params/u_tile_reduction = null
+
+[node name="HTerrainDetailLayer" type="Node3D" parent="HTerrain"]
+script = ExtResource("9_iv8ju")
+texture = ExtResource("12_os2r8")
+density = 10.0
+shader_params/u_globalmap_tint_bottom = null
+shader_params/u_globalmap_tint_top = null
+shader_params/u_bottom_ao = null
+shader_params/u_instance_scale = null
+shader_params/u_roughness = null
+
+[node name="CSGBox3D" type="CSGBox3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 188.767, 20.9032, -101.57)
+material_override = SubResource("StandardMaterial3D_pwflx")
+use_collision = true
+size = Vector3(100, 1, 100)
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+script = ExtResource("14_kvl5u")
+
+[node name="DeadOverlay" parent="CanvasLayer" instance=ExtResource("14_reoyo")]
+
+[node name="MiniMapOverlay" parent="CanvasLayer" node_paths=PackedStringArray("follow_node") instance=ExtResource("16_uw3t1")]
+anchors_preset = 1
+anchor_left = 1.0
+anchor_bottom = 0.0
+offset_left = -180.0
+offset_top = 21.0
+offset_right = -180.0
+offset_bottom = 21.0
+grow_horizontal = 0
+grow_vertical = 1
+follow_node = NodePath("../../Player")
+
+[node name="InteractOverly" parent="CanvasLayer" instance=ExtResource("17_gjsrs")]
+
+[node name="Chair" parent="." instance=ExtResource("17_ue5i0")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 200, 21.8773, -100)
+
+[connection signal="OnSit" from="Chair" to="Player" method="_on_chair_on_sit"]
