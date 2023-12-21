@@ -1,4 +1,4 @@
-[gd_scene load_steps=26 format=3 uid="uid://bam21kk1efirk"]
+[gd_scene load_steps=24 format=3 uid="uid://bam21kk1efirk"]
 
 [ext_resource type="Script" path="res://World.gd" id="1_jxrg7"]
 [ext_resource type="PackedScene" uid="uid://dt8pspf6ajxrc" path="res://camera-spring-arm/CameraSpringArm.tscn" id="2_0xycr"]
@@ -12,7 +12,6 @@
 [ext_resource type="Script" path="res://addons/zylann.hterrain/hterrain_detail_layer.gd" id="9_iv8ju"]
 [ext_resource type="Texture2D" uid="uid://wj6gaqfjicn4" path="res://textures/ground/ground_pebbles_1318_1625_Small.jpg" id="10_me1ke"]
 [ext_resource type="Texture2D" uid="uid://jfbvra1y56of" path="res://textures/Billboard_grass/n_grass_diff_0_34.png" id="12_os2r8"]
-[ext_resource type="Texture2D" uid="uid://dto0dugv7c7el" path="res://textures/rocky-dunes1-bl/rocky-dunes1_albedo.png" id="13_0gqpx"]
 [ext_resource type="Script" path="res://canvas-layers/CanvasLayers.gd" id="14_kvl5u"]
 [ext_resource type="PackedScene" uid="uid://jwwqrowp2n5s" path="res://canvas-layers/DeadOverlay/DeadOverlay.tscn" id="14_reoyo"]
 [ext_resource type="PackedScene" uid="uid://ba6wjd1xbqo5a" path="res://canvas-layers/MiniMapOverlay/MiniMap.tscn" id="16_uw3t1"]
@@ -42,9 +41,6 @@ script = ExtResource("5_wkg6r")
 mode = 0
 textures = [[ExtResource("7_1q7lo"), ExtResource("10_me1ke")], [ExtResource("8_cjh1g"), ExtResource("8_edkoc")]]
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_pwflx"]
-albedo_texture = ExtResource("13_0gqpx")
-
 [node name="World" type="Node3D"]
 script = ExtResource("1_jxrg7")
 
@@ -52,7 +48,7 @@ script = ExtResource("1_jxrg7")
 camera_look_at_point = NodePath("../Player/CameraLookAtPoint")
 
 [node name="Player" parent="." node_paths=PackedStringArray("camera_controller", "canvas_overlays") instance=ExtResource("2_nudr7")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 199.667, 21.4784, -98.9448)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 199.667, 3.7687, -85.4368)
 camera_controller = NodePath("../CameraController")
 canvas_overlays = NodePath("../CanvasLayer")
 
@@ -95,12 +91,6 @@ shader_params/u_bottom_ao = null
 shader_params/u_instance_scale = null
 shader_params/u_roughness = null
 
-[node name="CSGBox3D" type="CSGBox3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 188.767, 20.9032, -101.57)
-material_override = SubResource("StandardMaterial3D_pwflx")
-use_collision = true
-size = Vector3(100, 1, 100)
-
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 script = ExtResource("14_kvl5u")
 
@@ -121,6 +111,6 @@ follow_node = NodePath("../../Player")
 [node name="InteractOverly" parent="CanvasLayer" instance=ExtResource("17_gjsrs")]
 
 [node name="Chair" parent="." instance=ExtResource("17_ue5i0")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 200, 21.8773, -100)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 201.116, -4.71284, -89.9881)
 
 [connection signal="OnInteracting" from="Chair" to="Player" method="_on_chair_on_interacting"]
