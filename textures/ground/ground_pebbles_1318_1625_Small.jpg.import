@@ -4,15 +4,16 @@ importer="texture"
 type="CompressedTexture2D"
 uid="uid://wj6gaqfjicn4"
 path.s3tc="res://.godot/imported/ground_pebbles_1318_1625_Small.jpg-dd62c2804372289df3a9757f7a86c854.s3tc.ctex"
+path.etc2="res://.godot/imported/ground_pebbles_1318_1625_Small.jpg-dd62c2804372289df3a9757f7a86c854.etc2.ctex"
 metadata={
-"imported_formats": ["s3tc_bptc"],
+"imported_formats": ["s3tc_bptc", "etc2_astc"],
 "vram_texture": true
 }
 
 [deps]
 
 source_file="res://textures/ground/ground_pebbles_1318_1625_Small.jpg"
-dest_files=["res://.godot/imported/ground_pebbles_1318_1625_Small.jpg-dd62c2804372289df3a9757f7a86c854.s3tc.ctex"]
+dest_files=["res://.godot/imported/ground_pebbles_1318_1625_Small.jpg-dd62c2804372289df3a9757f7a86c854.s3tc.ctex", "res://.godot/imported/ground_pebbles_1318_1625_Small.jpg-dd62c2804372289df3a9757f7a86c854.etc2.ctex"]
 
 [params]
 

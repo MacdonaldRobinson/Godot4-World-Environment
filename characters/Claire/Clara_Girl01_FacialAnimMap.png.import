@@ -4,8 +4,9 @@ importer="texture"
 type="CompressedTexture2D"
 uid="uid://ds3duulaiy181"
 path.s3tc="res://.godot/imported/Clara_Girl01_FacialAnimMap.png-3abf0845aaab6b61a07ced8c5838134e.s3tc.ctex"
+path.etc2="res://.godot/imported/Clara_Girl01_FacialAnimMap.png-3abf0845aaab6b61a07ced8c5838134e.etc2.ctex"
 metadata={
-"imported_formats": ["s3tc_bptc"],
+"imported_formats": ["s3tc_bptc", "etc2_astc"],
 "vram_texture": true
 }
 generator_parameters={}
@@ -13,7 +14,7 @@ generator_parameters={}
 [deps]
 
 source_file="res://characters/Claire/Clara_Girl01_FacialAnimMap.png"
-dest_files=["res://.godot/imported/Clara_Girl01_FacialAnimMap.png-3abf0845aaab6b61a07ced8c5838134e.s3tc.ctex"]
+dest_files=["res://.godot/imported/Clara_Girl01_FacialAnimMap.png-3abf0845aaab6b61a07ced8c5838134e.s3tc.ctex", "res://.godot/imported/Clara_Girl01_FacialAnimMap.png-3abf0845aaab6b61a07ced8c5838134e.etc2.ctex"]
 
 [params]
 

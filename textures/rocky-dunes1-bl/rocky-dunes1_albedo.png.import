@@ -4,15 +4,16 @@ importer="texture"
 type="CompressedTexture2D"
 uid="uid://dto0dugv7c7el"
 path.s3tc="res://.godot/imported/rocky-dunes1_albedo.png-9d9e79ac116a43326a1a22c13d94a5d8.s3tc.ctex"
+path.etc2="res://.godot/imported/rocky-dunes1_albedo.png-9d9e79ac116a43326a1a22c13d94a5d8.etc2.ctex"
 metadata={
-"imported_formats": ["s3tc_bptc"],
+"imported_formats": ["s3tc_bptc", "etc2_astc"],
 "vram_texture": true
 }
 
 [deps]
 
 source_file="res://textures/rocky-dunes1-bl/rocky-dunes1_albedo.png"
-dest_files=["res://.godot/imported/rocky-dunes1_albedo.png-9d9e79ac116a43326a1a22c13d94a5d8.s3tc.ctex"]
+dest_files=["res://.godot/imported/rocky-dunes1_albedo.png-9d9e79ac116a43326a1a22c13d94a5d8.s3tc.ctex", "res://.godot/imported/rocky-dunes1_albedo.png-9d9e79ac116a43326a1a22c13d94a5d8.etc2.ctex"]
 
 [params]
 

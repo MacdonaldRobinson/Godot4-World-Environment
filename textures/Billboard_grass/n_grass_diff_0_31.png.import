@@ -4,15 +4,16 @@ importer="texture"
 type="CompressedTexture2D"
 uid="uid://dxq5xyj8sjq8q"
 path.s3tc="res://.godot/imported/n_grass_diff_0_31.png-6c7f8a247f4abcb59756417fb9e8f5b8.s3tc.ctex"
+path.etc2="res://.godot/imported/n_grass_diff_0_31.png-6c7f8a247f4abcb59756417fb9e8f5b8.etc2.ctex"
 metadata={
-"imported_formats": ["s3tc_bptc"],
+"imported_formats": ["s3tc_bptc", "etc2_astc"],
 "vram_texture": true
 }
 
 [deps]
 
 source_file="res://textures/Billboard_grass/n_grass_diff_0_31.png"
-dest_files=["res://.godot/imported/n_grass_diff_0_31.png-6c7f8a247f4abcb59756417fb9e8f5b8.s3tc.ctex"]
+dest_files=["res://.godot/imported/n_grass_diff_0_31.png-6c7f8a247f4abcb59756417fb9e8f5b8.s3tc.ctex", "res://.godot/imported/n_grass_diff_0_31.png-6c7f8a247f4abcb59756417fb9e8f5b8.etc2.ctex"]
 
 [params]
 

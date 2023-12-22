@@ -4,8 +4,9 @@ importer="texture"
 type="CompressedTexture2D"
 uid="uid://dxmklkotr373m"
 path.s3tc="res://.godot/imported/Kaya_OccupyGuy_diffuse.png-40046c3da31ccd8943e66c98cc2ef4a3.s3tc.ctex"
+path.etc2="res://.godot/imported/Kaya_OccupyGuy_diffuse.png-40046c3da31ccd8943e66c98cc2ef4a3.etc2.ctex"
 metadata={
-"imported_formats": ["s3tc_bptc"],
+"imported_formats": ["s3tc_bptc", "etc2_astc"],
 "vram_texture": true
 }
 generator_parameters={}
@@ -13,7 +14,7 @@ generator_parameters={}
 [deps]
 
 source_file="res://characters/Kaya/Kaya_OccupyGuy_diffuse.png"
-dest_files=["res://.godot/imported/Kaya_OccupyGuy_diffuse.png-40046c3da31ccd8943e66c98cc2ef4a3.s3tc.ctex"]
+dest_files=["res://.godot/imported/Kaya_OccupyGuy_diffuse.png-40046c3da31ccd8943e66c98cc2ef4a3.s3tc.ctex", "res://.godot/imported/Kaya_OccupyGuy_diffuse.png-40046c3da31ccd8943e66c98cc2ef4a3.etc2.ctex"]
 
 [params]
 
