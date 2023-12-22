@@ -45,15 +45,7 @@ textures = [[ExtResource("7_1q7lo"), ExtResource("10_me1ke")], [ExtResource("8_c
 script = ExtResource("1_jxrg7")
 
 [node name="CameraController" parent="." node_paths=PackedStringArray("camera_look_at_point") instance=ExtResource("2_0xycr")]
-camera_look_at_point = NodePath("../Player/CameraLookAtPoint")
-
-[node name="Player" parent="." node_paths=PackedStringArray("camera_controller", "canvas_overlays") instance=ExtResource("2_nudr7")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 199.667, 3.7687, -85.4368)
-camera_controller = NodePath("../CameraController")
-canvas_overlays = NodePath("../CanvasLayer")
-
-[node name="CameraLookAtPoint" type="Node3D" parent="Player"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0711536, 1.45474, 0.113083)
+camera_look_at_point = NodePath("../PlayersContainer/Player/CameraLookAtPoint")
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = SubResource("Environment_u1vc7")
@@ -106,11 +98,21 @@ offset_right = -180.0
 offset_bottom = 21.0
 grow_horizontal = 0
 grow_vertical = 1
-follow_node = NodePath("../../Player")
+follow_node = NodePath("../../PlayersContainer/Player")
 
 [node name="InteractOverly" parent="CanvasLayer" instance=ExtResource("17_gjsrs")]
 
 [node name="Chair" parent="." instance=ExtResource("17_ue5i0")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 201.116, -4.71284, -89.9881)
 
-[connection signal="OnInteracting" from="Chair" to="Player" method="_on_chair_on_interacting"]
+[node name="PlayersContainer" type="Node3D" parent="."]
+
+[node name="Player" parent="PlayersContainer" node_paths=PackedStringArray("camera_controller", "canvas_overlays") instance=ExtResource("2_nudr7")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 199.667, 3.7687, -85.4368)
+camera_controller = NodePath("../../CameraController")
+canvas_overlays = NodePath("../../CanvasLayer")
+
+[node name="CameraLookAtPoint" type="Node3D" parent="PlayersContainer/Player"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0711536, 1.45474, 0.113083)
+
+[connection signal="OnInteracting" from="Chair" to="PlayersContainer/Player" method="_on_chair_on_interacting"]

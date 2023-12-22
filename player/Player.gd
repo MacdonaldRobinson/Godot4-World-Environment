@@ -1,4 +1,5 @@
 extends CharacterBody3D
+class_name Player 
 
 const SPEED = 5.0
 const JUMP_VELOCITY = 4.5
@@ -8,18 +9,31 @@ var gravity = ProjectSettings.get_setting("physics/3d/default_gravity")
 var current_motion_state:Character.MotionState = Character.MotionState.standing
 
 @onready var floor_ray_cast:RayCast3D = $FloorRayCast as RayCast3D
-@onready var character: Character = $Clara as Character
 @onready var currently_interacting_body: Interactable = null
 @onready var collision_shape: CollisionShape3D = $CollisionShape3D
 
 @export var camera_controller: CameraController
 @export var canvas_overlays: CanvasOverlays
+@export var character_scene: PackedScene
+
+var character: Character
 
 func _ready():
-	pass
+	if not character_scene:
+		return
+		
+	set_character(character_scene)
+	
+func set_character(character_scene: PackedScene):
+	character = character_scene.instantiate()
+	self.add_child(character)
+
+	character.OnCharacterDying.connect(_on_character_on_character_dying)
 
 func _physics_process(delta):
-
+	if not character:
+		return
+		
 	# Get the input direction and handle the movement/deceleration.
 	# As good practice, you should replace UI actions with custom gameplay actions.
 	
@@ -37,15 +51,15 @@ func _physics_process(delta):
 	var input_dir = Input.get_vector("ui_left", "ui_right", "ui_up", "ui_down")
 	var direction = (transform.basis * Vector3(input_dir.x, 0, input_dir.y)).normalized()
 	
+	
 	if character and is_on_floor():
 		character.set_motion(current_motion_state, Vector2(input_dir.x, -input_dir.y))
 		
-		if input_dir != Vector2.ZERO:
+		if input_dir != Vector2.ZERO and camera_controller:
 			rotation.y = camera_controller.rotation.y + deg_to_rad(180)
 		
 		var new_velocity = (character.animation_tree.get_root_motion_position() / delta).rotated(Vector3.UP, rotation.y);
-		velocity = new_velocity
-	
+		velocity = new_velocity 		
 		
 	velocity.y -= gravity * delta
 		
@@ -65,7 +79,7 @@ func _physics_process(delta):
 		
 	move_and_slide()
 
-func _on_clara_on_character_dying():
+func _on_character_on_character_dying(character):
 	canvas_overlays.dead_overlay.show()
 
 
@@ -76,8 +90,10 @@ func _on_interact_area_body_entered(body):
 
 
 func _on_interact_area_body_exited(body):
-	currently_interacting_body = null
-	canvas_overlays.interact_overlay.hide()
+	if canvas_overlays:
+		currently_interacting_body = null
+		canvas_overlays.interact_overlay.hide()
+
 
 func _on_chair_on_interacting(chair: Interactable, interacting_body: Node3D):
 	var angle = interacting_body.global_rotation.angle_to(chair.interaction_point.global_rotation)

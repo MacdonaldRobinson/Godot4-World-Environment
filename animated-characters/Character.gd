@@ -4,12 +4,15 @@ class_name Character
 @onready var animation_tree:AnimationTree = $AnimationTree
 @onready var foot_step_sound: AudioStreamPlayer3D = $FootStepSound
 @onready var falling_timer: Timer = $FallingTimer
+@onready var camera_lookat_point: Node3D = $CameraLookAtPoint
+@onready var character_selector: Area3D = $CharacterSelector
 
 var pause_motion:bool = false
 
 var is_dead: bool = false
 
-signal OnCharacterDying
+signal OnCharacterDying(character)
+signal OnCharacterSelected(character)
 
 enum MotionState{
 	standing,
@@ -17,11 +20,13 @@ enum MotionState{
 	falling,
 	landing,
 	sitting,
-	sitting_to_standing
+	sitting_to_standing,
+	wave
 }
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
+	character_selector.input_event.connect(_on_character_selector_input_event)
 	pass # Replace with function body.
 
 
@@ -66,6 +71,9 @@ func sit_to_stand():
 	pause_motion = false
 	animation_tree["parameters/motion_state/transition_request"] = "sitting_to_standing"	
 
+func wave():	
+	pause_motion = false
+	animation_tree["parameters/motion_state/transition_request"] = "wave"
 
 func is_sitting():
 	var current_state = animation_tree["parameters/motion_state/current_state"];
@@ -95,4 +103,11 @@ func foot_step():
 
 func _on_falling_timer_timeout():
 	is_dead = true
-	emit_signal("OnCharacterDying")
+	emit_signal("OnCharacterDying", self)
+
+func _on_character_selector_input_event(camera, event, position, normal, shape_idx):
+	if event is InputEventMouseButton:
+		if event.button_index == 1:
+			wave()
+			emit_signal("OnCharacterSelected", self)
+		
