@@ -20,4 +20,4 @@ Shows how to use Root Motion in the Godot 4 game engine:
 - SPACE BAR to jump in the direction of the motion ( I could not find a left and right jump animation in miximo so I just used forward )
 - E to interact with items
 
-Demo: https://macdonaldrobinson.github.io/Godot4-World-Environment/exports/html/World-Environment-Test.html
+Demo: https://gotm.io/macdonald/world-environment
