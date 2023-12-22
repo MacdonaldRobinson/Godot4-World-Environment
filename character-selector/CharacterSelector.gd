@@ -2,6 +2,7 @@ extends Node3D
 
 @onready var characters_container: Node3D = $CharactersContainer
 @onready var camera: Camera3D = $Camera3D
+@export var selected_world: PackedScene
 
 var selected_character: Character
 
@@ -66,7 +67,7 @@ func lookat_character(character: Character):
 
 func _on_start_game_pressed():
 	
-	var world:World = load("res://World.tscn").instantiate()
+	var world = selected_world.instantiate()
 	get_tree().root.add_child(world)
 
 	var packed_scene: PackedScene = PackedScene.new()

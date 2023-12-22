@@ -1,0 +1,14 @@
+[gd_scene load_steps=3 format=3 uid="uid://dc5q3n2fjhtj1"]
+
+[ext_resource type="Script" path="res://ui/Overlays/JoystickOverlay/JoystickOverlay.gd" id="1_rnxco"]
+[ext_resource type="PackedScene" uid="uid://dmr0fcamx7t56" path="res://joystick/virtual_joystick.tscn" id="2_d03gh"]
+
+[node name="JoystickOverlay" type="Control"]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+script = ExtResource("1_rnxco")
+
+[node name="Virtual Joystick" parent="." instance=ExtResource("2_d03gh")]
+layout_mode = 1
