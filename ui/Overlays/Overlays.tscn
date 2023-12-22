@@ -1,0 +1,29 @@
+[gd_scene load_steps=6 format=3 uid="uid://dh675y5n05vdq"]
+
+[ext_resource type="Script" path="res://ui/Overlays/Overlays.gd" id="1_cexaf"]
+[ext_resource type="PackedScene" uid="uid://jwwqrowp2n5s" path="res://ui/Overlays/DeadOverlay/DeadOverlay.tscn" id="2_sy8jo"]
+[ext_resource type="PackedScene" uid="uid://ba6wjd1xbqo5a" path="res://ui/Overlays/MiniMapOverlay/MiniMap.tscn" id="3_0fpug"]
+[ext_resource type="PackedScene" uid="uid://dj4lu7oeb1sxq" path="res://ui/Overlays/InteractOverlay/InteractOverlay.tscn" id="4_0cgha"]
+[ext_resource type="PackedScene" uid="uid://dc5q3n2fjhtj1" path="res://ui/Overlays/JoystickOverlay/JoystickOverlay.tscn" id="5_57n0d"]
+
+[node name="Overlays" type="CanvasLayer"]
+script = ExtResource("1_cexaf")
+
+[node name="DeadOverlay" parent="." instance=ExtResource("2_sy8jo")]
+
+[node name="MiniMapOverlay" parent="." instance=ExtResource("3_0fpug")]
+offset_left = -180.0
+offset_top = 21.0
+offset_right = -180.0
+offset_bottom = 21.0
+
+[node name="InteractOverly" parent="." instance=ExtResource("4_0cgha")]
+
+[node name="JoystickOverlay" parent="." instance=ExtResource("5_57n0d")]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_right = 0.0
+offset_bottom = 0.0
+grow_horizontal = 2
+grow_vertical = 2

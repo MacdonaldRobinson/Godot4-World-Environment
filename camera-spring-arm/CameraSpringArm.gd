@@ -17,8 +17,11 @@ func get_camera_ray_cast() -> RayCast3D:
 func _input(event):
 	if !camera:
 		return
-		
-	if event is InputEventMouseMotion:
+					
+	if event is InputEventMouseMotion:		
+		if event.button_mask:
+			return
+			
 		var x_strength = -event.relative.x / 200;
 		var y_strength = -event.relative.y / 200;
 		

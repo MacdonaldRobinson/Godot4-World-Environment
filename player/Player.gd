@@ -13,7 +13,7 @@ var current_motion_state:Character.MotionState = Character.MotionState.standing
 @onready var collision_shape: CollisionShape3D = $CollisionShape3D
 
 @export var camera_controller: CameraController
-@export var canvas_overlays: CanvasOverlays
+@export var overlays: Overlays
 @export var character_scene: PackedScene
 
 var character: Character
@@ -80,19 +80,19 @@ func _physics_process(delta):
 	move_and_slide()
 
 func _on_character_on_character_dying(character):
-	canvas_overlays.dead_overlay.show()
+	overlays.dead_overlay.show()
 
 
 func _on_interact_area_body_entered(body):
 	if body is Interactable:
 		currently_interacting_body = body
-		canvas_overlays.interact_overlay.show()
+		overlays.interact_overlay.show()
 
 
 func _on_interact_area_body_exited(body):
-	if canvas_overlays:
+	if overlays:
 		currently_interacting_body = null
-		canvas_overlays.interact_overlay.hide()
+		overlays.interact_overlay.hide()
 
 
 func _on_chair_on_interacting(chair: Interactable, interacting_body: Node3D):

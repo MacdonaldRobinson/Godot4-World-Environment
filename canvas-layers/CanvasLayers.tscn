@@ -1,9 +1,0 @@
-[gd_scene load_steps=3 format=3 uid="uid://d3vdyy33hbf2y"]
-
-[ext_resource type="Script" path="res://canvas-layers/CanvasLayers.gd" id="1_dc2vp"]
-[ext_resource type="PackedScene" uid="uid://jwwqrowp2n5s" path="res://canvas-layers/DeadOverlay/DeadOverlay.tscn" id="2_cpbog"]
-
-[node name="CanvasLayer" type="CanvasLayer"]
-script = ExtResource("1_dc2vp")
-
-[node name="DeadOverlay" parent="." instance=ExtResource("2_cpbog")]
