@@ -8,9 +8,9 @@ const JUMP_VELOCITY = 4.5
 var gravity = ProjectSettings.get_setting("physics/3d/default_gravity")
 var current_motion_state:Character.MotionState = Character.MotionState.standing
 
-@onready var floor_ray_cast:RayCast3D = $FloorRayCast as RayCast3D
 @onready var currently_interacting_body: Interactable = null
 @onready var collision_shape: CollisionShape3D = $CollisionShape3D
+@onready var floor_check: Area3D = $FloorCheck
 
 @export var camera_controller: CameraController
 @export var overlays: Overlays
@@ -51,7 +51,6 @@ func _physics_process(delta):
 	var input_dir = Input.get_vector("ui_left", "ui_right", "ui_up", "ui_down")
 	var direction = (transform.basis * Vector3(input_dir.x, 0, input_dir.y)).normalized()
 	
-	
 	if character and is_on_floor():
 		character.set_motion(current_motion_state, Vector2(input_dir.x, -input_dir.y))
 		
@@ -63,8 +62,8 @@ func _physics_process(delta):
 		
 	velocity.y -= gravity * delta
 		
-	# Add the gravity.	
-	if character and not floor_ray_cast.is_colliding():
+	# Add the gravity.		
+	if character and floor_check.get_overlapping_bodies().size() == 1:
 		character.falling()
 		
 	if Input.is_action_just_pressed("jump"):

@@ -1,4 +1,4 @@
-[gd_scene load_steps=4 format=3 uid="uid://bt80o0nqyotka"]
+[gd_scene load_steps=5 format=3 uid="uid://bt80o0nqyotka"]
 
 [ext_resource type="Script" path="res://player/Player.gd" id="1_0cohp"]
 
@@ -7,6 +7,8 @@
 [sub_resource type="BoxShape3D" id="BoxShape3D_fqogg"]
 size = Vector3(1, 1.75399, 0.435577)
 
+[sub_resource type="BoxShape3D" id="BoxShape3D_8f0nk"]
+
 [node name="Player" type="CharacterBody3D"]
 script = ExtResource("1_0cohp")
 
@@ -14,13 +16,16 @@ script = ExtResource("1_0cohp")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.90258, 0)
 shape = SubResource("CapsuleShape3D_r0f6p")
 
-[node name="FloorRayCast" type="RayCast3D" parent="."]
-
 [node name="InteractArea" type="Area3D" parent="."]
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="InteractArea"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.924976, 0.292979)
 shape = SubResource("BoxShape3D_fqogg")
+
+[node name="FloorCheck" type="Area3D" parent="."]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="FloorCheck"]
+shape = SubResource("BoxShape3D_8f0nk")
 
 [connection signal="body_entered" from="InteractArea" to="." method="_on_interact_area_body_entered"]
 [connection signal="body_exited" from="InteractArea" to="." method="_on_interact_area_body_exited"]
