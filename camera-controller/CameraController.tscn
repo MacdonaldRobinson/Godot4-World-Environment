@@ -1,0 +1,20 @@
+[gd_scene load_steps=3 format=3 uid="uid://dt8pspf6ajxrc"]
+
+[ext_resource type="Script" path="res://camera-controller/CameraController.gd" id="1_db2uv"]
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_o2dqr"]
+
+[node name="CameraController" type="SpringArm3D"]
+shape = SubResource("SphereShape3D_o2dqr")
+spring_length = 3.0
+script = ExtResource("1_db2uv")
+
+[node name="Camera3D" type="Camera3D" parent="."]
+current = true
+
+[node name="AudioListener3D" type="AudioListener3D" parent="Camera3D"]
+current = true
+
+[node name="CameraRayCast" type="RayCast3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0)
+target_position = Vector3(0, -50, 0)
