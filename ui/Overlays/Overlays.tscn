@@ -1,10 +1,11 @@
-[gd_scene load_steps=6 format=3 uid="uid://dh675y5n05vdq"]
+[gd_scene load_steps=7 format=3 uid="uid://dh675y5n05vdq"]
 
 [ext_resource type="Script" path="res://ui/Overlays/Overlays.gd" id="1_cexaf"]
 [ext_resource type="PackedScene" uid="uid://jwwqrowp2n5s" path="res://ui/Overlays/DeadOverlay/DeadOverlay.tscn" id="2_sy8jo"]
 [ext_resource type="PackedScene" uid="uid://ba6wjd1xbqo5a" path="res://ui/Overlays/MiniMapOverlay/MiniMap.tscn" id="3_0fpug"]
 [ext_resource type="PackedScene" uid="uid://dj4lu7oeb1sxq" path="res://ui/Overlays/InteractOverlay/InteractOverlay.tscn" id="4_0cgha"]
 [ext_resource type="PackedScene" uid="uid://dc5q3n2fjhtj1" path="res://ui/Overlays/JoystickOverlay/JoystickOverlay.tscn" id="5_57n0d"]
+[ext_resource type="PackedScene" uid="uid://b2kcx0c5nifr0" path="res://ui/Overlays/MessageOverlay/MessageOverlay.tscn" id="6_ktd1u"]
 
 [node name="Overlays" type="CanvasLayer"]
 script = ExtResource("1_cexaf")
@@ -27,3 +28,5 @@ offset_right = 0.0
 offset_bottom = 0.0
 grow_horizontal = 2
 grow_vertical = 2
+
+[node name="MessageOverlay" parent="." instance=ExtResource("6_ktd1u")]
