@@ -5,10 +5,29 @@
 
 [node name="JoystickOverlay" type="Control"]
 layout_mode = 3
-anchors_preset = 0
-offset_right = 40.0
-offset_bottom = 40.0
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
 script = ExtResource("1_rnxco")
 
-[node name="Virtual Joystick" parent="." instance=ExtResource("2_d03gh")]
+[node name="PlayerJoystick" parent="." instance=ExtResource("2_d03gh")]
 layout_mode = 1
+visibility_mode = 1
+
+[node name="CameraJoystick" parent="." instance=ExtResource("2_d03gh")]
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -300.0
+offset_top = -300.0
+offset_right = 0.0
+offset_bottom = 0.0
+grow_horizontal = 0
+visibility_mode = 1
+use_input_actions = false
+
+[connection signal="visibility_changed" from="PlayerJoystick" to="." method="_on_player_joystick_visibility_changed"]
+[connection signal="gui_input" from="CameraJoystick" to="." method="_on_camera_joystick_gui_input"]
