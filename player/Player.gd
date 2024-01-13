@@ -7,6 +7,7 @@ const JUMP_VELOCITY = 4.5
 # Get the gravity from the project settings to be synced with RigidBody nodes.
 var gravity = ProjectSettings.get_setting("physics/3d/default_gravity")
 var current_motion_state:Character.MotionState = Character.MotionState.standing
+var enable_gravity: bool = true
 
 @onready var currently_interacting_body: Interactable = null
 @onready var collision_shape: CollisionShape3D = $CollisionShape3D
@@ -51,7 +52,7 @@ func _physics_process(delta):
 	var input_dir = Input.get_vector("ui_left", "ui_right", "ui_up", "ui_down")
 	var direction = (transform.basis * Vector3(input_dir.x, 0, input_dir.y)).normalized()
 	
-	if character and is_on_floor():
+	if character and is_on_floor_custom():
 		character.set_motion(current_motion_state, Vector2(input_dir.x, -input_dir.y))
 		
 		if input_dir != Vector2.ZERO and camera_controller:
@@ -59,18 +60,22 @@ func _physics_process(delta):
 		
 		var new_velocity = (character.animation_tree.get_root_motion_position() / delta).rotated(Vector3.UP, rotation.y);
 		velocity = new_velocity
+
 		
-	#if character.is_jumping() and character.is_foot_step:
-				
-	if not is_on_floor():
+	if character.is_jumping() and character.is_foot_step:
+		enable_gravity = true
+		
+	if enable_gravity:
 		velocity.y = (velocity.y - gravity)
-	
+		
 	# Add the gravity.		
-	if character and floor_check.get_overlapping_bodies().size() == 0:		
+	if character and not is_on_floor_custom() and not character.is_jumping():		
 		character.falling()
+		enable_gravity = true
 		
 	if Input.is_action_just_pressed("jump"):
-		if character and is_on_floor():
+		if character and is_on_floor_custom():
+			enable_gravity = false
 			character.jump()
 			
 	
@@ -81,6 +86,18 @@ func _physics_process(delta):
 			current_motion_state = Character.MotionState.standing
 		
 	move_and_slide()
+
+func is_on_floor_custom():
+	var bodies = floor_check.get_overlapping_bodies()
+	
+	if bodies.size() == 0:
+		false
+		
+	for body in bodies:
+		if not body is Player:
+			return true
+	
+	return false
 
 func _on_character_on_character_dying(character):
 	overlays.dead_overlay.show()
