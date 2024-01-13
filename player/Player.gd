@@ -58,23 +58,27 @@ func _physics_process(delta):
 			rotation.y = camera_controller.rotation.y + deg_to_rad(180)
 		
 		var new_velocity = (character.animation_tree.get_root_motion_position() / delta).rotated(Vector3.UP, rotation.y);
-		velocity = new_velocity 		
+		velocity = new_velocity
 		
-	velocity.y -= gravity * delta
-		
+	#if character.is_jumping() and character.is_foot_step:
+				
+	if not is_on_floor():
+		velocity.y = (velocity.y - gravity)
+	
 	# Add the gravity.		
-	if character and floor_check.get_overlapping_bodies().size() == 1:
+	if character and floor_check.get_overlapping_bodies().size() == 0:		
 		character.falling()
 		
 	if Input.is_action_just_pressed("jump"):
 		if character and is_on_floor():
 			character.jump()
+			
 	
 	if Input.is_action_just_pressed("crouch_toggle"):
 		if current_motion_state == Character.MotionState.standing:
 			current_motion_state = Character.MotionState.crouching
 		else:
-			current_motion_state = Character.MotionState.standing		
+			current_motion_state = Character.MotionState.standing
 		
 	move_and_slide()
 
