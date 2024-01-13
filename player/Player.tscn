@@ -13,7 +13,7 @@ size = Vector3(1, 1.75399, 0.435577)
 script = ExtResource("1_0cohp")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.90258, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.00771, 0)
 shape = SubResource("CapsuleShape3D_r0f6p")
 
 [node name="InteractArea" type="Area3D" parent="."]
@@ -23,8 +23,10 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.924976, 0.292979)
 shape = SubResource("BoxShape3D_fqogg")
 
 [node name="FloorCheck" type="Area3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.157813, 0)
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="FloorCheck"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.349133, 0)
 shape = SubResource("BoxShape3D_8f0nk")
 
 [connection signal="body_entered" from="InteractArea" to="." method="_on_interact_area_body_entered"]
