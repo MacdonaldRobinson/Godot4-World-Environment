@@ -10,6 +10,7 @@ class_name Character
 var pause_motion:bool = false
 
 var is_dead: bool = false
+var is_foot_step = false
 
 signal OnCharacterDying(character)
 signal OnCharacterSelected(character)
@@ -83,23 +84,24 @@ func is_falling():
 	var current_state = animation_tree["parameters/motion_state/current_state"];
 	return current_state == "falling"	
 	
-func is_jumping():
+func is_jumping():	
 	var is_jumping: bool = animation_tree["parameters/standing_jump/active"]
 	return is_jumping	
 	
 func jump():
-
 	if is_jumping():
 		return
-			
+	
+	is_foot_step = false
+	
 	var current_motion_direction:Vector2 = animation_tree["parameters/standing_motion_direction/blend_position"];
 
 	animation_tree["parameters/standing_jump_direction/blend_position"] = current_motion_direction
 	animation_tree["parameters/standing_jump/request"] = AnimationNodeOneShot.ONE_SHOT_REQUEST_FIRE
 	pass	
 
-func foot_step():	
-	pass
+func foot_step():
+	is_foot_step = true
 
 func _on_falling_timer_timeout():
 	is_dead = true

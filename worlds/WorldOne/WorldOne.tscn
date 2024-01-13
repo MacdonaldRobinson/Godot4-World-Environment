@@ -40,17 +40,29 @@ transform = Transform3D(-1, 1.08056e-08, -8.67524e-08, 0, 0.992332, 0.123601, 8.
 camera_controller = NodePath("../CameraController")
 
 [node name="Chair" parent="." instance=ExtResource("13_nd8qq")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -939.486, 0.415587, 1409.33)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 97.514, 0.415588, 107.33)
+
+[node name="CSGBox3D" type="CSGBox3D" parent="Chair"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.209082, 5.29089)
+size = Vector3(1, 0.41388, 1)
+
+[node name="CSGBox3D3" type="CSGBox3D" parent="Chair"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.321184, 6.49707)
+size = Vector3(1, 0.228902, 1)
+
+[node name="CSGBox3D4" type="CSGBox3D" parent="Chair"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.40667, 7.70667)
+size = Vector3(1, 0.0763195, 1)
 
 [node name="PlayersContainer" type="Node3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -934.595, 15.3411, 1405.38)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 82.3704, 2385.36, 97.0454)
 
 [node name="Player" parent="PlayersContainer" node_paths=PackedStringArray("camera_controller", "overlays") instance=ExtResource("14_a81yp")]
 camera_controller = NodePath("../../CameraController")
 overlays = NodePath("../../Overlays")
 
 [node name="CameraLookAtPoint" type="Node3D" parent="PlayersContainer/Player"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0711536, 1.45474, 0.113083)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.70377, 0)
 
 [node name="Manhattan" parent="." instance=ExtResource("6_hknjn")]
 

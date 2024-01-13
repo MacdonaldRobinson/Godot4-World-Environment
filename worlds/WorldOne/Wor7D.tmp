@@ -1,0 +1,69 @@
+[gd_scene load_steps=12 format=3 uid="uid://bam21kk1efirk"]
+
+[ext_resource type="Script" path="res://worlds/WorldOne/WorldOne.gd" id="1_cdv0c"]
+[ext_resource type="PackedScene" uid="uid://dt8pspf6ajxrc" path="res://camera-controller/CameraController.tscn" id="2_hqi6l"]
+[ext_resource type="PackedScene" uid="uid://def8jvtjrsdmv" path="res://worlds/Areas/Manhattan/Manhattan.tscn" id="6_hknjn"]
+[ext_resource type="PackedScene" uid="uid://cspwr8ncana77" path="res://interactables/chair/Chair.tscn" id="13_nd8qq"]
+[ext_resource type="PackedScene" uid="uid://bt80o0nqyotka" path="res://player/Player.tscn" id="14_a81yp"]
+[ext_resource type="PackedScene" uid="uid://dh675y5n05vdq" path="res://ui/Overlays/Overlays.tscn" id="14_sy0gl"]
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_mi8p7"]
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_x6f1b"]
+seamless = true
+noise = SubResource("FastNoiseLite_mi8p7")
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_t477f"]
+sky_cover = SubResource("NoiseTexture2D_x6f1b")
+
+[sub_resource type="Sky" id="Sky_y6k5f"]
+sky_material = SubResource("ProceduralSkyMaterial_t477f")
+
+[sub_resource type="Environment" id="Environment_u1vc7"]
+background_mode = 2
+background_energy_multiplier = 0.66
+sky = SubResource("Sky_y6k5f")
+
+[node name="WorldOne" type="Node3D"]
+script = ExtResource("1_cdv0c")
+
+[node name="CameraController" parent="." node_paths=PackedStringArray("camera_look_at_point") instance=ExtResource("2_hqi6l")]
+camera_look_at_point = NodePath("../PlayersContainer/Player/CameraLookAtPoint")
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_u1vc7")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(-1, 1.08056e-08, -8.67524e-08, 0, 0.992332, 0.123601, 8.74228e-08, 0.123601, -0.992332, -0.296527, 3, -4.79848)
+
+[node name="Overlays" parent="." node_paths=PackedStringArray("camera_controller") instance=ExtResource("14_sy0gl")]
+camera_controller = NodePath("../CameraController")
+
+[node name="Chair" parent="." instance=ExtResource("13_nd8qq")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -939.486, 0.415587, 1409.33)
+
+[node name="CSGBox3D" type="CSGBox3D" parent="Chair"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.209082, 5.29089)
+size = Vector3(1, 0.41388, 1)
+
+[node name="CSGBox3D3" type="CSGBox3D" parent="Chair"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.321184, 6.49707)
+size = Vector3(1, 0.228902, 1)
+
+[node name="CSGBox3D4" type="CSGBox3D" parent="Chair"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.40667, 7.70667)
+size = Vector3(1, 0.0763195, 1)
+
+[node name="PlayersContainer" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -934.595, 0.12235, 1405.38)
+
+[node name="Player" parent="PlayersContainer" node_paths=PackedStringArray("camera_controller", "overlays") instance=ExtResource("14_a81yp")]
+camera_controller = NodePath("../../CameraController")
+overlays = NodePath("../../Overlays")
+
+[node name="CameraLookAtPoint" type="Node3D" parent="PlayersContainer/Player"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.561588, 0)
+
+[node name="Manhattan" parent="." instance=ExtResource("6_hknjn")]
+
+[connection signal="OnInteracting" from="Chair" to="PlayersContainer/Player" method="_on_chair_on_interacting"]
