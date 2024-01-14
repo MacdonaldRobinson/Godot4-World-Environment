@@ -19,19 +19,31 @@ var enable_gravity: bool = true
 
 var character: Character
 
+func _enter_tree():
+	set_multiplayer_authority(str(name).to_int())
+
 func _ready():
+	if not is_multiplayer_authority():
+		return
+
 	if not character_scene:
 		return
 		
 	set_character(character_scene)
 	
 func set_character(character_scene: PackedScene):
-	character = character_scene.instantiate()
+	character = character_scene.instantiate()	
 	self.add_child(character)
-
+	
+	if not is_multiplayer_authority():
+		return
+	
 	character.OnCharacterDying.connect(_on_character_on_character_dying)
 
 func _physics_process(delta):
+	if not is_multiplayer_authority():
+		return
+			
 	if not character:
 		return
 		
@@ -100,7 +112,8 @@ func is_on_floor_custom():
 	return false
 
 func _on_character_on_character_dying(character):
-	overlays.dead_overlay.show()
+	#overlays.dead_overlay.show()
+	pass
 
 
 func _on_interact_area_body_entered(body):

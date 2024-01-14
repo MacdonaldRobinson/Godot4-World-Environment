@@ -2,7 +2,9 @@ extends Node3D
 
 @onready var characters_container: Node3D = $CharactersContainer
 @onready var camera: Camera3D = $Camera3D
-@export var selected_world: PackedScene
+
+var lobby:Lobby = preload("res://lobby/Lobby.tscn").instantiate()
+var player: Player = preload("res://player/Player.tscn").instantiate()
 
 var selected_character: Character
 
@@ -65,23 +67,21 @@ func lookat_character(character: Character):
 	
 	tween.tween_property(camera, "global_position", new_camera_position, 1)
 
-func _on_start_game_pressed():
-	
-	var world = selected_world.instantiate()
-	get_tree().root.add_child(world)
+func _on_select_pressed():	
 
-	var packed_scene: PackedScene = PackedScene.new()
+#	var packed_scene: PackedScene = PackedScene.new()
+#	selected_character.position = Vector3.ZERO
+#	selected_character.rotation = Vector3.ZERO
+#
+#	packed_scene.pack(selected_character)
+
 	selected_character.position = Vector3.ZERO
 	selected_character.rotation = Vector3.ZERO
-	
-	packed_scene.pack(selected_character)
-	
-	world.set_player_character(packed_scene)
+
+	get_tree().root.add_child(lobby)
+	lobby.set_peer_character(selected_character)
+
 	
 	get_tree().root.remove_child(self)
 	
 	
-	
-
-
-
