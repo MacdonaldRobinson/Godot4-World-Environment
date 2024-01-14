@@ -1,7 +1,3 @@
-[gd_resource type="Theme" load_steps=2 format=3 uid="uid://ctly6v5xdcdqo"]
-
-[ext_resource type="FontFile" uid="uid://2fx473o7debx" path="res://ui/fonts/vinque/vinque rg.otf" id="1_o6si8"]
+[gd_resource type="Theme" format=3 uid="uid://ctly6v5xdcdqo"]
 
 [resource]
-default_font = ExtResource("1_o6si8")
-default_font_size = 30
