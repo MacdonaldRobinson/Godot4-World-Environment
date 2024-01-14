@@ -2,6 +2,7 @@ extends Node3D
 
 @onready var characters_container: Node3D = $CharactersContainer
 @onready var camera: Camera3D = $Camera3D
+@onready var character_name: LineEdit = %Name as LineEdit
 
 var lobby:Lobby = preload("res://lobby/Lobby.tscn").instantiate()
 var player: Player = preload("res://player/Player.tscn").instantiate()
@@ -77,6 +78,8 @@ func _on_select_pressed():
 
 	selected_character.position = Vector3.ZERO
 	selected_character.rotation = Vector3.ZERO
+	
+	selected_character.character_name = character_name.text
 
 	get_tree().root.add_child(lobby)
 	lobby.set_peer_character(selected_character)

@@ -9,20 +9,20 @@
 
 [sub_resource type="FastNoiseLite" id="FastNoiseLite_mi8p7"]
 
-[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_x6f1b"]
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_rury6"]
 seamless = true
 noise = SubResource("FastNoiseLite_mi8p7")
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_t477f"]
-sky_cover = SubResource("NoiseTexture2D_x6f1b")
+sky_cover = SubResource("NoiseTexture2D_rury6")
 
-[sub_resource type="Sky" id="Sky_y6k5f"]
+[sub_resource type="Sky" id="Sky_s5mus"]
 sky_material = SubResource("ProceduralSkyMaterial_t477f")
 
 [sub_resource type="Environment" id="Environment_u1vc7"]
 background_mode = 2
 background_energy_multiplier = 0.66
-sky = SubResource("Sky_y6k5f")
+sky = SubResource("Sky_s5mus")
 
 [node name="WorldOne" type="Node3D"]
 script = ExtResource("1_cdv0c")

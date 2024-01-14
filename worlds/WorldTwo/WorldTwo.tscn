@@ -1,6 +1,51 @@
-[gd_scene load_steps=2 format=3 uid="uid://3nw1do41v022"]
+[gd_scene load_steps=11 format=3 uid="uid://3nw1do41v022"]
 
 [ext_resource type="Script" path="res://worlds/WorldTwo/WorldTwo.gd" id="1_uhi6g"]
+[ext_resource type="PackedScene" uid="uid://bt80o0nqyotka" path="res://player/Player.tscn" id="3_8pabw"]
+[ext_resource type="PackedScene" uid="uid://dt8pspf6ajxrc" path="res://camera-controller/CameraController.tscn" id="4_myxhw"]
+[ext_resource type="PackedScene" uid="uid://dh675y5n05vdq" path="res://ui/Overlays/Overlays.tscn" id="5_8olta"]
+[ext_resource type="PackedScene" uid="uid://ckgpjh46hrkwd" path="res://worlds/Areas/Garage/Garage.tscn" id="5_o712m"]
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_yru7q"]
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_x6f1b"]
+seamless = true
+noise = SubResource("FastNoiseLite_yru7q")
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_vrp4n"]
+sky_cover = SubResource("NoiseTexture2D_x6f1b")
+
+[sub_resource type="Sky" id="Sky_y6k5f"]
+sky_material = SubResource("ProceduralSkyMaterial_vrp4n")
+
+[sub_resource type="Environment" id="Environment_731rm"]
+background_mode = 2
+background_energy_multiplier = 0.66
+sky = SubResource("Sky_y6k5f")
 
 [node name="WorldTwo" type="Node3D"]
 script = ExtResource("1_uhi6g")
+
+[node name="PlayersContainer" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6.49831, 24.4491, 10.791)
+
+[node name="Player" parent="PlayersContainer" node_paths=PackedStringArray("camera_controller", "overlays") instance=ExtResource("3_8pabw")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -88.6797, 0)
+camera_controller = NodePath("../../CameraController")
+overlays = NodePath("../../Overlays")
+
+[node name="CameraLookAtPoint" type="Node3D" parent="PlayersContainer/Player"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.70377, 0)
+
+[node name="CameraController" parent="." node_paths=PackedStringArray("camera_look_at_point") instance=ExtResource("4_myxhw")]
+camera_look_at_point = NodePath("../PlayersContainer/Player/CameraLookAtPoint")
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_731rm")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(-1, 1.08056e-08, -8.67524e-08, 0, 0.992332, 0.123601, 8.74228e-08, 0.123601, -0.992332, -0.296527, 3, -4.79848)
+
+[node name="Overlays" parent="." instance=ExtResource("5_8olta")]
+
+[node name="Garage" parent="." instance=ExtResource("5_o712m")]
