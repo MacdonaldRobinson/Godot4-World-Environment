@@ -16,8 +16,10 @@ var enable_gravity: bool = true
 @export var camera_controller: CameraController
 @export var overlays: Overlays
 @export var character_scene: PackedScene
+@export var player_name: String
 
 var character: Character
+var pause_mode: bool = false
 
 func _enter_tree():
 	set_multiplayer_authority(str(name).to_int())
@@ -25,18 +27,15 @@ func _enter_tree():
 func _ready():
 	if not is_multiplayer_authority():
 		return
-
-	if not character_scene:
-		return
-		
-	set_character(character_scene)
 	
-func set_character(character_scene: PackedScene):
+func set_character(character_scene: PackedScene, character_name: String):
 	character = character_scene.instantiate() as Character
-	character.position = Vector3()
-	character.rotation = Vector3.ZERO
-	
 	self.add_child(character)
+	
+	character.position = Vector3.ZERO
+	character.rotation = Vector3.ZERO
+	character.character_name = character_name
+	
 	
 	if not is_multiplayer_authority():
 		return
@@ -64,7 +63,7 @@ func _physics_process(delta):
 	if character.pause_motion:
 		return
 		
-	var input_dir = Input.get_vector("ui_left", "ui_right", "ui_up", "ui_down")
+	var input_dir = Input.get_vector("left", "right", "forward", "backward")
 	var direction = (transform.basis * Vector3(input_dir.x, 0, input_dir.y)).normalized()
 	
 	if character and is_on_floor_custom():

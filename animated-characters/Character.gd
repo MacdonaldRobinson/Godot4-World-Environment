@@ -6,6 +6,9 @@ class_name Character
 @onready var falling_timer: Timer = $FallingTimer
 @onready var camera_lookat_point: Node3D = $CameraLookAtPoint
 @onready var character_selector: Area3D = $CharacterSelector
+@onready var character_name_label: Label3D = $Name
+
+@export var character_name: String
 
 var pause_motion:bool = false
 
@@ -28,11 +31,13 @@ enum MotionState{
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	character_selector.input_event.connect(_on_character_selector_input_event)
+
 	pass # Replace with function body.
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
-	pass
+	if character_name_label:
+		character_name_label.text = character_name
 
 @rpc("call_local","any_peer")
 func set_motion(motion_state: MotionState, blend_position:Vector2):
