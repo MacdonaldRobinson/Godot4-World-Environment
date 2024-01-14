@@ -1,4 +1,4 @@
-[gd_scene load_steps=6 format=3 uid="uid://ctai3uf0ytu67"]
+[gd_scene load_steps=7 format=3 uid="uid://ctai3uf0ytu67"]
 
 [ext_resource type="Texture2D" uid="uid://dto0dugv7c7el" path="res://textures/rocky-dunes1-bl/rocky-dunes1_albedo.png" id="1_emcfo"]
 [ext_resource type="Script" path="res://lobby/Lobby.gd" id="1_ugqrq"]
@@ -9,6 +9,9 @@ albedo_texture = ExtResource("1_emcfo")
 uv1_triplanar = true
 
 [sub_resource type="Environment" id="Environment_xww1p"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_dmtd7"]
+size = Vector3(8.78439, 1, 8.56184)
 
 [node name="Lobby" type="Node3D"]
 script = ExtResource("1_ugqrq")
@@ -88,6 +91,12 @@ environment = SubResource("Environment_xww1p")
 
 [node name="OmniLight3D" type="OmniLight3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.216, 1.55935)
+
+[node name="SpawnArea" type="Area3D" parent="."]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="SpawnArea"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -1.05177)
+shape = SubResource("BoxShape3D_dmtd7")
 
 [connection signal="pressed" from="CanvasLayer/Control/StartGame" to="." method="_on_start_game_pressed"]
 [connection signal="pressed" from="CanvasLayer/Control/Host_Join/HBoxContainer/Host" to="." method="_on_host_pressed"]

@@ -30,11 +30,11 @@ func _ready():
 	character_selector.input_event.connect(_on_character_selector_input_event)
 	pass # Replace with function body.
 
-
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
 	pass
 
+@rpc("call_local","any_peer")
 func set_motion(motion_state: MotionState, blend_position:Vector2):
 	falling_timer.stop()
 	
@@ -55,23 +55,28 @@ func set_motion(motion_state: MotionState, blend_position:Vector2):
 		animation_tree["parameters/crouching_motion_direction/blend_position"] = new_motion_direction		
 	pass
 
+@rpc("call_local","any_peer")
 func falling():
 	if not is_dead and falling_timer.is_stopped():
 		falling_timer.start()
 		
 	animation_tree["parameters/motion_state/transition_request"] = "falling"	
 	
+@rpc("call_local","any_peer")
 func landing():
 	animation_tree["parameters/motion_state/transition_request"] = "landing"
 	
+@rpc("call_local","any_peer")
 func sit():	
 	pause_motion = true
 	animation_tree["parameters/motion_state/transition_request"] = "sitting"	
 
+@rpc("call_local","any_peer")
 func sit_to_stand():	
 	pause_motion = false
 	animation_tree["parameters/motion_state/transition_request"] = "sitting_to_standing"	
 
+@rpc("call_local","any_peer")
 func wave():	
 	pause_motion = false
 	animation_tree["parameters/motion_state/transition_request"] = "wave"
@@ -88,6 +93,7 @@ func is_jumping():
 	var is_jumping: bool = animation_tree["parameters/standing_jump/active"]
 	return is_jumping	
 	
+@rpc("call_local","any_peer")
 func jump():
 	if is_jumping():
 		return
