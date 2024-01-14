@@ -9,7 +9,7 @@ class_name Overlays
 
 @export var camera_controller: CameraController
 # Called when the node enters the scene tree for the first time.
-func _ready():
+func _ready():	
 	interact_overlay.hide()
 	joystick_overlay.camera_controller = camera_controller
 
