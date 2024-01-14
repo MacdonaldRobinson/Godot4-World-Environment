@@ -1,8 +1,7 @@
-[gd_scene load_steps=7 format=3 uid="uid://by45l4tevn24p"]
+[gd_scene load_steps=6 format=3 uid="uid://by45l4tevn24p"]
 
 [ext_resource type="Script" path="res://character-selector/CharacterSelector.gd" id="1_bhs8g"]
 [ext_resource type="PackedScene" uid="uid://c75hd2d4c1wk6" path="res://animated-characters/Kaya/Kaya.tscn" id="2_etqcv"]
-[ext_resource type="PackedScene" uid="uid://bam21kk1efirk" path="res://worlds/WorldOne/WorldOne.tscn" id="2_ho4pm"]
 [ext_resource type="PackedScene" uid="uid://wh6yvkwenk0p" path="res://animated-characters/Clara/Clara.tscn" id="3_t042r"]
 [ext_resource type="Theme" uid="uid://ctly6v5xdcdqo" path="res://ui/Theme.tres" id="4_vpy62"]
 
@@ -10,7 +9,6 @@
 
 [node name="CharacterSelector" type="Node3D"]
 script = ExtResource("1_bhs8g")
-selected_world = ExtResource("2_ho4pm")
 
 [node name="Stage" type="CSGBox3D" parent="."]
 size = Vector3(4.48068, 0.248474, 3.50318)
@@ -45,32 +43,18 @@ grow_vertical = 2
 mouse_filter = 2
 theme = ExtResource("4_vpy62")
 
-[node name="Label" type="Label" parent="CanvasLayer/Control"]
-layout_mode = 1
-anchors_preset = 5
-anchor_left = 0.5
-anchor_right = 0.5
-offset_left = -215.0
-offset_right = 215.0
-offset_bottom = 64.0
-grow_horizontal = 2
-theme_override_font_sizes/font_size = 50
-text = "Select your character"
-horizontal_alignment = 1
-
-[node name="StartGame" type="Button" parent="CanvasLayer/Control"]
+[node name="Select" type="Button" parent="CanvasLayer/Control"]
 layout_mode = 1
 anchors_preset = 7
 anchor_left = 0.5
 anchor_top = 1.0
 anchor_right = 0.5
 anchor_bottom = 1.0
-offset_left = -80.5
-offset_top = -45.0
-offset_right = 80.5
+offset_left = -4.0
+offset_top = -8.0
+offset_right = 4.0
 grow_horizontal = 2
 grow_vertical = 0
-size_flags_vertical = 8
-text = "Start Game"
+text = "Select"
 
-[connection signal="pressed" from="CanvasLayer/Control/StartGame" to="." method="_on_start_game_pressed"]
+[connection signal="pressed" from="CanvasLayer/Control/Select" to="." method="_on_select_pressed"]
