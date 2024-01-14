@@ -32,7 +32,10 @@ func _ready():
 	set_character(character_scene)
 	
 func set_character(character_scene: PackedScene):
-	character = character_scene.instantiate()	
+	character = character_scene.instantiate() as Character
+	character.position = Vector3()
+	character.rotation = Vector3.ZERO
+	
 	self.add_child(character)
 	
 	if not is_multiplayer_authority():
@@ -65,7 +68,7 @@ func _physics_process(delta):
 	var direction = (transform.basis * Vector3(input_dir.x, 0, input_dir.y)).normalized()
 	
 	if character and is_on_floor_custom():
-		character.set_motion(current_motion_state, Vector2(input_dir.x, -input_dir.y))
+		character.set_motion.rpc(current_motion_state, Vector2(input_dir.x, -input_dir.y))
 		
 		if input_dir != Vector2.ZERO and camera_controller:
 			rotation.y = camera_controller.rotation.y + deg_to_rad(180)
@@ -88,7 +91,7 @@ func _physics_process(delta):
 	if Input.is_action_just_pressed("jump"):
 		if character and is_on_floor_custom():
 			enable_gravity = false
-			character.jump()
+			character.jump.rpc()
 			
 	
 	if Input.is_action_just_pressed("crouch_toggle"):
@@ -117,18 +120,27 @@ func _on_character_on_character_dying(character):
 
 
 func _on_interact_area_body_entered(body):
+	if not is_multiplayer_authority():
+		return
+			
 	if body is Interactable:
 		currently_interacting_body = body
 		overlays.interact_overlay.show()
 
 
 func _on_interact_area_body_exited(body):
+	if not is_multiplayer_authority():
+		return
+			
 	if overlays:
 		currently_interacting_body = null
 		overlays.interact_overlay.hide()
 
 
 func _on_chair_on_interacting(chair: Interactable, interacting_body: Node3D):
+	if not is_multiplayer_authority():
+		return
+			
 	var angle = interacting_body.global_rotation.angle_to(chair.interaction_point.global_rotation)
 	interacting_body.global_rotation.y = angle
 	interacting_body.global_position = chair.interaction_point.global_position

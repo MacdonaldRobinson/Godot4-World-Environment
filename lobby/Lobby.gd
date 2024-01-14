@@ -6,6 +6,7 @@ class_name Lobby
 @onready var players:Node3D = $Players
 @onready var host: Button = %Host
 @onready var join: Button = %Join
+@onready var spawn_area: Area3D = $SpawnArea
 
 var player_scene: PackedScene = preload("res://player/Player.tscn")
 var enet_peer: ENetMultiplayerPeer = ENetMultiplayerPeer.new()
@@ -25,7 +26,13 @@ func add_player(peer_id: int, character_scene_file_path: String):
 	if(not players.has_node(str(peer_id))):
 		var player: Player = player_scene.instantiate() as Player
 		player.name = str(peer_id)
-		players.add_child(player)		
+		
+		var spawn_position = Vector3(players.get_child_count() + 1, 0, 0)
+		print(player.name, spawn_position)
+		player.position = spawn_position
+		player.rotation = Vector3.ZERO
+		
+		players.add_child(player)
 	
 	if(players.has_node(str(peer_id))):
 		var found_player: Player = players.get_node(str(peer_id)) as Player
@@ -36,7 +43,7 @@ func add_player(peer_id: int, character_scene_file_path: String):
 		
 		var character_scene = ResourceLoader.load(character_scene_file_path)
 		found_player.set_character(character_scene) 
-	
+		
 	
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
