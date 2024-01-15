@@ -1,7 +1,6 @@
 extends Node3D
 class_name Lobby
 
-
 @onready var players:Node3D = $Players
 @onready var host: Button = %Host
 @onready var join: Button = %Join
@@ -9,6 +8,8 @@ class_name Lobby
 @onready var chat_overlay: ChatOverlay = %ChatOverlay as ChatOverlay
 @onready var host_join_buttons: Control = %Host_Join
 @onready var worlds_list: ItemList = %WorldList as ItemList
+
+var is_game_started: bool = false
 
 var worlds: Array[World] = [
 	preload("res://worlds/WorldOne/WorldOne.tscn").instantiate(),
@@ -35,24 +36,43 @@ func _ready():
 	pass
 
 func set_peer_character(character: Character):
-	player_character = character			
+	player_character = character
 	
 func get_my_player() ->Player:
-	return players.get_node(str(multiplayer.get_unique_id())) as Player
+	var my_player: Player = players.get_node(str(multiplayer.get_unique_id())) as Player
+	if my_player.character == null:
+		my_player.character = player_character
+		
+	return my_player
 
 @rpc("call_local", "any_peer")
-func add_player(peer_id: int, character_scene_file_path: String, character_name: String):	
+func remove_player(peer_id: int):
+	if players.has_node(str(peer_id)):
+		var found_player: Player = players.get_node(str(peer_id)) as Player
+		if found_player:
+			players.remove_child(found_player)
+			
+			var my_player: Player = players.get_node(str(multiplayer.get_unique_id())) as Player
+			
+			if my_player:
+				chat_overlay.set_players(players.get_children(), my_player)
 
+@rpc("call_local","any_peer")
+func add_player(peer_id: int, character_scene_file_path: String, character_name: String):
+#	print("executed on peer : ",multiplayer.get_unique_id(),
+#	" | peer_id : ", peer_id,
+#	" | character_scene_file_path : ", character_scene_file_path,
+#	" | character_name : ", character_name,
+#	" | peers_connected : ", multiplayer.get_peers()," \r\n")
+	
 	if(not players.has_node(str(peer_id))):
 		var player: Player = player_scene.instantiate() as Player
 		player.name = str(peer_id)
+		players.add_child(player)
 		
-		var spawn_position = Vector3(players.get_child_count() + 1, 0, 0)
-		print(player.name, spawn_position)
-		player.position = spawn_position
+		player.position = Vector3(players.get_child_count() * 2, 0, 0)
 		player.rotation = Vector3.ZERO
 		
-		players.add_child(player)
 	
 	if(players.has_node(str(peer_id))):
 		var found_player: Player = players.get_node(str(peer_id)) as Player
@@ -64,8 +84,16 @@ func add_player(peer_id: int, character_scene_file_path: String, character_name:
 		var character_scene = ResourceLoader.load(character_scene_file_path)		
 		found_player.set_character(character_scene, character_name) 
 		
-		var me: Player = players.get_node(str(multiplayer.get_unique_id())) as Player
-		chat_overlay.set_players(players.get_children(), me)
+		var my_player: Player = get_my_player()
+		chat_overlay.set_players(players.get_children(), my_player)
+		
+	if multiplayer.is_server():
+		var connected_peers = multiplayer.get_peers()
+		for connected_peer_id in connected_peers:
+			if connected_peer_id != peer_id:
+				# Add new peer to existing peers
+				var peer_player: Player = players.get_node(str(peer_id)) as Player
+				add_player.rpc_id(connected_peer_id, peer_id, peer_player.character.scene_file_path, peer_player.character.character_name)
 		
 	
 # Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -81,32 +109,55 @@ func start_game(selected_world_index: int):
 	selected_world.set_players(players.get_children(), get_my_player())
 
 	get_tree().root.remove_child(self)
+	is_game_started = true
 
 func _on_start_game_pressed():	
-	start_game.rpc(worlds_list.get_selected_items()[0])
+	var selected_items = worlds_list.get_selected_items()
+	
+	if selected_items.size() > 0:
+		start_game.rpc(selected_items[0])
+		
 	pass
 
 
 func _on_host_pressed():
 	enet_peer.create_server(9998)
 	multiplayer.multiplayer_peer = enet_peer	
-	add_player.rpc(multiplayer.get_unique_id(), player_character.scene_file_path, player_character.character_name)
+	
+	add_player(multiplayer.get_unique_id(), player_character.scene_file_path, player_character.character_name)
 	host_join_buttons.hide()
 	chat_overlay.show()
+	
 	multiplayer.peer_connected.connect(
-		func(peer_id:int):			
-			add_player.rpc(multiplayer.get_unique_id(), player_character.scene_file_path, player_character.character_name)
+		func(peer_id:int): 
+			for player in players.get_children():
+				if player is Player:
+					if player.name != str(peer_id):
+						# Add existing peers to new peer
+						add_player.rpc_id(peer_id, player.name.to_int(), player.character.scene_file_path, player.character.character_name)
+	)
+	
+	multiplayer.peer_disconnected.connect(
+		func(peer_id: int):
+			if self:
+				remove_player.rpc(peer_id)
 	)
 
 func _on_join_pressed():
 	enet_peer.create_client("127.0.0.1", 9998)
 	multiplayer.multiplayer_peer = enet_peer
+	
+	multiplayer.connected_to_server.connect(
+		func():
+			# Add my player to all peers
+			# Seems to only call the server, so had to send to existing players from the add_player from the server
+			add_player.rpc(multiplayer.get_unique_id(), player_character.scene_file_path, player_character.character_name)
+			pass
+	)
+		
+	
 	host_join_buttons.hide()
 	chat_overlay.show()
-	multiplayer.connected_to_server.connect(
-		func(): 
-			add_player.rpc(multiplayer.get_unique_id(), player_character.scene_file_path, player_character.character_name)		
-	)
 	
 
 func _on_world_list_item_selected(index):
