@@ -9,6 +9,15 @@ class_name World
 func _ready():
 	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
 	
+func remove_player(peer_id: int):
+	var my_player: Player = players_container.get_node(str(multiplayer.get_unique_id())) as Player
+	var found_player: Player = players_container.get_node(str(peer_id)) as Player
+	
+	if found_player and my_player:
+		players_container.remove_child(found_player)
+		overlays.chat_overlay.set_players(players_container.get_children(), my_player)	
+	
+	
 func set_players(players: Array[Node], my_player: Player):
 	for node in players_container.get_children():
 		players_container.remove_child(node)
