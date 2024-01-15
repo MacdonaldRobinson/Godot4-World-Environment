@@ -15,14 +15,18 @@ func _ready():
 func _process(delta):	
 	pass
 	
-func set_players(players: Array[Node], me: Player):
-	self.player = me
+func set_players(players: Array[Node], my_player: Player):
+	self.player = my_player
 	
 	players_list.clear()
+	
 	for player in players:
 		if player is Player:
 			var character: Character = player.character as Character
-			players_list.add_item(character.character_name)
+			
+			if character:
+				players_list.add_item(character.character_name)
+			
 
 @rpc("call_local", "any_peer")
 func send_message(message: String):
