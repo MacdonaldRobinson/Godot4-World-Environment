@@ -45,7 +45,7 @@ func get_my_player() ->Player:
 		
 	return my_player
 
-@rpc("call_local", "any_peer")
+@rpc("call_remote", "any_peer")
 func remove_player(peer_id: int):
 	if players.has_node(str(peer_id)):
 		var found_player: Player = players.get_node(str(peer_id)) as Player
@@ -151,7 +151,8 @@ func _on_join_pressed():
 		func():
 			# Add my player to all peers
 			# Seems to only call the server, so had to send to existing players from the add_player from the server
-			add_player.rpc(multiplayer.get_unique_id(), player_character.scene_file_path, player_character.character_name)
+			if multiplayer:
+				add_player.rpc(multiplayer.get_unique_id(), player_character.scene_file_path, player_character.character_name)
 			pass
 	)
 		
@@ -164,3 +165,9 @@ func _on_world_list_item_selected(index):
 	selected_world = worlds[index]
 	pass
 	
+
+func _on_character_selecter_pressed():	
+	remove_player.rpc(multiplayer.get_unique_id())
+	
+	get_tree().change_scene_to_file("res://character-selector/CharacterSelector.tscn")
+	get_tree().root.remove_child(self)

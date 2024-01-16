@@ -20,6 +20,7 @@ properties/1/sync = true
 properties/1/watch = false
 
 [node name="Player" type="CharacterBody3D"]
+collision_layer = 2
 script = ExtResource("1_0cohp")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
