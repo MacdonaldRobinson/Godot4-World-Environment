@@ -28,10 +28,6 @@ material = SubResource("StandardMaterial3D_372o4")
 [node name="Camera3D" type="Camera3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2, 7)
 
-[node name="MultiplayerSpawner" type="MultiplayerSpawner" parent="."]
-_spawnable_scenes = PackedStringArray("res://player/Player.tscn", "res://animated-characters/Clara/Clara.tscn", "res://animated-characters/Kaya/Kaya.tscn")
-spawn_path = NodePath("../Players")
-
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 
 [node name="Control" type="Control" parent="CanvasLayer"]
@@ -42,6 +38,13 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 theme = ExtResource("2_bv8y4")
+
+[node name="CharacterSelecter" type="Button" parent="CanvasLayer/Control"]
+unique_name_in_owner = true
+layout_mode = 0
+offset_right = 8.0
+offset_bottom = 8.0
+text = "< Character Selecter"
 
 [node name="Host_Join" type="HBoxContainer" parent="CanvasLayer/Control"]
 unique_name_in_owner = true
@@ -119,6 +122,11 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.216, 1.55935)
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -1.05177)
 shape = SubResource("BoxShape3D_dmtd7")
 
+[node name="MultiplayerSpawner" type="MultiplayerSpawner" parent="."]
+_spawnable_scenes = PackedStringArray("res://animated-characters/Clara/Clara.tscn", "res://animated-characters/Kaya/Kaya.tscn")
+spawn_path = NodePath("../Players")
+
+[connection signal="pressed" from="CanvasLayer/Control/CharacterSelecter" to="." method="_on_character_selecter_pressed"]
 [connection signal="pressed" from="CanvasLayer/Control/Host_Join/Host" to="." method="_on_host_pressed"]
 [connection signal="pressed" from="CanvasLayer/Control/Host_Join/Join" to="." method="_on_join_pressed"]
 [connection signal="item_selected" from="CanvasLayer/Control/WorldSelecter/Control/VBoxContainer/WorldList" to="." method="_on_world_list_item_selected"]
