@@ -9,6 +9,13 @@ class_name World
 func _ready():
 	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
 	
+	multiplayer.peer_disconnected.connect(
+		func(peer_id: int):
+			if self:
+				remove_player.rpc(peer_id)
+	)	
+
+@rpc("call_remote", "any_peer")
 func remove_player(peer_id: int):
 	var my_player: Player = players_container.get_node(str(multiplayer.get_unique_id())) as Player
 	var found_player: Player = players_container.get_node(str(peer_id)) as Player

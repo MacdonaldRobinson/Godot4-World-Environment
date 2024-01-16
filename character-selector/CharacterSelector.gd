@@ -1,4 +1,5 @@
 extends Node3D
+class_name CharacterSelecter
 
 @onready var characters_container: Node3D = $CharactersContainer
 @onready var camera: Camera3D = $Camera3D
