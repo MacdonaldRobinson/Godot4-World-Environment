@@ -34,13 +34,13 @@ func send_message(message: String):
 	chat_messages.newline()
 
 func _on_send_pressed():
-	send_message.rpc(player.character.character_name+": "+message.text)
+	send_message.rpc(GameState.my_player.character.character_name+": "+message.text)
 	message.clear()
 	message.release_focus()
-	self.player.set_physics_process(true)
+	GameState.start_my_player_process()
 
 func _on_message_text_submitted(new_text):
 	_on_send_pressed() 
 
 func _on_message_text_changed(new_text):
-	self.player.set_physics_process(false)
+	GameState.stop_my_player_process()
