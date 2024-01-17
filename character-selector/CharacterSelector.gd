@@ -5,9 +5,6 @@ class_name CharacterSelecter
 @onready var camera: Camera3D = $Camera3D
 @onready var character_name: LineEdit = %Name as LineEdit
 
-var lobby:Lobby = preload("res://lobby/Lobby.tscn").instantiate()
-var player: Player = preload("res://player/Player.tscn").instantiate()
-
 var selected_character: Character
 
 # Called when the node enters the scene tree for the first time.
@@ -69,23 +66,7 @@ func lookat_character(character: Character):
 	
 	tween.tween_property(camera, "global_position", new_camera_position, 1)
 
-func _on_select_pressed():	
-
-#	var packed_scene: PackedScene = PackedScene.new()
-#	selected_character.position = Vector3.ZERO
-#	selected_character.rotation = Vector3.ZERO
-#
-#	packed_scene.pack(selected_character)
-
-	selected_character.position = Vector3.ZERO
-	selected_character.rotation = Vector3.ZERO
-	
-	selected_character.character_name = character_name.text
-
-	get_tree().root.add_child(lobby)
-	lobby.set_peer_character(selected_character)
-
-	
-	get_tree().root.remove_child(self)
-	
-	
+func _on_select_pressed():
+	GameState.set_my_player_character(selected_character, character_name.text)
+		
+	get_tree().change_scene_to_file("res://lobby/Lobby.tscn")

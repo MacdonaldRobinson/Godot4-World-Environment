@@ -122,6 +122,10 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.216, 1.55935)
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -1.05177)
 shape = SubResource("BoxShape3D_dmtd7")
 
+[node name="MultiplayerSpawner" type="MultiplayerSpawner" parent="."]
+_spawnable_scenes = PackedStringArray("res://animated-characters/Clara/Clara.tscn", "res://animated-characters/Kaya/Kaya.tscn")
+spawn_path = NodePath("../Players")
+
 [connection signal="pressed" from="CanvasLayer/Control/CharacterSelecter" to="." method="_on_character_selecter_pressed"]
 [connection signal="pressed" from="CanvasLayer/Control/Host_Join/Host" to="." method="_on_host_pressed"]
 [connection signal="pressed" from="CanvasLayer/Control/Host_Join/Join" to="." method="_on_join_pressed"]
