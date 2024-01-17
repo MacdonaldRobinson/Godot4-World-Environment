@@ -28,14 +28,17 @@ func _ready():
 	if not is_multiplayer_authority():
 		return
 	
-func set_character(character_scene: PackedScene, character_name: String):
-	character = character_scene.instantiate() as Character
+func set_character(character: Character):
+	
+	for node in get_children():
+		if node is Character:
+			remove_child(node)
+	
 	self.add_child(character)
+	self.character = character
 	
 	character.position = Vector3.ZERO
 	character.rotation = Vector3.ZERO
-	character.character_name = character_name
-	
 	
 	if not is_multiplayer_authority():
 		return

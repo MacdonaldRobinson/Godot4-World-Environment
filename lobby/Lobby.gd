@@ -21,7 +21,6 @@ var worlds: Array[World] = [
 var player_scene: PackedScene = preload("res://player/Player.tscn")
 var enet_peer: ENetMultiplayerPeer = ENetMultiplayerPeer.new()
 var selected_world: World
-var player_character: Character
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -34,16 +33,6 @@ func _ready():
 		if world is World:
 			worlds_list.add_item(world.name)
 	pass
-
-func set_peer_character(character: Character):
-	player_character = character
-	
-func get_my_player() ->Player:
-	var my_player: Player = players.get_node(str(multiplayer.get_unique_id())) as Player
-	if my_player.character == null:
-		my_player.character = player_character
-		
-	return my_player
 
 @rpc("call_remote", "any_peer")
 func remove_player(peer_id: int):
@@ -66,13 +55,17 @@ func add_player(peer_id: int, character_scene_file_path: String, character_name:
 #	" | peers_connected : ", multiplayer.get_peers()," \r\n")
 	
 	if(not players.has_node(str(peer_id))):
-		var player: Player = player_scene.instantiate() as Player
-		player.name = str(peer_id)
-		players.add_child(player)
-		
-		player.position = Vector3(players.get_child_count() * 2, 0, 0)
-		player.rotation = Vector3.ZERO
-		
+		if peer_id == multiplayer.get_unique_id():
+			GameState.my_player.name = str(peer_id)
+			GameState.set_my_player_character_name(character_name)
+			GameState.move_my_player_to_container(players)
+		else:
+			var player: Player = player_scene.instantiate() as Player
+			player.name = str(peer_id)
+			players.add_child(player)
+			
+			player.position = Vector3(players.get_child_count() * 2, 0, 0)
+			player.rotation = Vector3.ZERO
 	
 	if(players.has_node(str(peer_id))):
 		var found_player: Player = players.get_node(str(peer_id)) as Player
@@ -81,11 +74,11 @@ func add_player(peer_id: int, character_scene_file_path: String, character_name:
 			if child is Character:
 				return
 		
-		var character_scene = ResourceLoader.load(character_scene_file_path)		
-		found_player.set_character(character_scene, character_name) 
+		var character: Character = ResourceLoader.load(character_scene_file_path).instantiate()
+		character.character_name = character_name
+		found_player.set_character(character) 
 		
-		var my_player: Player = get_my_player()
-		chat_overlay.set_players(players.get_children(), my_player)
+	chat_overlay.set_players(players.get_children(), GameState.my_player)
 		
 	if multiplayer.is_server():
 		var connected_peers = multiplayer.get_peers()
@@ -106,7 +99,7 @@ func start_game(selected_world_index: int):
 			
 	get_tree().root.add_child(selected_world)
 	
-	selected_world.set_players(players.get_children(), get_my_player())
+	selected_world.set_players(players.get_children(), GameState.my_player)
 
 	get_tree().root.remove_child(self)
 	is_game_started = true
@@ -121,10 +114,9 @@ func _on_start_game_pressed():
 
 
 func _on_host_pressed():
-	enet_peer.create_server(9998)
-	multiplayer.multiplayer_peer = enet_peer	
+	NetworkState.start_network(true)
 	
-	add_player(multiplayer.get_unique_id(), player_character.scene_file_path, player_character.character_name)
+	add_player(multiplayer.get_unique_id(), GameState.my_player.character.scene_file_path, GameState.my_player.character.character_name)
 	host_join_buttons.hide()
 	chat_overlay.show()
 	
@@ -144,15 +136,14 @@ func _on_host_pressed():
 	)
 
 func _on_join_pressed():
-	enet_peer.create_client("127.0.0.1", 9998)
-	multiplayer.multiplayer_peer = enet_peer
+	NetworkState.start_network(false)
 	
 	multiplayer.connected_to_server.connect(
 		func():
 			# Add my player to all peers
 			# Seems to only call the server, so had to send to existing players from the add_player from the server
 			if multiplayer:
-				add_player.rpc(multiplayer.get_unique_id(), player_character.scene_file_path, player_character.character_name)
+				add_player.rpc(multiplayer.get_unique_id(), GameState.my_player.character.scene_file_path, GameState.my_player.character.character_name)
 			pass
 	)
 		
@@ -167,6 +158,7 @@ func _on_world_list_item_selected(index):
 	
 
 func _on_character_selecter_pressed():	
+	GameState.move_my_player_to_gamestate()
 	remove_player.rpc(multiplayer.get_unique_id())
 	
 	get_tree().change_scene_to_file("res://character-selector/CharacterSelector.tscn")
