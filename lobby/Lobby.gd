@@ -7,35 +7,38 @@ class_name Lobby
 @onready var spawn_area: Area3D = $SpawnArea
 @onready var chat_overlay: ChatOverlay = %ChatOverlay as ChatOverlay
 @onready var host_join_buttons: Control = %Host_Join
+@onready var world_selecter: Control = %WorldSelecter
 @onready var worlds_list: ItemList = %WorldList as ItemList
 
-var is_game_started: bool = false
-
-var worlds: Array[World] = [
-	preload("res://worlds/WorldOne/WorldOne.tscn").instantiate(),
-	preload("res://worlds/WorldTwo/WorldTwo.tscn").instantiate(),
-] as Array[World]
+var worlds: Dictionary = {
+	"City" = "res://worlds/WorldOne/WorldOne.tscn",
+	"Garage" = "res://worlds/WorldTwo/WorldTwo.tscn",
+}
 
 @onready var camera: Camera3D = $Camera3D
 
 var player_scene: PackedScene = preload("res://player/Player.tscn")
+var character_selecter: PackedScene = preload("res://character-selector/CharacterSelector.tscn")
+
 var enet_peer: ENetMultiplayerPeer = ENetMultiplayerPeer.new()
-var selected_world: World
+var selected_world: String
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	chat_overlay.hide()
 	worlds_list.clear()
+	world_selecter.hide()
+	
 	Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
 	camera.current = true
 	
 	for world in worlds:
-		if world is World:
-			worlds_list.add_item(world.name)
+		if world is String:
+			worlds_list.add_item(world)
 	pass
 
 @rpc("call_remote", "any_peer")
-func remove_player(peer_id: int):
+func remove_player(peer_id: int):	
 	if players.has_node(str(peer_id)):
 		var found_player: Player = players.get_node(str(peer_id)) as Player
 		if found_player:
@@ -96,13 +99,14 @@ func _process(delta):
 @rpc("call_local", "any_peer")
 func start_game(selected_world_index: int):	
 	_on_world_list_item_selected(selected_world_index)
-			
-	get_tree().root.add_child(selected_world)
 	
-	selected_world.set_players(players.get_children(), GameState.my_player)
-
-	get_tree().root.remove_child(self)
-	is_game_started = true
+	GameState.switch_to_scene(
+		selected_world, 
+		self,
+		func(world: World): 
+			world.set_players(players.get_children(), GameState.my_player)			
+			GameState.is_game_started = true
+	)
 
 func _on_start_game_pressed():	
 	var selected_items = worlds_list.get_selected_items()
@@ -119,6 +123,7 @@ func _on_host_pressed():
 	add_player(multiplayer.get_unique_id(), GameState.my_player.character.scene_file_path, GameState.my_player.character.character_name)
 	host_join_buttons.hide()
 	chat_overlay.show()
+	world_selecter.show()
 	
 	multiplayer.peer_connected.connect(
 		func(peer_id:int): 
@@ -152,8 +157,9 @@ func _on_join_pressed():
 	chat_overlay.show()
 	
 
-func _on_world_list_item_selected(index):
-	selected_world = worlds[index]
+func _on_world_list_item_selected(index):	
+	var selected_list_item = worlds_list.get_item_text(index)
+	selected_world = worlds[selected_list_item]
 	pass
 	
 
@@ -161,5 +167,5 @@ func _on_character_selecter_pressed():
 	GameState.move_my_player_to_gamestate()
 	remove_player.rpc(multiplayer.get_unique_id())
 	
-	get_tree().change_scene_to_file("res://character-selector/CharacterSelector.tscn")
+	get_tree().change_scene_to_packed(character_selecter)
 	get_tree().root.remove_child(self)
