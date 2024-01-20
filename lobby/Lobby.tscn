@@ -66,6 +66,7 @@ layout_mode = 2
 text = "Join"
 
 [node name="WorldSelecter" type="VBoxContainer" parent="CanvasLayer/Control"]
+unique_name_in_owner = true
 layout_mode = 1
 anchors_preset = 11
 anchor_left = 1.0
