@@ -14,8 +14,6 @@ layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_top = 380.0
-offset_right = -711.0
 grow_horizontal = 2
 grow_vertical = 2
 theme = ExtResource("1_ypt5t")
@@ -46,5 +44,6 @@ visible = false
 layout_mode = 1
 
 [node name="ChatOverlay" parent="." instance=ExtResource("8_7ho4t")]
-visible = false
 layout_mode = 1
+offset_top = 385.0
+offset_right = -784.0
