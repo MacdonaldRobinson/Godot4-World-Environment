@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=3 uid="uid://dh675y5n05vdq"]
+[gd_scene load_steps=10 format=3 uid="uid://dh675y5n05vdq"]
 
 [ext_resource type="Script" path="res://ui/Overlays/Overlays.gd" id="1_cexaf"]
 [ext_resource type="Theme" uid="uid://ctly6v5xdcdqo" path="res://ui/Theme.tres" id="1_ypt5t"]
@@ -8,6 +8,7 @@
 [ext_resource type="PackedScene" uid="uid://dc5q3n2fjhtj1" path="res://ui/Overlays/JoystickOverlay/JoystickOverlay.tscn" id="5_57n0d"]
 [ext_resource type="PackedScene" uid="uid://b2kcx0c5nifr0" path="res://ui/Overlays/MessageOverlay/MessageOverlay.tscn" id="6_ktd1u"]
 [ext_resource type="PackedScene" uid="uid://cquyprb3f0o57" path="res://ui/Overlays/ChatOverlay/ChatOverlay.tscn" id="8_7ho4t"]
+[ext_resource type="PackedScene" uid="uid://c3iuby3rmb7vn" path="res://ui/Overlays/MainMenu/MainMenu.tscn" id="9_ejgin"]
 
 [node name="Overlays" type="Control"]
 layout_mode = 3
@@ -44,6 +45,11 @@ visible = false
 layout_mode = 1
 
 [node name="ChatOverlay" parent="." instance=ExtResource("8_7ho4t")]
+visible = false
 layout_mode = 1
 offset_top = 385.0
 offset_right = -784.0
+
+[node name="MainMenu" parent="." instance=ExtResource("9_ejgin")]
+visible = false
+layout_mode = 1
