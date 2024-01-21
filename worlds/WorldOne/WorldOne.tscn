@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" path="res://worlds/WorldOne/WorldOne.gd" id="1_cdv0c"]
 [ext_resource type="PackedScene" uid="uid://dt8pspf6ajxrc" path="res://camera-controller/CameraController.tscn" id="2_hqi6l"]
-[ext_resource type="PackedScene" uid="uid://def8jvtjrsdmv" path="res://worlds/Areas/Manhattan/Manhattan.tscn" id="6_hknjn"]
+[ext_resource type="PackedScene" uid="uid://c1ch3xmuffi8p" path="res://worlds/Areas/Mountain/Mountain.tscn" id="6_lkrw2"]
 [ext_resource type="PackedScene" uid="uid://cspwr8ncana77" path="res://interactables/chair/Chair.tscn" id="13_nd8qq"]
 [ext_resource type="PackedScene" uid="uid://bt80o0nqyotka" path="res://player/Player.tscn" id="14_a81yp"]
 [ext_resource type="PackedScene" uid="uid://dh675y5n05vdq" path="res://ui/Overlays/Overlays.tscn" id="14_sy0gl"]
@@ -40,22 +40,10 @@ transform = Transform3D(-1, 1.08056e-08, -8.67524e-08, 0, 0.992332, 0.123601, 8.
 camera_controller = NodePath("../CameraController")
 
 [node name="Chair" parent="." instance=ExtResource("13_nd8qq")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 97.514, 0.415588, 107.33)
-
-[node name="CSGBox3D" type="CSGBox3D" parent="Chair"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.209082, 5.29089)
-size = Vector3(1, 0.41388, 1)
-
-[node name="CSGBox3D3" type="CSGBox3D" parent="Chair"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.321184, 6.49707)
-size = Vector3(1, 0.228902, 1)
-
-[node name="CSGBox3D4" type="CSGBox3D" parent="Chair"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.40667, 7.70667)
-size = Vector3(1, 0.0763195, 1)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 48.6183, 3.76751, -9.99355)
 
 [node name="PlayersContainer" type="Node3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 82.3704, 2385.36, 97.0454)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.37553, 91.3053, 0)
 
 [node name="Player" parent="PlayersContainer" node_paths=PackedStringArray("camera_controller", "overlays") instance=ExtResource("14_a81yp")]
 camera_controller = NodePath("../../CameraController")
@@ -64,6 +52,6 @@ overlays = NodePath("../../Overlays")
 [node name="CameraLookAtPoint" type="Node3D" parent="PlayersContainer/Player"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.70377, 0)
 
-[node name="Manhattan" parent="." instance=ExtResource("6_hknjn")]
+[node name="uploads_files_3116838_Mountain" parent="." instance=ExtResource("6_lkrw2")]
 
 [connection signal="OnInteracting" from="Chair" to="PlayersContainer/Player" method="_on_chair_on_interacting"]

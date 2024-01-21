@@ -16,18 +16,12 @@ func _ready():
 func _process(delta):
 	if camera and follow_node:
 		camera.global_position.x = follow_node.global_position.x
-		camera.global_position.y = follow_node.global_position.y + 10
-		camera.global_position.z = follow_node.global_position.z		
+		camera.global_position.y = (follow_node.global_position.y + 10)
+		camera.global_position.z = follow_node.global_position.z 		
 		
 		var viewport_size = get_viewport_rect().size;
 		
 		sub_viewport.size = Vector2(viewport_size.x / 3, viewport_size.y / 3)
 				
-
-#	camera.position.y += 10
-#	if camera and follow_node:
-#		camera.position.x = follow_node.position.x
-#		camera.position.y = follow_node.position.y 
-#		camera.position.z = follow_node.position.z
 	pass
 		
