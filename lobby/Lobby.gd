@@ -13,6 +13,7 @@ class_name Lobby
 var worlds: Dictionary = {
 	"Mountain" = "res://worlds/WorldOne/WorldOne.tscn",
 	"Garage" = "res://worlds/WorldTwo/WorldTwo.tscn",
+	"London" = "res://worlds/WorldThree/WorldThree.tscn",
 }
 
 @onready var camera: Camera3D = $Camera3D
@@ -102,7 +103,6 @@ func start_game(selected_world_index: int):
 	
 	GameState.switch_to_scene(
 		selected_world, 
-		self,
 		func(world: World): 
 			world.set_players(players.get_children(), GameState.my_player)			
 			GameState.is_game_started = true

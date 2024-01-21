@@ -7,6 +7,7 @@ class_name Overlays
 @onready var message_overlay: MessageOverlay = $MessageOverlay
 @onready var joystick_overlay: JoystickOverlay = $JoystickOverlay as JoystickOverlay
 @onready var chat_overlay: ChatOverlay = $ChatOverlay
+@onready var main_menu_overlay: MainMenu = $MainMenu as MainMenu
 
 @export var camera_controller: CameraController
 # Called when the node enters the scene tree for the first time.
@@ -16,6 +17,7 @@ func _ready():
 	interact_overlay.hide()
 	message_overlay.hide()
 	chat_overlay.hide()
+	main_menu_overlay.hide()
 	
 	joystick_overlay.camera_controller = camera_controller
 

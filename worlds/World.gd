@@ -3,10 +3,10 @@ class_name World
 
 @onready var players_container: Node3D = $PlayersContainer
 @onready var camera_controller: CameraController = $CameraController
-@onready var overlays: Overlays = $Overlays
+@onready var overlays: Overlays = $Overlays as Overlays
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
+	GameState.capture_mouse()
 	overlays.minmap_overlay.follow_node = GameState.my_player
 	overlays.minmap_overlay.show()
 	
@@ -53,6 +53,20 @@ func set_players(players: Array[Node], my_player: Player):
 func _input(event):
 	if Input.is_action_just_pressed("mouse_capture_toggle"):
 		if Input.mouse_mode == Input.MOUSE_MODE_CAPTURED:
-			Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
+			GameState.capture_mouse()
 		else:
-			Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
+			GameState.release_mouse()
+			
+	if Input.is_action_just_pressed("main_menu"):
+		var main_menu = overlays.main_menu_overlay as MainMenu
+		
+		if main_menu.visible == false:
+			GameState.stop_my_player_process()
+			GameState.release_mouse()
+			camera_controller.pause_rotation = true
+			main_menu.show()
+		else:
+			GameState.start_my_player_process()
+			GameState.capture_mouse()
+			camera_controller.pause_rotation = false
+			main_menu.hide()

@@ -54,15 +54,33 @@ func move_my_player_to_gamestate(reset_position_to_zero: bool = true):
 	if reset_position_to_zero:
 		reset_my_player_position_to_zero()
 
-func switch_to_scene(new_scene_path: String, current_scene: Node, callback: Callable):
+func switch_to_scene(new_scene_path: String, callback: Callable = func(arg): pass):
+	var current_scene: Node = get_current_scene()
+	
 	get_tree().root.remove_child(current_scene)
 	scene_loader.show()
 	
 	scene_loader.load_scene(
 		new_scene_path, 
-		func(new_scene: Node):			
+		func(new_scene: Node):
 			callback.call(new_scene)
-			new_scene.reparent(get_tree().root)
+									
 			get_tree().root.remove_child(current_scene)
+			new_scene.reparent(get_tree().root)
+						
 			scene_loader.hide()
 	)
+
+func get_current_scene() -> Node3D:
+	for scene in get_tree().root.get_children():
+		if scene is Node3D:
+			return scene
+			
+	return null
+	
+func capture_mouse():
+	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)	
+			
+func release_mouse():
+	Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)	
+	

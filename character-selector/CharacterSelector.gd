@@ -6,6 +6,7 @@ class_name CharacterSelecter
 @onready var character_name: LineEdit = %Name as LineEdit
 
 var selected_character: Character
+var lobby_scene_path: String = "res://lobby/Lobby.tscn"
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -67,6 +68,5 @@ func lookat_character(character: Character):
 	tween.tween_property(camera, "global_position", new_camera_position, 1)
 
 func _on_select_pressed():
-	GameState.set_my_player_character(selected_character, character_name.text)
-		
-	get_tree().change_scene_to_file("res://lobby/Lobby.tscn")
+	GameState.set_my_player_character(selected_character, character_name.text)		
+	GameState.switch_to_scene(lobby_scene_path)
