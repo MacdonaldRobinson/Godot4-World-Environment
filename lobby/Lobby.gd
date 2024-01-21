@@ -13,7 +13,6 @@ class_name Lobby
 var worlds: Dictionary = {
 	"Mountain" = "res://worlds/WorldOne/WorldOne.tscn",
 	"Garage" = "res://worlds/WorldTwo/WorldTwo.tscn",
-	"London" = "res://worlds/WorldThree/WorldThree.tscn",
 }
 
 @onready var camera: Camera3D = $Camera3D
