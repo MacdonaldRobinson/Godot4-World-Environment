@@ -11,7 +11,7 @@ class_name Lobby
 @onready var worlds_list: ItemList = %WorldList as ItemList
 
 var worlds: Dictionary = {
-	"City" = "res://worlds/WorldOne/WorldOne.tscn",
+	"Mountain" = "res://worlds/WorldOne/WorldOne.tscn",
 	"Garage" = "res://worlds/WorldTwo/WorldTwo.tscn",
 }
 
@@ -123,7 +123,7 @@ func _on_host_pressed():
 	add_player(multiplayer.get_unique_id(), GameState.my_player.character.scene_file_path, GameState.my_player.character.character_name)
 	host_join_buttons.hide()
 	chat_overlay.show()
-	world_selecter.show()
+	world_selecter.show()	
 	
 	multiplayer.peer_connected.connect(
 		func(peer_id:int): 
@@ -140,8 +140,10 @@ func _on_host_pressed():
 				remove_player.rpc(peer_id)
 	)
 
-func _on_join_pressed():
+func _on_join_pressed():	
 	NetworkState.start_network(false)
+	
+	world_selecter.show()	
 	
 	multiplayer.connected_to_server.connect(
 		func():

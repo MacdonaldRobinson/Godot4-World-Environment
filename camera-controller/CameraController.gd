@@ -19,6 +19,8 @@ func get_camera_ray_cast() -> RayCast3D:
 func _input(event):
 	if !camera:
 		return
+		
+	handle_scroll(event)
 	
 	if event is InputEventMouseMotion:
 		if pause_rotation:

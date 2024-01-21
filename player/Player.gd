@@ -15,7 +15,6 @@ var enable_gravity: bool = true
 
 @export var camera_controller: CameraController
 @export var overlays: Overlays
-@export var character_scene: PackedScene
 @export var player_name: String
 
 var character: Character
@@ -44,7 +43,7 @@ func set_character(character: Character):
 		return
 	
 	character.OnCharacterDying.connect(_on_character_on_character_dying)
-
+	
 func _physics_process(delta):
 	if not is_multiplayer_authority():
 		return
@@ -101,7 +100,8 @@ func _physics_process(delta):
 			current_motion_state = Character.MotionState.crouching
 		else:
 			current_motion_state = Character.MotionState.standing
-		
+	
+	
 	move_and_slide()
 
 func is_on_floor_custom():
@@ -139,10 +139,7 @@ func _on_interact_area_body_exited(body):
 		overlays.interact_overlay.hide()
 
 
-func _on_chair_on_interacting(chair: Interactable, interacting_body: Node3D):
-	if not is_multiplayer_authority():
-		return
-			
+func _on_chair_on_interacting(chair: Interactable, interacting_body: Player):			
 	var angle = interacting_body.global_rotation.angle_to(chair.interaction_point.global_rotation)
 	interacting_body.global_rotation.y = angle
 	interacting_body.global_position = chair.interaction_point.global_position
@@ -150,4 +147,4 @@ func _on_chair_on_interacting(chair: Interactable, interacting_body: Node3D):
 	interacting_body.global_position.y -= 0.2
 	collision_shape.disabled = true
 	
-	character.sit();
+	interacting_body.character.sit();

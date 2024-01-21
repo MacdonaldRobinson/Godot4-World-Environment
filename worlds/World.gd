@@ -4,10 +4,11 @@ class_name World
 @onready var players_container: Node3D = $PlayersContainer
 @onready var camera_controller: CameraController = $CameraController
 @onready var overlays: Overlays = $Overlays
-
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
+	overlays.minmap_overlay.follow_node = GameState.my_player
+	overlays.minmap_overlay.show()
 	
 	multiplayer.peer_disconnected.connect(
 		func(peer_id: int):

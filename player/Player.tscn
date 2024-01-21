@@ -34,7 +34,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.924976, 0.292979)
 shape = SubResource("BoxShape3D_fqogg")
 
 [node name="FloorCheck" type="Area3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.157813, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.00097248, 0)
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="FloorCheck"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.349133, 0)
