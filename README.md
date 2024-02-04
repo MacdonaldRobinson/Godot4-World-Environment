@@ -11,7 +11,10 @@ Shows how to use Root Motion in the Godot 4 game engine:
 - Shows how to display a Mini Map
 - Shows how to create a character selector and dynamicly add the character to the game world
 - Shows how you can apply the same animation to multiple characters as long as they are using the same bone map
-
+- Shows how to load scenes without blocking the main thread or preloading scenes and slowing down the loading of scenes
+- Shows how to create a multiplayer game using RPC and the MultiplayerSynchronizer node
+- Shows how to select different world maps and start the game, which starts it for all players
+  
 # Instructions
 
 - Click on the playing game and then press the ALT button to capture the mouse press it again to Release the mouse
