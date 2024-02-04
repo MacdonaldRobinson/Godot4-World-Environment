@@ -7,6 +7,7 @@ class_name Character
 @onready var camera_lookat_point: Node3D = $CameraLookAtPoint
 @onready var character_selector: Area3D = $CharacterSelector
 @onready var character_name_label: Label3D = $Name
+@onready var weapon_holder: Node3D = $Armature/GeneralSkeleton/LeftHand/WeaponHolder
 
 @export var character_name: String
 
@@ -25,7 +26,8 @@ enum MotionState{
 	landing,
 	sitting,
 	sitting_to_standing,
-	wave
+	wave,
+	weapon_pistol
 }
 
 # Called when the node enters the scene tree for the first time.
@@ -58,6 +60,8 @@ func set_motion(motion_state: MotionState, blend_position:Vector2):
 		animation_tree["parameters/standing_motion_direction/blend_position"] = new_motion_direction
 	elif motion_state == MotionState.crouching:
 		animation_tree["parameters/crouching_motion_direction/blend_position"] = new_motion_direction		
+	elif motion_state == MotionState.weapon_pistol:
+		animation_tree["parameters/weapon_pistol_motion_direction/blend_position"] = new_motion_direction		
 	pass
 
 @rpc("call_local","any_peer")
@@ -85,6 +89,21 @@ func sit_to_stand():
 func wave():	
 	pause_motion = false
 	animation_tree["parameters/motion_state/transition_request"] = "wave"
+	
+@rpc("call_local","any_peer")
+func equip_weapon_pistol():
+	var pistol: Pistol = preload("res://interactables/collectables/weapons/pistol/Pistol.tscn").instantiate()
+	
+	for node in weapon_holder.get_children():
+		weapon_holder.remove_child(node)
+	
+	weapon_holder.add_child(pistol)
+	
+	pistol.global_position = Vector3.ZERO
+	pistol.global_rotation = Vector3.ZERO	
+	
+	pause_motion = false
+	animation_tree["parameters/motion_state/transition_request"] = "weapon_pistol"	
 
 func is_sitting():
 	var current_state = animation_tree["parameters/motion_state/current_state"];

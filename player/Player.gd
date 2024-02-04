@@ -19,6 +19,7 @@ var enable_gravity: bool = true
 
 var character: Character
 var pause_mode: bool = false
+var inventory: Inventory = Inventory.new()
 
 func _enter_tree():
 	set_multiplayer_authority(str(name).to_int())
@@ -148,3 +149,19 @@ func _on_chair_on_interacting(chair: Interactable, interacting_body: Player):
 	collision_shape.disabled = true
 	
 	interacting_body.character.sit();
+
+func _on_interact_area_area_entered(area):
+	if area is AutoCollectChildItem:
+		var collectable_item: Collectable
+		
+		for child in area.get_children():
+			if child is Collectable:
+				collectable_item = child
+				break
+		
+		if collectable_item and collectable_item is Collectable:
+			inventory.add_item(collectable_item)
+			
+			if collectable_item is Pistol:
+				current_motion_state = Character.MotionState.weapon_pistol
+		

@@ -1,7 +1,9 @@
-[gd_scene load_steps=11 format=3 uid="uid://3nw1do41v022"]
+[gd_scene load_steps=13 format=3 uid="uid://3nw1do41v022"]
 
 [ext_resource type="Script" path="res://worlds/WorldTwo/WorldTwo.gd" id="1_uhi6g"]
+[ext_resource type="PackedScene" uid="uid://bc5quiw5hux80" path="res://interactables/AutoCollectChildItem/AutoCollectChildItem.tscn" id="2_wmyjp"]
 [ext_resource type="PackedScene" uid="uid://bt80o0nqyotka" path="res://player/Player.tscn" id="3_8pabw"]
+[ext_resource type="PackedScene" uid="uid://horck4dael68" path="res://interactables/collectables/weapons/pistol/Pistol.tscn" id="3_cwv6s"]
 [ext_resource type="PackedScene" uid="uid://dt8pspf6ajxrc" path="res://camera-controller/CameraController.tscn" id="4_myxhw"]
 [ext_resource type="PackedScene" uid="uid://dh675y5n05vdq" path="res://ui/Overlays/Overlays.tscn" id="5_8olta"]
 [ext_resource type="PackedScene" uid="uid://ckgpjh46hrkwd" path="res://worlds/Areas/Garage/Garage.tscn" id="5_o712m"]
@@ -25,6 +27,11 @@ sky = SubResource("Sky_y6k5f")
 
 [node name="WorldTwo" type="Node3D"]
 script = ExtResource("1_uhi6g")
+
+[node name="Shield" parent="." instance=ExtResource("2_wmyjp")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 6.56783, -12.0093)
+
+[node name="Pistol" parent="Shield" instance=ExtResource("3_cwv6s")]
 
 [node name="PlayersContainer" type="Node3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6.49831, 24.4491, 10.791)
