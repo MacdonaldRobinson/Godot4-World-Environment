@@ -4,10 +4,11 @@ class_name Character
 @onready var animation_tree:AnimationTree = $AnimationTree
 @onready var foot_step_sound: AudioStreamPlayer3D = $FootStepSound
 @onready var falling_timer: Timer = $FallingTimer
-@onready var camera_lookat_point: Node3D = $CameraLookAtPoint
+@onready var camera_lookat_point: Node3D = %CameraLookAtPoint
 @onready var character_selector: Area3D = $CharacterSelector
 @onready var character_name_label: Label3D = $Name
-@onready var weapon_holder: Node3D = $Armature/GeneralSkeleton/LeftHand/WeaponHolder
+@onready var weapon_holder: Node3D = %WeaponHolder
+@onready var head_look_at_point: Node3D = $HeadLookAtPoint
 
 @export var character_name: String
 
@@ -33,13 +34,21 @@ enum MotionState{
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	character_selector.input_event.connect(_on_character_selector_input_event)
-
 	pass # Replace with function body.
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
+	if not is_multiplayer_authority():
+		return
+	
 	if character_name_label:
 		character_name_label.text = character_name
+
+	if weapon_holder and weapon_holder.get_child_count() > 0 and Input.is_action_just_pressed("shoot"):
+		var item = weapon_holder.get_child(0)
+		if item is Weapon:
+			item.fire.rpc()
+
 
 @rpc("call_local","any_peer")
 func set_motion(motion_state: MotionState, blend_position:Vector2):
@@ -49,46 +58,46 @@ func set_motion(motion_state: MotionState, blend_position:Vector2):
 		return
 	
 	var str_motion_state:String = MotionState.find_key(motion_state)
+	var motion_direction_path: String = "parameters/"+str_motion_state+"_motion_direction/blend_position";
 		
-	var current_motion_direction:Vector2 = animation_tree["parameters/"+str_motion_state+"_motion_direction/blend_position"];
-	var new_motion_direction: Vector2 = lerp(current_motion_direction, blend_position, 0.1);
-	var current_motion_state:MotionState = MotionState.get(animation_tree["parameters/motion_state/current_state"]);
+	var current_motion_direction = animation_tree.get(motion_direction_path);
+	var new_motion_direction: Vector2 
 	
+	if current_motion_direction is Vector2:
+		var current_motion_state_index = animation_tree.get("parameters/motion_state/current_state");
+		var current_motion_state:MotionState = MotionState.get(current_motion_state_index);
+		
+		new_motion_direction = lerp(current_motion_direction, blend_position, 0.1);
+		animation_tree[motion_direction_path] = new_motion_direction
+		
 	animation_tree["parameters/motion_state/transition_request"] = str_motion_state
 	
-	if motion_state == MotionState.standing:
-		animation_tree["parameters/standing_motion_direction/blend_position"] = new_motion_direction
-	elif motion_state == MotionState.crouching:
-		animation_tree["parameters/crouching_motion_direction/blend_position"] = new_motion_direction		
-	elif motion_state == MotionState.weapon_pistol:
-		animation_tree["parameters/weapon_pistol_motion_direction/blend_position"] = new_motion_direction		
-	pass
 
 @rpc("call_local","any_peer")
 func falling():
 	if not is_dead and falling_timer.is_stopped():
 		falling_timer.start()
 		
-	animation_tree["parameters/motion_state/transition_request"] = "falling"	
+	set_motion(MotionState.falling, Vector2(0, 0))
 	
 @rpc("call_local","any_peer")
 func landing():
-	animation_tree["parameters/motion_state/transition_request"] = "landing"
+	set_motion(MotionState.landing, Vector2(0, 0))
 	
 @rpc("call_local","any_peer")
 func sit():	
-	pause_motion = true
-	animation_tree["parameters/motion_state/transition_request"] = "sitting"	
+	pause_motion = true	
+	set_motion(MotionState.sitting, Vector2(0, 0))
 
 @rpc("call_local","any_peer")
 func sit_to_stand():	
 	pause_motion = false
-	animation_tree["parameters/motion_state/transition_request"] = "sitting_to_standing"	
+	set_motion(MotionState.sitting_to_standing, Vector2(0, 0))
 
 @rpc("call_local","any_peer")
-func wave():	
+func wave():		
 	pause_motion = false
-	animation_tree["parameters/motion_state/transition_request"] = "wave"
+	set_motion(MotionState.wave, Vector2(0, 0))
 	
 @rpc("call_local","any_peer")
 func equip_weapon_pistol():
@@ -97,21 +106,31 @@ func equip_weapon_pistol():
 	for node in weapon_holder.get_children():
 		weapon_holder.remove_child(node)
 	
-	weapon_holder.add_child(pistol)
-	
-	pistol.global_position = Vector3.ZERO
-	pistol.global_rotation = Vector3.ZERO	
+	weapon_holder.add_child(pistol)	
 	
 	pause_motion = false
-	animation_tree["parameters/motion_state/transition_request"] = "weapon_pistol"	
+	set_motion(MotionState.weapon_pistol, Vector2(0, 0))
 
 func is_sitting():
-	var current_state = animation_tree["parameters/motion_state/current_state"];
-	return current_state == "sitting"	
+	return is_motion_state(MotionState.sitting)	
 	
 func is_falling():
+	return is_motion_state(MotionState.falling)	
+	
+func is_motion_state(motion_state: MotionState):
 	var current_state = animation_tree["parameters/motion_state/current_state"];
-	return current_state == "falling"	
+	var str_motion_state:String = MotionState.find_key(motion_state)
+	
+	return current_state == str_motion_state
+	
+func is_weapon_pistol():
+	return is_motion_state(MotionState.weapon_pistol)
+	
+func get_weapon() -> Weapon:
+	if weapon_holder.get_child_count() > 0:
+		return weapon_holder.get_child(0)
+		
+	return null
 	
 func is_jumping():	
 	var is_jumping: bool = animation_tree["parameters/standing_jump/active"]

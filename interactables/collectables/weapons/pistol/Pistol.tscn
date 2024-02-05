@@ -1,8 +1,10 @@
-[gd_scene load_steps=8 format=3 uid="uid://horck4dael68"]
+[gd_scene load_steps=10 format=3 uid="uid://horck4dael68"]
 
 [ext_resource type="PackedScene" uid="uid://blebsaub6ahb7" path="res://meshes/Weapons/Pistol/pistol.glb" id="1_dgmmi"]
 [ext_resource type="Script" path="res://interactables/collectables/weapons/pistol/Pistol.gd" id="2_yvf4t"]
+[ext_resource type="PackedScene" uid="uid://dt8g0ht0660ck" path="res://interactables/collectables/weapons/pistol/PistolAmmo/PistolAmmo.tscn" id="3_23vwk"]
 [ext_resource type="Texture2D" uid="uid://ct4k8o08ksh37" path="res://textures/particals/spark_02.png" id="3_iaunv"]
+[ext_resource type="Texture2D" uid="uid://b8nq0007rfua1" path="res://textures/guns/pistol.png" id="3_qerss"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_wmemi"]
 transparency = 1
@@ -27,6 +29,13 @@ size = Vector3(1, 3, 5)
 [node name="Pistol" instance=ExtResource("1_dgmmi")]
 transform = Transform3D(0.07, 0, 0, 0, 0.07, 0, 0, 0, 0.07, 0, 0, 0)
 script = ExtResource("2_yvf4t")
+has_ammo = true
+max_ammo_capacity = 100
+current_ammo_amount = 10
+ammo_scene = ExtResource("3_23vwk")
+max_collectable_amount = 1
+item_name = "Pistol"
+item_texture = ExtResource("3_qerss")
 
 [node name="Flash" type="Node3D" parent="BarrelLock" index="0"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.20707, 2.52119)

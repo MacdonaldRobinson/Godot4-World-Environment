@@ -19,7 +19,6 @@ var enable_gravity: bool = true
 
 var character: Character
 var pause_mode: bool = false
-var inventory: Inventory = Inventory.new()
 
 func _enter_tree():
 	set_multiplayer_authority(str(name).to_int())
@@ -72,7 +71,7 @@ func _physics_process(delta):
 	if character and is_on_floor_custom():
 		character.set_motion.rpc(current_motion_state, Vector2(input_dir.x, -input_dir.y))
 		
-		if input_dir != Vector2.ZERO and camera_controller:
+		if (input_dir != Vector2.ZERO and camera_controller) or ( camera_controller and camera_controller.is_first_person ):
 			rotation.y = camera_controller.rotation.y + deg_to_rad(180)
 		
 		var new_velocity = (character.animation_tree.get_root_motion_position() / delta).rotated(Vector3.UP, rotation.y);
@@ -101,7 +100,13 @@ func _physics_process(delta):
 			current_motion_state = Character.MotionState.crouching
 		else:
 			current_motion_state = Character.MotionState.standing
-	
+			
+	if character.is_weapon_pistol():
+		overlays.weapon_overlay.show()
+		camera_controller.set_camera_first_person()
+		
+		if Input.is_action_just_pressed("reload"):
+			character.get_w
 	
 	move_and_slide()
 
@@ -129,6 +134,27 @@ func _on_interact_area_body_entered(body):
 	if body is Interactable:
 		currently_interacting_body = body
 		overlays.interact_overlay.show()
+		
+	if body is AutoCollectChildItem:
+		var collectable_item: Collectable
+		
+		for child in body.get_children():
+			if child is Collectable:
+				collectable_item = child
+				break
+		
+		if collectable_item and collectable_item is Collectable:
+			GameState.inventory.add_item(collectable_item)
+			
+			if collectable_item is Pistol:
+				current_motion_state = Character.MotionState.weapon_pistol
+				character.equip_weapon_pistol()
+				var inventory_item: InventoryItem = GameState.inventory.get_item(collectable_item)
+				
+				if inventory_item:
+					overlays.weapon_overlay.set_inventory_item(inventory_item)
+					
+			body.queue_free()
 
 
 func _on_interact_area_body_exited(body):
@@ -149,19 +175,4 @@ func _on_chair_on_interacting(chair: Interactable, interacting_body: Player):
 	collision_shape.disabled = true
 	
 	interacting_body.character.sit();
-
-func _on_interact_area_area_entered(area):
-	if area is AutoCollectChildItem:
-		var collectable_item: Collectable
-		
-		for child in area.get_children():
-			if child is Collectable:
-				collectable_item = child
-				break
-		
-		if collectable_item and collectable_item is Collectable:
-			inventory.add_item(collectable_item)
-			
-			if collectable_item is Pistol:
-				current_motion_state = Character.MotionState.weapon_pistol
 		

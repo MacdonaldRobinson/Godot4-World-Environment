@@ -1,4 +1,4 @@
-[gd_scene load_steps=11 format=3 uid="uid://dh675y5n05vdq"]
+[gd_scene load_steps=12 format=3 uid="uid://dh675y5n05vdq"]
 
 [ext_resource type="Script" path="res://ui/Overlays/Overlays.gd" id="1_cexaf"]
 [ext_resource type="Theme" uid="uid://ctly6v5xdcdqo" path="res://ui/Theme.tres" id="1_ypt5t"]
@@ -10,6 +10,7 @@
 [ext_resource type="PackedScene" uid="uid://cquyprb3f0o57" path="res://ui/Overlays/ChatOverlay/ChatOverlay.tscn" id="8_7ho4t"]
 [ext_resource type="PackedScene" uid="uid://c3iuby3rmb7vn" path="res://ui/Overlays/MainMenu/MainMenu.tscn" id="9_ejgin"]
 [ext_resource type="PackedScene" uid="uid://dbkc82jdcovr6" path="res://ui/Overlays/InventoryOverlay/InventoryOverlay.tscn" id="10_48r7n"]
+[ext_resource type="PackedScene" uid="uid://do3hofyp52jsn" path="res://ui/Overlays/WeaponOverlay/WeaponOverlay.tscn" id="11_0cw3x"]
 
 [node name="Overlays" type="Control"]
 layout_mode = 3
@@ -56,5 +57,9 @@ visible = false
 layout_mode = 1
 
 [node name="InventoryOverlay" parent="." instance=ExtResource("10_48r7n")]
+visible = false
+layout_mode = 1
+
+[node name="WeaponOverlay" parent="." instance=ExtResource("11_0cw3x")]
 visible = false
 layout_mode = 1

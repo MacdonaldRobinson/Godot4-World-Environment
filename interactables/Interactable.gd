@@ -1,6 +1,9 @@
 extends Node3D
 class_name Interactable
 
+@export var item_name: String
+@export var item_texture: Texture
+
 @onready var interaction_point: Node3D = get_node("InteractionPoint")
 
 # Called when the node enters the scene tree for the first time.

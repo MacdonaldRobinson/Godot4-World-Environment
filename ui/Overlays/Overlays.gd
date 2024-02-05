@@ -9,6 +9,7 @@ class_name Overlays
 @onready var chat_overlay: ChatOverlay = $ChatOverlay
 @onready var main_menu_overlay: MainMenu = $MainMenu
 @onready var inventory_overlay: InventoryOverlay = $InventoryOverlay
+@onready var weapon_overlay: WeaponOverlay = $WeaponOverlay
 
 @export var camera_controller: CameraController
 # Called when the node enters the scene tree for the first time.
@@ -20,15 +21,17 @@ func _ready():
 	chat_overlay.hide()
 	main_menu_overlay.hide()
 	inventory_overlay.hide()
+	weapon_overlay.hide()
 	
 	joystick_overlay.camera_controller = camera_controller
 
 func _input(event):
 	if Input.is_action_just_pressed("inventory"):
-		if inventory_overlay.visible:
-			inventory_overlay.hide()
-		else:
-			inventory_overlay.show()
+		if inventory_overlay:
+			if inventory_overlay.visible:
+				inventory_overlay.hide()
+			else:
+				inventory_overlay.show()
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):

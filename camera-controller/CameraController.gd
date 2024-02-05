@@ -7,6 +7,7 @@ class_name CameraController
 @onready var camera_ray_cast: RayCast3D = $CameraRayCast as RayCast3D
 
 var pause_rotation: bool = false
+var is_first_person: bool = false
 
 # Called when the node enters the scene tree for the first time.
 func _ready():	
@@ -52,10 +53,16 @@ func handle_scroll(controller_event):
 				spring_length -= 0.1
 		elif controller_event.button_index == 5:
 			if spring_length < 10:
-				spring_length += 0.1		
+				spring_length += 0.1
+				
+func set_camera_first_person():
+	is_first_person = true
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
 	if camera_look_at_point:		
 		#position = lerp(position, camera_look_at_point.global_position, 0.1)
 		position = camera_look_at_point.global_position
+		
+		if is_first_person:
+			spring_length = 0

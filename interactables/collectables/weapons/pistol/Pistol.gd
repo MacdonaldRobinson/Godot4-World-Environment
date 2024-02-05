@@ -1,7 +1,7 @@
 extends Weapon
 class_name Pistol
 
-@onready var spark: GPUParticles3D = $BarrelLock/Flash/Spark
+@onready var spark: GPUParticles3D = $BarrelLock/Flash/Spark as GPUParticles3D
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -15,6 +15,15 @@ func _process(delta):
 func interact(interacting_body):
 	print("Pistol")
 
-func shoot():
-	spark.one_shot = true
+@rpc("call_local", "any_peer")
+func fire():	
+	var inventory_item: InventoryItem = GameState.inventory.get_item(self)
+	
+	if inventory_item.item is Pistol:
+		var weapon: Pistol = inventory_item.item		
+		
+		if weapon.current_ammo_amount > 0:
+			weapon.current_ammo_amount -= 1
+			spark.restart()
+	
 	
