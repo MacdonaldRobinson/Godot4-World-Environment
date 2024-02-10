@@ -2,7 +2,7 @@ extends Node
 
 var my_player: Player
 var is_game_started: bool = false
-var inventory: Inventory = Inventory.new()
+var inventory: Inventory = Inventory.new() as Inventory
 
 @onready var player_container: Node3D = %PlayerContainer
 @onready var scene_loader: Control = %SceneLoader

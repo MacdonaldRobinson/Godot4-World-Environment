@@ -52,7 +52,7 @@ layout_mode = 1
 offset_top = 385.0
 offset_right = -784.0
 
-[node name="MainMenu" parent="." instance=ExtResource("9_ejgin")]
+[node name="WeaponOverlay" parent="." instance=ExtResource("11_0cw3x")]
 visible = false
 layout_mode = 1
 
@@ -60,6 +60,6 @@ layout_mode = 1
 visible = false
 layout_mode = 1
 
-[node name="WeaponOverlay" parent="." instance=ExtResource("11_0cw3x")]
+[node name="MainMenu" parent="." instance=ExtResource("9_ejgin")]
 visible = false
 layout_mode = 1

@@ -25,5 +25,5 @@ func _process(delta):
 			var weapon: Weapon = inventory_item.item
 			
 			if weapon.has_ammo:
-				current_ammo_amount.text = str(weapon.current_ammo_amount)
-				max_ammo_capacity.text = str(weapon.max_ammo_capacity)
+				current_ammo_amount.text = str(weapon.ammo_current_amount)
+				max_ammo_capacity.text = str(weapon.ammo_max_capacity)

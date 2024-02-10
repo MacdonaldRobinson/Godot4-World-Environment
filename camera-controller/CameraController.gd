@@ -8,6 +8,9 @@ class_name CameraController
 
 var pause_rotation: bool = false
 var is_first_person: bool = false
+var is_aiming: bool = false
+
+signal OnCameraRotationChange(CameraController)
 
 # Called when the node enters the scene tree for the first time.
 func _ready():	
@@ -26,8 +29,8 @@ func _input(event):
 	if event is InputEventMouseMotion:
 		if pause_rotation:
 			return
-			
-	handle_rotation(event, false)
+	
+	handle_rotation(event, false)	
 			
 
 func handle_rotation(controller_event, must_press_button: bool):
@@ -38,9 +41,9 @@ func handle_rotation(controller_event, must_press_button: bool):
 				
 		var x_strength = -controller_event.relative.x / 200;
 		var y_strength = -controller_event.relative.y / 200;
-				
+		
 		rotate_y(x_strength)		
-		camera.rotate_x(y_strength)
+		camera.rotate_x(y_strength)		
 		
 		camera.rotation.x = clamp(camera.rotation.x, -0.5, 1)
 		camera.rotation.y = 0
@@ -57,6 +60,9 @@ func handle_scroll(controller_event):
 				
 func set_camera_first_person():
 	is_first_person = true
+	
+func set_camera_aiming():
+	is_aiming = true	
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
@@ -64,5 +70,7 @@ func _process(delta):
 		#position = lerp(position, camera_look_at_point.global_position, 0.1)
 		position = camera_look_at_point.global_position
 		
-		if is_first_person:
+		if is_aiming:
 			spring_length = 0
+			position.x += 0
+			position.y += 0.5

@@ -27,8 +27,8 @@ func _ready():
 	if not is_multiplayer_authority():
 		return
 	
-func set_character(character: Character):
 	
+func set_character(character: Character):	
 	for node in get_children():
 		if node is Character:
 			remove_child(node)
@@ -71,7 +71,7 @@ func _physics_process(delta):
 	if character and is_on_floor_custom():
 		character.set_motion.rpc(current_motion_state, Vector2(input_dir.x, -input_dir.y))
 		
-		if (input_dir != Vector2.ZERO and camera_controller) or ( camera_controller and camera_controller.is_first_person ):
+		if (input_dir != Vector2.ZERO and camera_controller) or ( camera_controller and camera_controller.is_aiming ):
 			rotation.y = camera_controller.rotation.y + deg_to_rad(180)
 		
 		var new_velocity = (character.animation_tree.get_root_motion_position() / delta).rotated(Vector3.UP, rotation.y);
@@ -93,7 +93,6 @@ func _physics_process(delta):
 		if character and is_on_floor_custom():
 			enable_gravity = false
 			character.jump.rpc()
-			
 	
 	if Input.is_action_just_pressed("crouch_toggle"):
 		if current_motion_state == Character.MotionState.standing:
@@ -103,11 +102,15 @@ func _physics_process(delta):
 			
 	if character.is_weapon_pistol():
 		overlays.weapon_overlay.show()
-		camera_controller.set_camera_first_person()
+		camera_controller.set_camera_aiming()
+		
+		var weapon: Weapon = character.get_weapon();
+		weapon.OnWeaponFired.disconnect(_on_weapon_fired)
+		weapon.OnWeaponFired.connect(_on_weapon_fired)
 		
 		if Input.is_action_just_pressed("reload"):
-			character.get_w
-	
+			weapon.reload()
+
 	move_and_slide()
 
 func is_on_floor_custom():
@@ -121,6 +124,12 @@ func is_on_floor_custom():
 			return true
 	
 	return false
+	
+func _on_weapon_fired(weapon: Weapon):
+	var camera_ray_cast: RayCast3D = camera_controller.get_camera_ray_cast()
+	if camera_ray_cast.is_colliding():
+		var collider = camera_ray_cast.get_collider()
+		print(collider)
 
 func _on_character_on_character_dying(character):
 	#overlays.dead_overlay.show()
@@ -144,7 +153,7 @@ func _on_interact_area_body_entered(body):
 				break
 		
 		if collectable_item and collectable_item is Collectable:
-			GameState.inventory.add_item(collectable_item)
+			GameState.inventory.add_or_update_item(collectable_item)
 			
 			if collectable_item is Pistol:
 				current_motion_state = Character.MotionState.weapon_pistol

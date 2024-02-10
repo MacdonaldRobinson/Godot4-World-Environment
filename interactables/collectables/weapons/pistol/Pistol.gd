@@ -22,8 +22,8 @@ func fire():
 	if inventory_item.item is Pistol:
 		var weapon: Pistol = inventory_item.item		
 		
-		if weapon.current_ammo_amount > 0:
-			weapon.current_ammo_amount -= 1
+		if weapon.ammo_current_amount > 0:
+			weapon.ammo_current_amount -= 1
 			spark.restart()
-	
-	
+			
+	super.fire()
