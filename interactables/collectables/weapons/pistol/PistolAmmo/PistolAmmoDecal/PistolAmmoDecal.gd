@@ -1,7 +1,4 @@
-extends Collectable
-class_name Ammo
-
-@export var ammo_decal_scene: PackedScene
+extends AmmoDecal
 
 # Called when the node enters the scene tree for the first time.
 func _ready():

@@ -1,0 +1,19 @@
+[gd_scene load_steps=4 format=3 uid="uid://boc84p052a8q2"]
+
+[ext_resource type="Script" path="res://animated-characters/HealthBar/HealthBar.gd" id="1_agaw2"]
+[ext_resource type="PackedScene" uid="uid://dv53rj67knsus" path="res://ui/ProgressBar/CustomProgresBar.tscn" id="1_xa6dt"]
+
+[sub_resource type="ViewportTexture" id="ViewportTexture_7jpbx"]
+viewport_path = NodePath("SubViewport")
+
+[node name="HealthBar" type="Sprite3D"]
+pixel_size = 0.005
+billboard = 2
+texture = SubResource("ViewportTexture_7jpbx")
+script = ExtResource("1_agaw2")
+
+[node name="SubViewport" type="SubViewport" parent="."]
+size = Vector2i(150, 25)
+
+[node name="CustomProgressBar" parent="SubViewport" instance=ExtResource("1_xa6dt")]
+unique_name_in_owner = true

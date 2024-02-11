@@ -9,6 +9,7 @@ class_name Character
 @onready var character_name_label: Label3D = $Name
 @onready var weapon_holder: Node3D = %WeaponHolder
 @onready var head_look_at_point: Node3D = $HeadLookAtPoint
+@onready var health_bar: HealthBar = %HealthBar as HealthBar
 
 @export var character_name: String
 
@@ -28,11 +29,13 @@ enum MotionState{
 	sitting,
 	sitting_to_standing,
 	wave,
-	weapon_pistol
+	weapon_pistol,
+	dying
 }
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
+	health_bar.hide()
 	character_selector.input_event.connect(_on_character_selector_input_event)
 	pass # Replace with function body.
 
@@ -48,8 +51,14 @@ func _process(delta):
 		var item = weapon_holder.get_child(0)
 		if item is Weapon:
 			item.fire.rpc()
-
-
+			
+func set_health(health: int):
+	health_bar.show()
+	health_bar.custom_progress_bar.progres_bar.value = health
+	
+func get_health() -> int:
+	return health_bar.custom_progress_bar.progres_bar.value
+	
 @rpc("call_local","any_peer")
 func set_motion(motion_state: MotionState, blend_position:Vector2):
 	falling_timer.stop()
@@ -88,6 +97,14 @@ func landing():
 func sit():	
 	pause_motion = true	
 	set_motion(MotionState.sitting, Vector2(0, 0))
+	
+@rpc("call_local","any_peer")
+func die():	
+	if is_dead:
+		return	
+	set_motion(MotionState.dying, Vector2(0, 0))
+	pause_motion = true	
+	is_dead = true
 
 @rpc("call_local","any_peer")
 func sit_to_stand():	
@@ -114,9 +131,13 @@ func equip_weapon_pistol():
 func is_sitting():
 	return is_motion_state(MotionState.sitting)	
 	
+func is_dying():
+	return is_motion_state(MotionState.dying)
+	
 func is_falling():
 	return is_motion_state(MotionState.falling)	
 	
+
 func is_motion_state(motion_state: MotionState):
 	var current_state = animation_tree["parameters/motion_state/current_state"];
 	var str_motion_state:String = MotionState.find_key(motion_state)

@@ -1,7 +1,7 @@
-extends Collectable
-class_name Ammo
+extends Control
+class_name CustomProgresBar
 
-@export var ammo_decal_scene: PackedScene
+@onready var progres_bar: ProgressBar = %ProgressBar
 
 # Called when the node enters the scene tree for the first time.
 func _ready():

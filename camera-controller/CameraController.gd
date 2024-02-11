@@ -3,8 +3,8 @@ class_name CameraController
 
 @export var camera_look_at_point:Node3D
 
-@onready var camera:Camera3D = $Camera3D
-@onready var camera_ray_cast: RayCast3D = $CameraRayCast as RayCast3D
+@onready var camera:Camera3D = %Camera3D
+@onready var camera_ray_cast: RayCast3D = %CameraRayCast as RayCast3D
 
 var pause_rotation: bool = false
 var is_first_person: bool = false

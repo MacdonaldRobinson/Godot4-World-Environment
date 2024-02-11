@@ -105,8 +105,10 @@ func _physics_process(delta):
 		camera_controller.set_camera_aiming()
 		
 		var weapon: Weapon = character.get_weapon();
-		weapon.OnWeaponFired.disconnect(_on_weapon_fired)
-		weapon.OnWeaponFired.connect(_on_weapon_fired)
+		
+		if weapon and weapon.OnWeaponFired:
+			weapon.OnWeaponFired.disconnect(_on_weapon_fired)
+			weapon.OnWeaponFired.connect(_on_weapon_fired)
 		
 		if Input.is_action_just_pressed("reload"):
 			weapon.reload()
@@ -129,7 +131,30 @@ func _on_weapon_fired(weapon: Weapon):
 	var camera_ray_cast: RayCast3D = camera_controller.get_camera_ray_cast()
 	if camera_ray_cast.is_colliding():
 		var collider = camera_ray_cast.get_collider()
-		print(collider)
+		
+		if collider is Node:		
+			var ammo: Ammo = weapon.ammo_scene.instantiate() as Ammo
+			var ammo_decal_instance: AmmoDecal = ammo.ammo_decal_scene.instantiate() as AmmoDecal
+			
+			collider.add_child(ammo_decal_instance)
+			
+			ammo_decal_instance.global_position = camera_controller.camera_ray_cast.get_collision_point()
+			ammo_decal_instance.look_at(camera_controller.camera_ray_cast.get_collision_normal())
+			
+			if collider is Player:
+				var hit_player: Player = collider as Player
+				var hit_character: Character = hit_player.character as Character
+				var current_health: int = hit_character.get_health()
+				var new_health: int = current_health - 10
+				
+				if new_health < 0:
+					new_health = 0
+									
+				hit_character.set_health(new_health)
+				
+				if new_health == 0:
+					hit_player.current_motion_state = Character.MotionState.dying
+					hit_character.die.rpc()
 
 func _on_character_on_character_dying(character):
 	#overlays.dead_overlay.show()
