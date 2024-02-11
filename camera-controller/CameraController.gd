@@ -45,7 +45,7 @@ func handle_rotation(controller_event, must_press_button: bool):
 		rotate_y(x_strength)		
 		camera.rotate_x(y_strength)		
 		
-		camera.rotation.x = clamp(camera.rotation.x, -0.5, 1)
+		camera.rotation.x = clamp(camera.rotation.x, -0.9, 1)
 		camera.rotation.y = 0
 		camera.rotation.z = 0
 	
@@ -69,6 +69,7 @@ func _process(delta):
 	if camera_look_at_point:		
 		#position = lerp(position, camera_look_at_point.global_position, 0.1)
 		position = camera_look_at_point.global_position
+		position.y += 0.5
 		
 		if is_aiming:
 			spring_length = 0

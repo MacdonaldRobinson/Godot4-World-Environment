@@ -131,6 +131,9 @@ func _on_weapon_fired(weapon: Weapon):
 	var camera_ray_cast: RayCast3D = camera_controller.get_camera_ray_cast()
 	if camera_ray_cast.is_colliding():
 		var collider = camera_ray_cast.get_collider()
+		var collision_point = camera_ray_cast.get_collision_point()		
+		
+		weapon.play_hitpoint_effect(camera_ray_cast)
 		
 		if collider is Node:		
 			var ammo: Ammo = weapon.ammo_scene.instantiate() as Ammo

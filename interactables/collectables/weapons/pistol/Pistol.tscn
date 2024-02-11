@@ -1,10 +1,14 @@
-[gd_scene load_steps=10 format=3 uid="uid://horck4dael68"]
+[gd_scene load_steps=14 format=3 uid="uid://horck4dael68"]
 
 [ext_resource type="PackedScene" uid="uid://blebsaub6ahb7" path="res://meshes/Weapons/Pistol/pistol.glb" id="1_dgmmi"]
 [ext_resource type="Script" path="res://interactables/collectables/weapons/pistol/Pistol.gd" id="2_yvf4t"]
 [ext_resource type="PackedScene" uid="uid://dt8g0ht0660ck" path="res://interactables/collectables/weapons/pistol/PistolAmmo/PistolAmmo.tscn" id="3_23vwk"]
 [ext_resource type="Texture2D" uid="uid://ct4k8o08ksh37" path="res://textures/particals/spark_02.png" id="3_iaunv"]
 [ext_resource type="Texture2D" uid="uid://b8nq0007rfua1" path="res://textures/guns/pistol.png" id="3_qerss"]
+[ext_resource type="PackedScene" uid="uid://dwavcinrffiff" path="res://interactables/collectables/weapons/pistol/Effects/HitPointEffect/HitPointEffect.tscn" id="4_uidw8"]
+[ext_resource type="AudioStream" uid="uid://n3a8gstp05p" path="res://interactables/collectables/weapons/pistol/pistol-shot.wav" id="6_ghexv"]
+[ext_resource type="AudioStream" uid="uid://d2cjbnvxgicft" path="res://interactables/collectables/weapons/pistol/pistol-reload.wav" id="7_jigao"]
+[ext_resource type="AudioStream" uid="uid://bcyxf4u45iy0r" path="res://interactables/collectables/weapons/pistol/pistol-empty.wav" id="8_anq5d"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_wmemi"]
 transparency = 1
@@ -34,6 +38,7 @@ ammo_max_capacity = 100
 ammo_current_amount = 20
 ammo_reload_amount = 10
 ammo_scene = ExtResource("3_23vwk")
+hit_point_effect = ExtResource("4_uidw8")
 max_collectable_amount = 1
 item_name = "Pistol"
 item_texture = ExtResource("3_qerss")
@@ -55,3 +60,16 @@ collision_layer = 2
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="StaticBody3D" index="0"]
 shape = SubResource("BoxShape3D_w8g8h")
+
+[node name="FireSound" type="AudioStreamPlayer3D" parent="." index="17"]
+unique_name_in_owner = true
+transform = Transform3D(14.2857, 0, 0, 0, 14.2857, 0, 0, 0, 14.2857, 0, 0, 0)
+stream = ExtResource("6_ghexv")
+
+[node name="ReloadSound" type="AudioStreamPlayer3D" parent="." index="18"]
+unique_name_in_owner = true
+stream = ExtResource("7_jigao")
+
+[node name="EmptySound" type="AudioStreamPlayer3D" parent="." index="19"]
+unique_name_in_owner = true
+stream = ExtResource("8_anq5d")

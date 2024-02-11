@@ -25,5 +25,6 @@ func fire():
 		if weapon.ammo_current_amount > 0:
 			weapon.ammo_current_amount -= 1
 			spark.restart()
-			
-	super.fire()
+			super.fire()
+		else:
+			empty_sound.play()
