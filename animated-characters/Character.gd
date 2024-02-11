@@ -47,11 +47,6 @@ func _process(delta):
 	
 	if character_name_label:
 		character_name_label.text = character_name
-
-	if weapon_holder and weapon_holder.get_child_count() > 0 and Input.is_action_just_pressed("shoot"):
-		var item = weapon_holder.get_child(0)
-		if item is Weapon:
-			item.fire.rpc()
 			
 @rpc("call_local","any_peer")
 func set_health(health: int):	
@@ -60,7 +55,8 @@ func set_health(health: int):
 
 	var player = self.get_parent()
 	if character_name == GameState.my_player.character.character_name and player.overlays:	
-		player.overlays.damage_overlay.taking_damage()	
+		if not is_dead:
+			player.overlays.damage_overlay.taking_damage()	
 
 func get_health() -> int:
 	return health_bar.custom_progress_bar.progress_bar.value

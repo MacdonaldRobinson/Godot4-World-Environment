@@ -106,13 +106,15 @@ func _physics_process(delta):
 		camera_controller.set_camera_aiming()
 		
 		var weapon: Weapon = character.get_weapon();
-		
-		if weapon and weapon.OnWeaponFired:
-			weapon.OnWeaponFired.disconnect(_on_weapon_fired)
-			weapon.OnWeaponFired.connect(_on_weapon_fired)
+		var weapon_inventory_item: InventoryItem = GameState.inventory.get_item(weapon)
 		
 		if Input.is_action_just_pressed("reload"):
 			weapon.reload()
+			
+		if Input.is_action_just_pressed("shoot"):			
+			weapon.OnWeaponFired.disconnect(_on_weapon_fired)
+			weapon.OnWeaponFired.connect(_on_weapon_fired)
+			weapon.fire()	
 
 	move_and_slide()
 
