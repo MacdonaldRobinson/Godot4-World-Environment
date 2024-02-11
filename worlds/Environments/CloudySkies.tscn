@@ -1,0 +1,21 @@
+[gd_scene load_steps=6 format=3 uid="uid://dy05upntcegm"]
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_yru7q"]
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_x6f1b"]
+seamless = true
+noise = SubResource("FastNoiseLite_yru7q")
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_vrp4n"]
+sky_cover = SubResource("NoiseTexture2D_x6f1b")
+
+[sub_resource type="Sky" id="Sky_y6k5f"]
+sky_material = SubResource("ProceduralSkyMaterial_vrp4n")
+
+[sub_resource type="Environment" id="Environment_731rm"]
+background_mode = 2
+background_energy_multiplier = 0.66
+sky = SubResource("Sky_y6k5f")
+
+[node name="WorldEnvironment" type="WorldEnvironment"]
+environment = SubResource("Environment_731rm")

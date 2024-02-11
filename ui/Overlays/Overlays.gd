@@ -10,6 +10,8 @@ class_name Overlays
 @onready var main_menu_overlay: MainMenu = $MainMenu
 @onready var inventory_overlay: InventoryOverlay = $InventoryOverlay
 @onready var weapon_overlay: WeaponOverlay = $WeaponOverlay
+@onready var player_overlay: PlayerOverlay = $PlayerOverlay
+@onready var damage_overlay: DamageOverlay = $DamageOverlay
 
 @export var camera_controller: CameraController
 # Called when the node enters the scene tree for the first time.
@@ -22,6 +24,7 @@ func _ready():
 	main_menu_overlay.hide()
 	inventory_overlay.hide()
 	weapon_overlay.hide()
+	player_overlay.hide()
 	
 	joystick_overlay.camera_controller = camera_controller
 

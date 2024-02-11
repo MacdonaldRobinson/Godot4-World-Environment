@@ -1,2 +1,2 @@
-extends RigidBody3D
+extends Node3D
 class_name AutoCollectChildItem

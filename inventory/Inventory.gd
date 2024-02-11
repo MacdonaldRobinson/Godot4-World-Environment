@@ -25,3 +25,4 @@ func add_or_update_item(item: Collectable):
 		inventory_item.item_quantity += item.quantity_on_collect
 		
 		inventory_items[item.item_name] = inventory_item
+	

@@ -14,7 +14,7 @@ func _process(delta):
 
 
 func _on_quit_pressed():
-	pass # Replace with function body.
+	get_tree().quit()
 
 
 func _on_character_selecter_pressed():

@@ -19,7 +19,7 @@ func interact(interacting_body):
 func fire():	
 	var inventory_item: InventoryItem = GameState.inventory.get_item(self)
 	
-	if inventory_item.item is Pistol:
+	if inventory_item and inventory_item.item is Pistol:
 		var weapon: Pistol = inventory_item.item		
 		
 		if weapon.ammo_current_amount > 0:

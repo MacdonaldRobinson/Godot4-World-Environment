@@ -1,6 +1,7 @@
-[gd_scene load_steps=6 format=3 uid="uid://bt80o0nqyotka"]
+[gd_scene load_steps=7 format=3 uid="uid://bt80o0nqyotka"]
 
 [ext_resource type="Script" path="res://player/Player.gd" id="1_0cohp"]
+[ext_resource type="AudioStream" uid="uid://cgfoo1uerd1fh" path="res://sound-effects/collect/item-collected.wav" id="2_i3x3s"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_r0f6p"]
 
@@ -42,6 +43,10 @@ shape = SubResource("BoxShape3D_8f0nk")
 
 [node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="."]
 replication_config = SubResource("SceneReplicationConfig_5c750")
+
+[node name="CollectItemSound" type="AudioStreamPlayer" parent="."]
+unique_name_in_owner = true
+stream = ExtResource("2_i3x3s")
 
 [connection signal="body_entered" from="InteractArea" to="." method="_on_interact_area_body_entered"]
 [connection signal="body_exited" from="InteractArea" to="." method="_on_interact_area_body_exited"]

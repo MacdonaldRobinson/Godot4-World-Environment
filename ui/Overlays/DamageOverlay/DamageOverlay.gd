@@ -1,7 +1,7 @@
 extends Control
-class_name CustomProgresBar
+class_name DamageOverlay
 
-@onready var progress_bar: ProgressBar = %ProgressBar
+@onready var anim_player: AnimationPlayer = $AnimationPlayer
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -11,3 +11,6 @@ func _ready():
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
 	pass
+	
+func taking_damage():
+	anim_player.play("FlashScreen")

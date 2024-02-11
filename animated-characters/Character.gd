@@ -11,6 +11,7 @@ class_name Character
 @onready var head_look_at_point: Node3D = $HeadLookAtPoint
 @onready var health_bar: HealthBar = %HealthBar as HealthBar
 
+@export var character_photo: Texture
 @export var character_name: String
 
 var pause_motion:bool = false
@@ -52,12 +53,17 @@ func _process(delta):
 		if item is Weapon:
 			item.fire.rpc()
 			
-func set_health(health: int):
+@rpc("call_local","any_peer")
+func set_health(health: int):	
 	health_bar.show()
-	health_bar.custom_progress_bar.progres_bar.value = health
-	
+	health_bar.custom_progress_bar.progress_bar.value = health
+
+	var player = self.get_parent()
+	if character_name == GameState.my_player.character.character_name and player.overlays:	
+		player.overlays.damage_overlay.taking_damage()	
+
 func get_health() -> int:
-	return health_bar.custom_progress_bar.progres_bar.value
+	return health_bar.custom_progress_bar.progress_bar.value
 	
 @rpc("call_local","any_peer")
 func set_motion(motion_state: MotionState, blend_position:Vector2):

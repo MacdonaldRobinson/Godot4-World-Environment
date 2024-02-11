@@ -31,7 +31,9 @@ scale_curve = SubResource("CurveTexture_0e3pe")
 
 [node name="HitPointEffect" type="GPUParticles3D"]
 material_override = SubResource("StandardMaterial3D_rukw3")
+emitting = false
 amount = 20
+one_shot = true
 process_material = SubResource("ParticleProcessMaterial_haqje")
 draw_pass_1 = SubResource("QuadMesh_lmwqe")
 script = ExtResource("2_wipdu")

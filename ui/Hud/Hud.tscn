@@ -1,0 +1,44 @@
+[gd_scene load_steps=4 format=3 uid="uid://y4i6u4bfgs8w"]
+
+[ext_resource type="PackedScene" uid="uid://dv53rj67knsus" path="res://ui/CustomProgresBar/CustomProgresBar.tscn" id="1_3wvgd"]
+[ext_resource type="Script" path="res://ui/Hud/Hud.gd" id="1_ivcy7"]
+[ext_resource type="Texture2D" uid="uid://cluhagljxgqcw" path="res://animated-characters/Kaya/kaya.png" id="2_cgiwg"]
+
+[node name="Hud" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_ivcy7")
+
+[node name="HBoxContainer" type="HBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_bottom = 50.0
+grow_horizontal = 2
+
+[node name="Photo" type="TextureRect" parent="HBoxContainer"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(50, 50)
+layout_mode = 2
+texture = ExtResource("2_cgiwg")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="VBoxContainer" type="VBoxContainer" parent="HBoxContainer"]
+layout_mode = 2
+
+[node name="Name" type="Label" parent="HBoxContainer/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 0
+text = "Player Name"
+
+[node name="HealthProgressBar" parent="HBoxContainer/VBoxContainer" instance=ExtResource("1_3wvgd")]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(200, 0)
+layout_mode = 2
+size_flags_vertical = 3

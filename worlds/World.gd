@@ -9,6 +9,7 @@ func _ready():
 	GameState.capture_mouse()
 	overlays.minmap_overlay.follow_node = GameState.my_player
 	overlays.minmap_overlay.show()
+	overlays.player_overlay.show()
 	
 	multiplayer.peer_disconnected.connect(
 		func(peer_id: int):
@@ -42,11 +43,13 @@ func set_players(players: Array[Node], my_player: Player):
 						
 			overlays.chat_overlay.set_players(players, my_player)		
 			player.overlays = overlays
+			
+			player.character.set_health(100)
 		
 		overlays.chat_overlay.show()
 		
 		if player.name == my_player.name:
-			player.camera_controller = camera_controller		
+			player.camera_controller = camera_controller
 			camera_controller.camera_look_at_point = player.character.camera_lookat_point
 		
 

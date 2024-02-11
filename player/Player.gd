@@ -1,5 +1,5 @@
 extends CharacterBody3D
-class_name Player 
+class_name Player
 
 const SPEED = 5.0
 const JUMP_VELOCITY = 4.5
@@ -12,6 +12,7 @@ var enable_gravity: bool = true
 @onready var currently_interacting_body: Interactable = null
 @onready var collision_shape: CollisionShape3D = $CollisionShape3D
 @onready var floor_check: Area3D = $FloorCheck
+@onready var collect_item_sound: AudioStreamPlayer = %CollectItemSound
 
 @export var camera_controller: CameraController
 @export var overlays: Overlays
@@ -37,7 +38,7 @@ func set_character(character: Character):
 	self.character = character
 	
 	character.position = Vector3.ZERO
-	character.rotation = Vector3.ZERO
+	character.rotation = Vector3.ZERO	
 	
 	if not is_multiplayer_authority():
 		return
@@ -153,7 +154,7 @@ func _on_weapon_fired(weapon: Weapon):
 				if new_health < 0:
 					new_health = 0
 									
-				hit_character.set_health(new_health)
+				hit_character.set_health.rpc(new_health)
 				
 				if new_health == 0:
 					hit_player.current_motion_state = Character.MotionState.dying
@@ -182,10 +183,11 @@ func _on_interact_area_body_entered(body):
 		
 		if collectable_item and collectable_item is Collectable:
 			GameState.inventory.add_or_update_item(collectable_item)
+			collect_item_sound.play()
 			
 			if collectable_item is Pistol:
 				current_motion_state = Character.MotionState.weapon_pistol
-				character.equip_weapon_pistol()
+				character.equip_weapon_pistol.rpc()
 				var inventory_item: InventoryItem = GameState.inventory.get_item(collectable_item)
 				
 				if inventory_item:

@@ -7,6 +7,8 @@
 transparency = 1
 albedo_color = Color(0.647059, 0.235294, 1, 1)
 albedo_texture = ExtResource("2_e8jqq")
+emission_enabled = true
+emission = Color(0.501961, 0, 1, 1)
 
 [sub_resource type="SphereMesh" id="SphereMesh_8acjw"]
 material = SubResource("StandardMaterial3D_osrgj")
@@ -70,4 +72,4 @@ libraries = {
 "": SubResource("AnimationLibrary_txjeh")
 }
 
-[connection signal="body_entered" from="." to="." method="_on_body_entered"]
+[node name="Node3D" type="Node3D" parent="."]
