@@ -49,14 +49,17 @@ func _process(delta):
 		character_name_label.text = character_name
 			
 @rpc("call_local","any_peer")
-func set_health(health: int):	
+func set_health(health: int):
+	var current_health = int(health_bar.custom_progress_bar.progress_bar.value)
+	
 	health_bar.show()
 	health_bar.custom_progress_bar.progress_bar.value = health
 
 	var player = self.get_parent()
 	if character_name == GameState.my_player.character.character_name and player.overlays:	
 		if not is_dead:
-			player.overlays.damage_overlay.taking_damage()	
+			if health < current_health and player.overlays.screen_overlay:
+				player.overlays.screen_overlay.taking_damage()	
 
 func get_health() -> int:
 	return health_bar.custom_progress_bar.progress_bar.value
@@ -166,11 +169,14 @@ func jump():
 	
 	is_foot_step = false
 	
-	var current_motion_direction:Vector2 = animation_tree["parameters/standing_motion_direction/blend_position"];
+	var current_state = animation_tree["parameters/motion_state/current_state"];
+	print(current_state) 
+	
+	var current_motion_direction:Vector2 = animation_tree["parameters/"+current_state+"_motion_direction/blend_position"];
 
-	animation_tree["parameters/standing_jump_direction/blend_position"] = current_motion_direction
-	animation_tree["parameters/standing_jump/request"] = AnimationNodeOneShot.ONE_SHOT_REQUEST_FIRE
-	pass	
+	animation_tree["parameters/"+current_state+"_jump_direction/blend_position"] = current_motion_direction
+	animation_tree["parameters/"+current_state+"_jump/request"] = AnimationNodeOneShot.ONE_SHOT_REQUEST_FIRE
+	pass
 
 func foot_step():
 	is_foot_step = true

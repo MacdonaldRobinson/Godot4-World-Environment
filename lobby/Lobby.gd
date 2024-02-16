@@ -103,7 +103,7 @@ func start_game(selected_world_index: int):
 	GameState.switch_to_scene(
 		selected_world, 
 		func(world: World): 
-			world.set_players(players.get_children(), GameState.my_player)			
+			world.set_players(players.get_children(), GameState.my_player)
 			GameState.is_game_started = true
 	)
 

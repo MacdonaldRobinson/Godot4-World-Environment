@@ -42,7 +42,7 @@ transform = Transform3D(-1, 1.08056e-08, -8.67524e-08, 0, 0.992332, 0.123601, 8.
 [node name="Garage" parent="." instance=ExtResource("5_o712m")]
 
 [node name="DropTimer" type="Timer" parent="."]
-wait_time = 5.0
+wait_time = 10.0
 autostart = true
 
 [node name="DropZone" type="Area3D" parent="."]

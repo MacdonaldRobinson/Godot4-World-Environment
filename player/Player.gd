@@ -101,7 +101,7 @@ func _physics_process(delta):
 		else:
 			current_motion_state = Character.MotionState.standing
 			
-	if character.is_weapon_pistol():
+	if character.is_weapon_pistol() and overlays:
 		overlays.weapon_overlay.show()
 		camera_controller.set_camera_aiming()
 		
@@ -186,6 +186,8 @@ func _on_interact_area_body_entered(body):
 		if collectable_item and collectable_item is Collectable:
 			GameState.inventory.add_or_update_item(collectable_item)
 			collect_item_sound.play()
+			
+			overlays.screen_overlay.collected_item(collectable_item, collectable_item.quantity_on_collect)
 			
 			if collectable_item is Pistol:
 				current_motion_state = Character.MotionState.weapon_pistol

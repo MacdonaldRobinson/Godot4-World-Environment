@@ -11,7 +11,7 @@ class_name Overlays
 @onready var inventory_overlay: InventoryOverlay = $InventoryOverlay
 @onready var weapon_overlay: WeaponOverlay = $WeaponOverlay
 @onready var player_overlay: PlayerOverlay = $PlayerOverlay
-@onready var damage_overlay: DamageOverlay = $DamageOverlay
+@onready var screen_overlay: ScreenOverlay = $ScreenOverlay
 
 @export var camera_controller: CameraController
 # Called when the node enters the scene tree for the first time.

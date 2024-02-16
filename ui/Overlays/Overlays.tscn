@@ -11,7 +11,7 @@
 [ext_resource type="PackedScene" uid="uid://c3iuby3rmb7vn" path="res://ui/Overlays/MainMenu/MainMenu.tscn" id="9_ejgin"]
 [ext_resource type="PackedScene" uid="uid://dbkc82jdcovr6" path="res://ui/Overlays/InventoryOverlay/InventoryOverlay.tscn" id="10_48r7n"]
 [ext_resource type="PackedScene" uid="uid://do3hofyp52jsn" path="res://ui/Overlays/WeaponOverlay/WeaponOverlay.tscn" id="11_0cw3x"]
-[ext_resource type="PackedScene" uid="uid://bpqgmgcyowome" path="res://ui/Overlays/DamageOverlay/DamageOverlay.tscn" id="11_l385d"]
+[ext_resource type="PackedScene" uid="uid://bpqgmgcyowome" path="res://ui/Overlays/ScreenOverlay/ScreenOverlay.tscn" id="11_l385d"]
 [ext_resource type="PackedScene" uid="uid://8r5uv00kxiqn" path="res://ui/Overlays/PlayerOverlay/PlayerOverlay.tscn" id="12_0xfm4"]
 
 [node name="Overlays" type="Control"]
@@ -60,7 +60,7 @@ layout_mode = 1
 visible = false
 layout_mode = 1
 
-[node name="DamageOverlay" parent="." instance=ExtResource("11_l385d")]
+[node name="ScreenOverlay" parent="." instance=ExtResource("11_l385d")]
 layout_mode = 1
 
 [node name="MainMenu" parent="." instance=ExtResource("9_ejgin")]
