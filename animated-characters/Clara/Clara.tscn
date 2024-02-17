@@ -7,7 +7,7 @@
 [ext_resource type="Texture2D" uid="uid://cb1fxcf2oxjfd" path="res://animated-characters/Clara/carla.png" id="3_go86i"]
 [ext_resource type="Texture2D" uid="uid://wo0luxmhhecu" path="res://particle-effects/PNG (Transparent)/dirt_02.png" id="5_vkts3"]
 
-[sub_resource type="ViewportTexture" id="ViewportTexture_piorp"]
+[sub_resource type="ViewportTexture" id="ViewportTexture_pjowq"]
 viewport_path = NodePath("SubViewport")
 
 [sub_resource type="Animation" id="Animation_g7br3"]
@@ -855,7 +855,7 @@ billboard = 1
 [node name="HealthBar" parent="." index="1" instance=ExtResource("3_7ryig")]
 unique_name_in_owner = true
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.2963, 0)
-texture = SubResource("ViewportTexture_piorp")
+texture = SubResource("ViewportTexture_pjowq")
 
 [node name="GeneralSkeleton" parent="Armature" index="0"]
 bones/0/position = Vector3(0.0103252, -1.53046e-10, -0.00128384)

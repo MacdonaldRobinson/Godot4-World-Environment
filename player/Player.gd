@@ -18,7 +18,7 @@ var enable_gravity: bool = true
 @export var overlays: Overlays
 @export var player_name: String
 
-var character: Character
+@export var character: Character
 var pause_mode: bool = false
 
 func _enter_tree():
@@ -27,7 +27,6 @@ func _enter_tree():
 func _ready():
 	if not is_multiplayer_authority():
 		return
-	
 	
 func set_character(character: Character):	
 	for node in get_children():

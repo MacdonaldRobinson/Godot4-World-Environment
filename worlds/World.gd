@@ -33,24 +33,29 @@ func set_players(players: Array[Node], my_player: Player):
 	
 	for player in players:
 		if player is Player:
-			var old_position = player.position
-			var old_rotation = player.rotation
+			var instance = player.duplicate();
+			instance.set_character(player.character.duplicate())
 			
-			player.reparent(players_container)
+			var old_position = instance.position
+			var old_rotation = instance.rotation
 			
-			player.position = old_position
-			player.rotation = old_rotation
+			players_container.add_child(instance)
+			
+			#player.reparent(players_container)
+			
+			instance.position = old_position
+			instance.rotation = old_rotation
 						
 			overlays.chat_overlay.set_players(players, my_player)		
-			player.overlays = overlays
+			instance.overlays = overlays
 			
-			player.character.set_health(100)
+			instance.character.set_health(100)
 		
-		overlays.chat_overlay.show()
-		
-		if player.name == my_player.name:
-			player.camera_controller = camera_controller
-			camera_controller.camera_look_at_point = player.character.camera_lookat_point
+			overlays.chat_overlay.show()
+			
+			if instance.name == my_player.name:
+				instance.camera_controller = camera_controller
+				camera_controller.camera_look_at_point = instance.character.camera_lookat_point
 		
 
 func _input(event):
