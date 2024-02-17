@@ -50,6 +50,7 @@ func _process(delta):
 			
 @rpc("call_local","any_peer")
 func set_health(health: int):
+	
 	var current_health = int(health_bar.custom_progress_bar.progress_bar.value)
 	
 	health_bar.show()

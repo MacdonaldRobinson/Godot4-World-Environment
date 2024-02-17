@@ -147,6 +147,8 @@ func _on_weapon_fired(weapon: Weapon):
 			ammo_decal_instance.look_at(camera_controller.camera_ray_cast.get_collision_normal())
 			
 			if collider is Player:
+				var hit_player_info: PlayerInfo = GameState.get_player_info(collider.name.to_int())
+				
 				var hit_player: Player = collider as Player
 				var hit_character: Character = hit_player.character as Character
 				var current_health: int = hit_character.get_health()
@@ -154,8 +156,11 @@ func _on_weapon_fired(weapon: Weapon):
 				
 				if new_health < 0:
 					new_health = 0
-									
+				
+				hit_player_info.health = new_health
 				hit_character.set_health.rpc(new_health)
+								
+				GameState.add_or_update_player_info.rpc(var_to_str(hit_player_info))
 				
 				if new_health == 0:
 					hit_player.current_motion_state = Character.MotionState.dying

@@ -23,7 +23,8 @@ use_collision = true
 size = Vector3(13.9984, 1, 11.708)
 material = SubResource("StandardMaterial3D_372o4")
 
-[node name="Players" type="Node3D" parent="."]
+[node name="PlayersContainer" type="Node3D" parent="."]
+unique_name_in_owner = true
 
 [node name="Camera3D" type="Camera3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2, 7)
@@ -106,10 +107,11 @@ layout_mode = 2
 size_flags_vertical = 8
 text = "Start Game"
 
-[node name="ChatOverlay" parent="CanvasLayer" instance=ExtResource("4_f7ucu")]
+[node name="ChatOverlay" parent="CanvasLayer/Control" instance=ExtResource("4_f7ucu")]
 unique_name_in_owner = true
-offset_top = 402.0
-offset_right = -648.0
+layout_mode = 1
+offset_top = 405.0
+offset_right = -740.0
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = SubResource("Environment_xww1p")

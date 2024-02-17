@@ -11,7 +11,6 @@ func _ready():
 	if not follow_node:
 		return
 
-
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
 	if camera and follow_node:

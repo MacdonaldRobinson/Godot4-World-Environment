@@ -16,6 +16,5 @@ func _process(delta):
 func _on_quit_pressed():
 	get_tree().quit()
 
-
 func _on_character_selecter_pressed():
-	GameState.switch_to_scene(character_selector_scene_path)
+	GameState.leave()

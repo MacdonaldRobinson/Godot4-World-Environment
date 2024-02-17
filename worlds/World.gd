@@ -4,58 +4,63 @@ class_name World
 @onready var players_container: Node3D = $PlayersContainer
 @onready var camera_controller: CameraController = $CameraController
 @onready var overlays: Overlays = $Overlays as Overlays
+
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	GameState.capture_mouse()
 	overlays.minmap_overlay.follow_node = GameState.my_player
 	overlays.minmap_overlay.show()
 	overlays.player_overlay.show()
-	
-	multiplayer.peer_disconnected.connect(
-		func(peer_id: int):
-			if self:
-				remove_player.rpc(peer_id)
-	)	
-
-@rpc("call_remote", "any_peer")
-func remove_player(peer_id: int):
-	var my_player: Player = players_container.get_node(str(multiplayer.get_unique_id())) as Player
-	var found_player: Player = players_container.get_node(str(peer_id)) as Player
-	
-	if found_player and my_player:
-		players_container.remove_child(found_player)
-		overlays.chat_overlay.set_players(players_container.get_children(), my_player)	
-	
-	
-func set_players(players: Array[Node], my_player: Player):
-	for node in players_container.get_children():
-		players_container.remove_child(node)
-	
-	for player in players:
-		if player is Player:
-			var instance = player.duplicate();
-			instance.set_character(player.character.duplicate())
-			
-			var old_position = instance.position
-			var old_rotation = instance.rotation
-			
-			players_container.add_child(instance)
-			
-			#player.reparent(players_container)
-			
-			instance.position = old_position
-			instance.rotation = old_rotation
-						
-			overlays.chat_overlay.set_players(players, my_player)		
-			instance.overlays = overlays
-			
-			instance.character.set_health(100)
 		
-			overlays.chat_overlay.show()
-			
-			if instance.name == my_player.name:
-				instance.camera_controller = camera_controller
-				camera_controller.camera_look_at_point = instance.character.camera_lookat_point
+	GameState.OnPlayerAdded.connect(
+		func(player_info: PlayerInfo):
+			overlays.chat_overlay.sync_with_game_state()
+			add_player(player_info)
+	)
+	
+	GameState.OnPlayerUpdated.connect(
+		func(player_info: PlayerInfo):
+			print("Player Updated: ", var_to_str(player_info))
+	)	
+	
+	GameState.OnPlayerRemoved.connect(
+		func(player_info: PlayerInfo):
+			overlays.chat_overlay.sync_with_game_state()
+			remove_player(player_info)
+	)	
+	
+func remove_player(player_info: PlayerInfo):
+	for existing_player in players_container.get_children():
+		if existing_player.name == str(player_info.peer_id):
+			players_container.remove_child(existing_player)
+			return	
+	
+func add_player(player_info: PlayerInfo):
+	for existing_player in players_container.get_children():
+		if existing_player.name == str(player_info.peer_id):
+			return
+	
+	var player: Player = GameState.player_scene.instantiate();
+	player.name = str(player_info.peer_id)
+	
+	var character: Character = ResourceLoader.load(player_info.character_scene_file_path).instantiate()
+	character.character_name = player_info.character_name
+	
+	player.set_character(character)		
+	players_container.add_child(player)
+
+	player.set_multiplayer_authority(player.name.to_int())
+		
+	character.set_health(player_info.health)
+	overlays.minmap_overlay.follow_node = player
+	player.overlays = overlays
+	
+	overlays.chat_overlay.sync_with_game_state()	
+	overlays.chat_overlay.show()
+	
+	if player.name == GameState.my_player.name:
+		player.camera_controller = camera_controller
+		camera_controller.camera_look_at_point = player.character.camera_lookat_point
 		
 
 func _input(event):

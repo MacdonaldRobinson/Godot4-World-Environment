@@ -1,14 +1,15 @@
 extends Node3D
 class_name Lobby
 
-@onready var players:Node3D = $Players
+@onready var players_container:Node3D = %PlayersContainer
 @onready var host: Button = %Host
 @onready var join: Button = %Join
 @onready var spawn_area: Area3D = $SpawnArea
-@onready var chat_overlay: ChatOverlay = %ChatOverlay as ChatOverlay
+
 @onready var host_join_buttons: Control = %Host_Join
 @onready var world_selecter: Control = %WorldSelecter
 @onready var worlds_list: ItemList = %WorldList as ItemList
+@onready var chat_overlay: ChatOverlay = %ChatOverlay
 
 var worlds: Dictionary = {
 	"Mountain" = "res://worlds/WorldOne/WorldOne.tscn",
@@ -26,39 +27,9 @@ func _ready():
 	worlds_list.clear()
 	world_selecter.hide()
 	
-	GameState.OnPlayerAdded.connect(
-		func(player: Player):
-			print("Player Added: ", player.name, " on: ", GameState.my_player.name," count: " ,GameState.players_container.get_child_count())
-			chat_overlay.set_players(GameState.players_container.get_children(), GameState.my_player)
-			
-			var found_player: Player
-			
-			for existing_player in players.get_children():
-				if existing_player.name == player.name:
-					found_player = existing_player
-					break
-			
-			if not found_player:
-				var instance: Player = player.duplicate()
-				var character: Character = player.character.duplicate()
-				instance.set_character(character)
-				
-				players.add_child(instance)
-			else:
-				var character: Character = player.character.duplicate()
-				found_player.set_character(character)
-			
-	)
-	
-	GameState.OnPlayerRemoved.connect(
-		func(player: Player):
-			print("Player Removed: ", player.name, " on: ", GameState.my_player.name," count: " ,GameState.players_container.get_child_count())
-			chat_overlay.set_players(GameState.players_container.get_children(), GameState.my_player)
-			
-			for existing_player in players.get_children():
-				if existing_player.name == player.name:
-					players.remove_child(existing_player)
-	)	
+	GameState.OnPlayerAdded.connect(_on_player_added)	
+	GameState.OnPlayerUpdated.connect(_on_player_updated)	
+	GameState.OnPlayerRemoved.connect(_on_player_removed)
 		
 	Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
 	camera.current = true
@@ -67,7 +38,22 @@ func _ready():
 		if world is String:
 			worlds_list.add_item(world)
 	pass
+	
+func _on_player_added(player_info: PlayerInfo):
+	print("_on_player_added")
+	chat_overlay.sync_with_game_state()		
+	GameState.add_or_update_player_in_container(player_info, players_container)
+	
+func _on_player_updated(player_info: PlayerInfo):	
+	print("_on_player_updated")
+	chat_overlay.sync_with_game_state()	
+	GameState.add_or_update_player_in_container(player_info, players_container)
 
+func _on_player_removed(player_info: PlayerInfo):
+	print("_on_player_removed")
+	GameState.remove_player_from_container(player_info.peer_id, players_container)						
+	chat_overlay.sync_with_game_state()
+	
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):	
 	pass
@@ -79,9 +65,13 @@ func start_game(selected_world_index: int):
 	
 	GameState.switch_to_scene(
 		selected_world, 
-		func(world: World): 
-			world.set_players(players.get_children(), GameState.my_player)
+		func(world: World):
 			GameState.is_game_started = true
+			for player_info in GameState.all_players_info:
+				player_info.is_in_game = true
+				GameState.add_or_update_player_info(var_to_str(player_info))
+				
+				world.add_player(player_info)
 	)
 
 func _on_start_game_pressed():	
@@ -95,9 +85,8 @@ func _on_start_game_pressed():
 
 func _on_host_pressed():
 	NetworkState.start_network(true)
-
-	chat_overlay.set_players(GameState.players_container.get_children(), GameState.my_player)
-
+	chat_overlay.sync_with_game_state()
+	
 	host_join_buttons.hide()
 	chat_overlay.show()
 	world_selecter.show()	
@@ -106,7 +95,7 @@ func _on_host_pressed():
 func _on_join_pressed():
 	NetworkState.start_network(false)
 	
-	chat_overlay.set_players(GameState.players_container.get_children(), GameState.my_player)
+	chat_overlay.sync_with_game_state()
 
 	world_selecter.show()	
 	
@@ -117,9 +106,7 @@ func _on_join_pressed():
 func _on_world_list_item_selected(index):	
 	var selected_list_item = worlds_list.get_item_text(index)
 	selected_world = worlds[selected_list_item]
-	pass
-	
+	pass	
 
 func _on_character_selecter_pressed():	
 	GameState.leave()
-
