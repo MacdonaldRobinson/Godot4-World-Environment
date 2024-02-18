@@ -43,7 +43,6 @@ transform = Transform3D(-1, 1.08056e-08, -8.67524e-08, 0, 0.992332, 0.123601, 8.
 
 [node name="DropTimer" type="Timer" parent="."]
 wait_time = 10.0
-autostart = true
 
 [node name="DropZone" type="Area3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 13, 0)

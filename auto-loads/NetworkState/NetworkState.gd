@@ -1,17 +1,13 @@
 extends Node
 
 var is_server := false
+var peer: ENetMultiplayerPeer = null
 
 func start_network(server: bool, ip: String = '127.0.0.1', port: int = 4242) -> void:
 	is_server = server
-	var peer = ENetMultiplayerPeer.new()
+	peer = ENetMultiplayerPeer.new()
 	
-	var my_player_info: PlayerInfo = PlayerInfo.new()
-	my_player_info.character_scene_file_path = GameState.my_player.character.scene_file_path
-	my_player_info.character_name = GameState.my_player.character.character_name		
-	my_player_info.health = 100
-	my_player_info.is_in_game = false
-	my_player_info.character_photo = GameState.my_player.character.character_photo
+	var my_player_info: PlayerInfo = GameState.get_my_player_info()
 	
 	if server:
 		peer.create_server(port)		

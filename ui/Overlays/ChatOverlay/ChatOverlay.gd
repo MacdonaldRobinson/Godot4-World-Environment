@@ -6,8 +6,6 @@ class_name ChatOverlay
 @onready var players_list: ItemList = %PlayersList
 @onready var chat_messages: RichTextLabel = %ChatMessages
 
-var player: Player
-
 func _ready():
 	chat_messages.clear()
 	GameState.OnChatMessageAdded.connect(
@@ -17,8 +15,6 @@ func _ready():
 	)
 	
 func sync_with_game_state():
-	self.player = GameState.my_player
-	
 	players_list.clear()
 	
 	for player_info in GameState.all_players_info:

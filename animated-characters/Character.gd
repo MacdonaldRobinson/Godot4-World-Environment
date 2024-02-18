@@ -47,6 +47,11 @@ func _process(delta):
 	
 	if character_name_label:
 		character_name_label.text = character_name
+		
+func set_player_info(player_info: PlayerInfo):
+	character_name_label.text = player_info.character_name
+	character_photo = player_info.character_photo
+	set_health(player_info.health)
 			
 @rpc("call_local","any_peer")
 func set_health(health: int):
@@ -57,7 +62,9 @@ func set_health(health: int):
 	health_bar.custom_progress_bar.progress_bar.value = health
 
 	var player = self.get_parent()
-	if character_name == GameState.my_player.character.character_name and player.overlays:	
+	var my_player_info: PlayerInfo = GameState.get_my_player_info()
+	
+	if character_name == my_player_info.character_name and player.overlays:	
 		if not is_dead:
 			if health < current_health and player.overlays.screen_overlay:
 				player.overlays.screen_overlay.taking_damage()	

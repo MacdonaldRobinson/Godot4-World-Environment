@@ -40,20 +40,19 @@ func _ready():
 	pass
 	
 func _on_player_added(player_info: PlayerInfo):
-	print("_on_player_added")
-	chat_overlay.sync_with_game_state()		
-	GameState.add_or_update_player_in_container(player_info, players_container)
+	chat_overlay.sync_with_game_state()
+	if not player_info.is_in_game:
+		GameState.add_or_update_player_in_container(player_info, players_container)
 	
 func _on_player_updated(player_info: PlayerInfo):	
-	print("_on_player_updated")
 	chat_overlay.sync_with_game_state()	
-	GameState.add_or_update_player_in_container(player_info, players_container)
+	if not player_info.is_in_game:		
+		GameState.add_or_update_player_in_container(player_info, players_container)
 
 func _on_player_removed(player_info: PlayerInfo):
-	print("_on_player_removed")
 	GameState.remove_player_from_container(player_info.peer_id, players_container)						
 	chat_overlay.sync_with_game_state()
-	
+
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):	
 	pass
@@ -70,8 +69,6 @@ func start_game(selected_world_index: int):
 			for player_info in GameState.all_players_info:
 				player_info.is_in_game = true
 				GameState.add_or_update_player_info(var_to_str(player_info))
-				
-				world.add_player(player_info)
 	)
 
 func _on_start_game_pressed():	

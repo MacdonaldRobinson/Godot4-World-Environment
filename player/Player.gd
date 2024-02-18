@@ -27,6 +27,21 @@ func _enter_tree():
 func _ready():
 	if not is_multiplayer_authority():
 		return
+		
+
+func set_player_info(player_info: PlayerInfo):
+	self.name = str(player_info.peer_id)
+	self.set_multiplayer_authority(player_info.peer_id)
+	
+	var character: Character = ResourceLoader.load(player_info.character_scene_file_path).instantiate()
+	character.character_name = player_info.character_name
+	character.character_photo = player_info.character_photo
+	
+	set_character(character)
+
+func get_player_info() -> PlayerInfo:
+	var player: PlayerInfo = GameState.get_player_info(self.name.to_int())
+	return player
 	
 func set_character(character: Character):	
 	for node in get_children():
@@ -38,6 +53,8 @@ func set_character(character: Character):
 	
 	character.position = Vector3.ZERO
 	character.rotation = Vector3.ZERO	
+	
+	character.set_player_info(get_player_info())
 	
 	if not is_multiplayer_authority():
 		return
@@ -105,6 +122,10 @@ func _physics_process(delta):
 		camera_controller.set_camera_aiming()
 		
 		var weapon: Weapon = character.get_weapon();
+		
+		if not weapon:
+			return
+			
 		var weapon_inventory_item: InventoryItem = GameState.inventory.get_item(weapon)
 		
 		if Input.is_action_just_pressed("reload"):
