@@ -30,8 +30,8 @@ func _process(delta):
 		var loaded_scene = ResourceLoader.load_threaded_get(scene_to_load)	
 		var scene_instance: Node = loaded_scene.instantiate()
 		scene_container.add_child(scene_instance)
-		callback.call(scene_instance)
 		
-		scene_instance.reparent(get_tree().root)	
-		get_tree().root.remove_child(self)
+		scene_instance.reparent(get_tree().root)
+		
+		callback.call(scene_instance)
 

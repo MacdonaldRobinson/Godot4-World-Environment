@@ -48,11 +48,11 @@ func switch_to_scene(new_scene_path: String, callback: Callable = func(arg): pas
 	scene_loader.load_scene(
 		new_scene_path, 
 		func(new_scene: Node):
-			callback.call(new_scene)
 					
 			new_scene.reparent(get_tree().root)
-						
 			scene_loader.hide()
+			
+			callback.call(new_scene)
 	)	
 		
 @rpc("call_remote", "any_peer")
@@ -80,10 +80,7 @@ func _add_or_update_player_info(player_info: PlayerInfo):
 		
 		OnPlayerUpdated.emit(player_info)
 	else:
-		if all_players_info.size() == 1:
-			print("incorrect")
 		all_players_info.push_back(player_info)
-		
 		
 		OnPlayerAdded.emit(player_info)
 		
@@ -101,6 +98,10 @@ func remove_player_info(peer_id: int):
 	
 func get_my_player_info() -> PlayerInfo:
 	var player_info: PlayerInfo = GameState.get_player_info(multiplayer.get_unique_id())	
+	
+	if not player_info and all_players_info.size() == 1:
+		return all_players_info[0]
+	
 	return player_info
 
 func get_player_in_container(peer_id: int, container: Node) -> Player:
@@ -146,15 +147,9 @@ func log(message: String):
 	for item in get_stack():
 		function_chain += item.function + " -> "
 	
-	var json = JSON.new()
-	var json_string = var_to_str(GameState.all_players_info)
-	
-		
-	print("On: ", multiplayer.get_unique_id(), " Remote: ", multiplayer.get_remote_sender_id(), " Stack: ", function_chain, " Message: "+ message)
+	print("On: ", multiplayer.get_unique_id(), " Remote: ", multiplayer.get_remote_sender_id(), " Stack: ", function_chain, "\nMessage: "+ message +"\n\n")
 			
 func add_or_update_player_in_container(player_info: PlayerInfo, players_container: Node3D) -> Player:	
-	GameState.log(player_info.character_name)
-	
 	var str_peer_id: String = str(player_info.peer_id)
 	var player: Player
 	
@@ -163,7 +158,7 @@ func add_or_update_player_in_container(player_info: PlayerInfo, players_containe
 		players_container.add_child(player)		
 	else:
 		player = players_container.get_node(str_peer_id)
-		
+	
 	player.set_player_info(player_info)
 		
 	return player
@@ -184,20 +179,10 @@ func _process(delta):
 
 func leave():	
 	GameState.remove_player.rpc(multiplayer.get_unique_id())
-	GameState.all_players_info.clear()	
 	
-	for connection in GameState.OnPlayerAdded.get_connections():
-		GameState.OnPlayerAdded.disconnect(connection["callable"])
-
-	for connection in GameState.OnPlayerUpdated.get_connections():
-		GameState.OnPlayerUpdated.disconnect(connection["callable"])
-
-	for connection in GameState.OnPlayerRemoved.get_connections():
-		GameState.OnPlayerUpdated.disconnect(connection["callable"])
-
-	for connection in GameState.OnChatMessageAdded.get_connections():
-		GameState.OnPlayerUpdated.disconnect(connection["callable"])
-
+	GameState.all_players_info.clear()	
+	NetworkState.peer = null	
+	
 	get_tree().change_scene_to_packed(GameState.character_selecter)
 	get_current_scene().queue_free()
 

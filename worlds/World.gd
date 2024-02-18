@@ -9,8 +9,11 @@ class_name World
 func _ready():
 	GameState.capture_mouse()
 	
+	for child in players_container.get_children():
+		players_container.remove_child(child)	
+	
 	var player: Player = GameState.get_my_player_in_container(players_container)
-		
+
 	overlays.minmap_overlay.follow_node = player
 	overlays.minmap_overlay.show()
 	overlays.player_overlay.show()
@@ -42,7 +45,14 @@ func remove_player(player_info: PlayerInfo):
 func add_or_update_player(player_info: PlayerInfo):
 	overlays.chat_overlay.sync_with_game_state()
 
+	GameState.log(" character: " + player_info.character_name + ": in game: "+ str(player_info.is_in_game))
+	
+
 	var player: Player = GameState.add_or_update_player_in_container(player_info, players_container)
+
+	if GameState.get_my_player_info().peer_id == 1:
+		GameState.log(player_info.character_name + ": MultiPlayer Authority: "+str(player.get_multiplayer_authority()))
+		
 	var my_player_info: PlayerInfo = GameState.get_my_player_info()
 	overlays.minmap_overlay.follow_node = player
 	player.overlays = overlays

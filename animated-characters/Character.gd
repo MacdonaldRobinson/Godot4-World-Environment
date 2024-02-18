@@ -48,7 +48,7 @@ func _process(delta):
 	if character_name_label:
 		character_name_label.text = character_name
 		
-func set_player_info(player_info: PlayerInfo):
+func set_player_info(player_info: PlayerInfo):	
 	character_name_label.text = player_info.character_name
 	character_photo = player_info.character_photo
 	set_health(player_info.health)

@@ -17,9 +17,6 @@ func _ready():
 func sync_with_game_state():
 	players_list.clear()
 	
-	if GameState.all_players_info.size() == 3:
-		print("GameState.sync_with_game_state")
-	
 	for player_info in GameState.all_players_info:
 		if player_info is PlayerInfo:
 			players_list.add_item(player_info.character_name)
@@ -28,13 +25,15 @@ func _process(delta):
 	pass
 
 func _on_send_pressed():
-	GameState.add_chat_message.rpc(GameState.my_player.character.character_name, message.text)
+	var player_info: PlayerInfo = GameState.get_my_player_info()
+	
+	GameState.add_chat_message.rpc(player_info.character_name, message.text)
 	message.clear()
 	message.release_focus()
-	GameState.start_my_player_process()
+	pass
 
 func _on_message_text_submitted(new_text):
 	_on_send_pressed() 
 
 func _on_message_text_changed(new_text):
-	GameState.stop_my_player_process()
+	pass

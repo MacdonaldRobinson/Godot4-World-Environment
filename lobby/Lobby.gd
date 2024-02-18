@@ -27,6 +27,9 @@ func _ready():
 	worlds_list.clear()
 	world_selecter.hide()
 	
+	for child in players_container.get_children():
+		players_container.remove_child(child)
+	
 	GameState.OnPlayerAdded.connect(_on_player_added)	
 	GameState.OnPlayerUpdated.connect(_on_player_updated)	
 	GameState.OnPlayerRemoved.connect(_on_player_removed)
@@ -46,7 +49,7 @@ func _on_player_added(player_info: PlayerInfo):
 	
 func _on_player_updated(player_info: PlayerInfo):	
 	chat_overlay.sync_with_game_state()	
-	if not player_info.is_in_game:		
+	if not player_info.is_in_game:
 		GameState.add_or_update_player_in_container(player_info, players_container)
 
 func _on_player_removed(player_info: PlayerInfo):
