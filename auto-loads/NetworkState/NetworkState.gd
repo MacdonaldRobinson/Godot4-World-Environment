@@ -5,7 +5,7 @@ var peer: ENetMultiplayerPeer = null
 
 func start_network(server: bool, ip: String = '127.0.0.1', port: int = 4242) -> void:
 	is_server = server
-	var my_player_info: PlayerInfo = GameState.get_my_player_info()			
+	var my_player_info: PlayerInfo = GameState.get_my_player_info()	
 	
 	peer = ENetMultiplayerPeer.new()
 
@@ -17,16 +17,12 @@ func start_network(server: bool, ip: String = '127.0.0.1', port: int = 4242) -> 
 		GameState.all_players_info.clear()
 		GameState._add_or_update_player_info(my_player_info)
 		
-		multiplayer.peer_connected.disconnect(_on_peer_connected)		
-		multiplayer.peer_disconnected.disconnect(_on_peer_disconnected)
-				
 		multiplayer.peer_connected.connect(_on_peer_connected)		
 		multiplayer.peer_disconnected.connect(_on_peer_disconnected)
 		
 	else:
 		peer.create_client(ip, port)		
 			
-		multiplayer.connected_to_server.disconnect(_on_connected_to_server)		
 		multiplayer.connected_to_server.connect(_on_connected_to_server)
 
 	multiplayer.set_multiplayer_peer(peer)

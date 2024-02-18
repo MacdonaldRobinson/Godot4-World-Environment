@@ -60,7 +60,6 @@ func _on_player_removed(player_info: PlayerInfo):
 func _process(delta):	
 	pass
 
-	
 @rpc("call_local", "any_peer")
 func start_game(selected_world_index: int):	
 	_on_world_list_item_selected(selected_world_index)
@@ -71,6 +70,7 @@ func start_game(selected_world_index: int):
 			GameState.is_game_started = true
 			for player_info in GameState.all_players_info:
 				player_info.is_in_game = true
+				GameState.log(": Update Game State for: "+ player_info.character_name)
 				GameState.add_or_update_player_info(var_to_str(player_info))
 	)
 

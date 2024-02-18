@@ -8,7 +8,6 @@ class_name Character
 @onready var character_selector: Area3D = $CharacterSelector
 @onready var character_name_label: Label3D = $Name
 @onready var weapon_holder: Node3D = %WeaponHolder
-@onready var head_look_at_point: Node3D = $HeadLookAtPoint
 @onready var health_bar: HealthBar = %HealthBar as HealthBar
 
 @export var character_photo: Texture

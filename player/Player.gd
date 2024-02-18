@@ -6,13 +6,14 @@ const JUMP_VELOCITY = 4.5
 
 # Get the gravity from the project settings to be synced with RigidBody nodes.
 var gravity = ProjectSettings.get_setting("physics/3d/default_gravity")
-var current_motion_state:Character.MotionState = Character.MotionState.standing
+@export var current_motion_state:Character.MotionState = Character.MotionState.standing
 var enable_gravity: bool = true
 
 @onready var currently_interacting_body: Interactable = null
 @onready var collision_shape: CollisionShape3D = $CollisionShape3D
 @onready var floor_check: Area3D = $FloorCheck
 @onready var collect_item_sound: AudioStreamPlayer = %CollectItemSound
+@onready var multiplayer_sync: MultiplayerSynchronizer = %MultiplayerSynchronizer
 
 @export var camera_controller: CameraController
 @export var overlays: Overlays
@@ -21,29 +22,23 @@ var enable_gravity: bool = true
 @export var character: Character
 var pause_mode: bool = false
 
-func _enter_tree():
-	set_multiplayer_authority(str(name).to_int())
-
 func _ready():
 	if not is_multiplayer_authority():
 		return
 		
-
 func set_player_info(player_info: PlayerInfo):
 	self.name = str(player_info.peer_id)
 	self.set_multiplayer_authority(player_info.peer_id)
 	
+	self.current_motion_state = player_info.character_motion_state
+			
 	var character: Character = ResourceLoader.load(player_info.character_scene_file_path).instantiate()
 	character.character_name = player_info.character_name
 	character.character_photo = player_info.character_photo
-	
-	set_character(character)
 
-func get_player_info() -> PlayerInfo:
-	var player: PlayerInfo = GameState.get_player_info(self.name.to_int())
-	return player
+	set_character(character, player_info)
 	
-func set_character(character: Character):	
+func set_character(character: Character, player_info: PlayerInfo):	
 	for node in get_children():
 		if node is Character:
 			remove_child(node)
@@ -54,7 +49,7 @@ func set_character(character: Character):
 	character.position = Vector3.ZERO
 	character.rotation = Vector3.ZERO	
 	
-	character.set_player_info(get_player_info())
+	character.set_player_info(player_info)
 	
 	if not is_multiplayer_authority():
 		return
@@ -86,6 +81,9 @@ func _physics_process(delta):
 	var direction = (transform.basis * Vector3(input_dir.x, 0, input_dir.y)).normalized()
 	
 	if character and is_on_floor_custom():
+		if multiplayer.is_server() and current_motion_state:
+			print(Character.MotionState.find_key(current_motion_state))
+			
 		character.set_motion.rpc(current_motion_state, Vector2(input_dir.x, -input_dir.y))
 		
 		if (input_dir != Vector2.ZERO and camera_controller) or ( camera_controller and camera_controller.is_aiming ):
@@ -131,12 +129,14 @@ func _physics_process(delta):
 		if Input.is_action_just_pressed("reload"):
 			weapon.reload()
 			
-		if Input.is_action_just_pressed("shoot"):			
-			weapon.OnWeaponFired.disconnect(_on_weapon_fired)
-			weapon.OnWeaponFired.connect(_on_weapon_fired)
+		if Input.is_action_just_pressed("shoot"):
+			if not weapon.OnWeaponFired.is_connected(_on_weapon_fired):
+				weapon.OnWeaponFired.connect(_on_weapon_fired)
+				
 			weapon.fire()	
-
-	move_and_slide()
+			
+	move_and_slide()	
+	
 
 func is_on_floor_custom():
 	var bodies = floor_check.get_overlapping_bodies()
@@ -180,13 +180,15 @@ func _on_weapon_fired(weapon: Weapon):
 				
 				hit_player_info.health = new_health
 				hit_character.set_health.rpc(new_health)
-								
-				GameState.add_or_update_player_info.rpc(var_to_str(hit_player_info))
 				
 				if new_health == 0:
 					hit_player.current_motion_state = Character.MotionState.dying
+					hit_player_info.character_motion_state = hit_player.current_motion_state
+					
 					hit_character.die.rpc()
 
+				GameState.add_or_update_player_info.rpc(var_to_str(hit_player_info))
+				
 func _on_character_on_character_dying(character):
 	#overlays.dead_overlay.show()
 	pass

@@ -17,6 +17,9 @@ func _ready():
 	overlays.minmap_overlay.follow_node = player
 	overlays.minmap_overlay.show()
 	overlays.player_overlay.show()
+	
+	for player_info in GameState.all_players_info:
+		add_or_update_player(player_info)
 		
 	GameState.OnPlayerAdded.connect(
 		func(player_info: PlayerInfo):
@@ -45,14 +48,8 @@ func remove_player(player_info: PlayerInfo):
 func add_or_update_player(player_info: PlayerInfo):
 	overlays.chat_overlay.sync_with_game_state()
 
-	GameState.log(" character: " + player_info.character_name + ": in game: "+ str(player_info.is_in_game))
-	
-
 	var player: Player = GameState.add_or_update_player_in_container(player_info, players_container)
-
-	if GameState.get_my_player_info().peer_id == 1:
-		GameState.log(player_info.character_name + ": MultiPlayer Authority: "+str(player.get_multiplayer_authority()))
-		
+	
 	var my_player_info: PlayerInfo = GameState.get_my_player_info()
 	overlays.minmap_overlay.follow_node = player
 	player.overlays = overlays
@@ -62,7 +59,6 @@ func add_or_update_player(player_info: PlayerInfo):
 	if player.name == str(my_player_info.peer_id):
 		player.camera_controller = camera_controller
 		camera_controller.camera_look_at_point = player.character.camera_lookat_point
-		
 
 func _input(event):
 	if Input.is_action_just_pressed("mouse_capture_toggle"):

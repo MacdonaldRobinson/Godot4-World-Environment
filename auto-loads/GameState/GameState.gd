@@ -179,9 +179,7 @@ func _process(delta):
 
 func leave():	
 	GameState.remove_player.rpc(multiplayer.get_unique_id())
-	
 	GameState.all_players_info.clear()	
-	NetworkState.peer = null	
 	
 	get_tree().change_scene_to_packed(GameState.character_selecter)
 	get_current_scene().queue_free()
