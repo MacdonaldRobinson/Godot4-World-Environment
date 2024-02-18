@@ -17,6 +17,9 @@ func _ready():
 func sync_with_game_state():
 	players_list.clear()
 	
+	if GameState.all_players_info.size() == 3:
+		print("GameState.sync_with_game_state")
+	
 	for player_info in GameState.all_players_info:
 		if player_info is PlayerInfo:
 			players_list.add_item(player_info.character_name)

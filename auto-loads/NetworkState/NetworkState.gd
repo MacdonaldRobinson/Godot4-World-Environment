@@ -13,6 +13,7 @@ func start_network(server: bool, ip: String = '127.0.0.1', port: int = 4242) -> 
 		peer.create_server(port)		
 
 		my_player_info.peer_id = multiplayer.get_unique_id()
+		GameState.all_players_info.clear()
 		GameState._add_or_update_player_info(my_player_info)	
 				
 		multiplayer.peer_connected.connect(
@@ -36,7 +37,9 @@ func start_network(server: bool, ip: String = '127.0.0.1', port: int = 4242) -> 
 			func():
 				# Add my player to all peers
 				# Seems to only call the server, so had to send to existing players from the add_player from the server				
-				my_player_info.peer_id = multiplayer.get_unique_id()	
+				my_player_info.peer_id = multiplayer.get_unique_id()
+								
+				GameState.all_players_info.clear()
 				GameState.add_or_update_player_info.rpc(var_to_str(my_player_info))
 		)
 

@@ -69,7 +69,6 @@ func add_or_update_player_info(player_info_str: String):
 	_add_or_update_player_info(player_info)	
 
 func _add_or_update_player_info(player_info: PlayerInfo):
-	GameState.log()
 	var found_existing_player_info: PlayerInfo = get_player_info(player_info.peer_id)
 
 	if found_existing_player_info:
@@ -81,7 +80,11 @@ func _add_or_update_player_info(player_info: PlayerInfo):
 		
 		OnPlayerUpdated.emit(player_info)
 	else:
+		if all_players_info.size() == 1:
+			print("incorrect")
 		all_players_info.push_back(player_info)
+		
+		
 		OnPlayerAdded.emit(player_info)
 		
 	if multiplayer.is_server():
@@ -137,15 +140,21 @@ func remove_player_from_container(peer_id: int, players_container: Node3D):
 		if found_player:
 			players_container.remove_child(found_player)
 
-func log():
+func log(message: String):
 	var function_chain: String
 	
 	for item in get_stack():
 		function_chain += item.function + " -> "
+	
+	var json = JSON.new()
+	var json_string = var_to_str(GameState.all_players_info)
+	
 		
-	print("On: ", multiplayer.get_unique_id(), " Remote: ", multiplayer.get_remote_sender_id(), " Stack: ", function_chain)
+	print("On: ", multiplayer.get_unique_id(), " Remote: ", multiplayer.get_remote_sender_id(), " Stack: ", function_chain, " Message: "+ message)
 			
 func add_or_update_player_in_container(player_info: PlayerInfo, players_container: Node3D) -> Player:	
+	GameState.log(player_info.character_name)
+	
 	var str_peer_id: String = str(player_info.peer_id)
 	var player: Player
 	
@@ -175,7 +184,7 @@ func _process(delta):
 
 func leave():	
 	GameState.remove_player.rpc(multiplayer.get_unique_id())
-	GameState.all_players_info.clear()
+	GameState.all_players_info.clear()	
 	
 	for connection in GameState.OnPlayerAdded.get_connections():
 		GameState.OnPlayerAdded.disconnect(connection["callable"])
