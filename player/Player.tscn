@@ -1,4 +1,4 @@
-[gd_scene load_steps=7 format=3 uid="uid://bt80o0nqyotka"]
+[gd_scene load_steps=6 format=3 uid="uid://bt80o0nqyotka"]
 
 [ext_resource type="Script" path="res://player/Player.gd" id="1_0cohp"]
 [ext_resource type="AudioStream" uid="uid://cgfoo1uerd1fh" path="res://sound-effects/collect/item-collected.wav" id="2_i3x3s"]
@@ -9,16 +9,6 @@
 size = Vector3(1, 1.75399, 0.435577)
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_8f0nk"]
-
-[sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_5c750"]
-properties/0/path = NodePath(".:position")
-properties/0/spawn = true
-properties/0/sync = true
-properties/0/watch = false
-properties/1/path = NodePath(".:rotation")
-properties/1/spawn = true
-properties/1/sync = true
-properties/1/watch = false
 
 [node name="Player" type="CharacterBody3D"]
 collision_layer = 2
@@ -40,10 +30,6 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.00097248, 0)
 [node name="CollisionShape3D" type="CollisionShape3D" parent="FloorCheck"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.349133, 0)
 shape = SubResource("BoxShape3D_8f0nk")
-
-[node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="."]
-unique_name_in_owner = true
-replication_config = SubResource("SceneReplicationConfig_5c750")
 
 [node name="CollectItemSound" type="AudioStreamPlayer" parent="."]
 unique_name_in_owner = true

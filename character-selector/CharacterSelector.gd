@@ -12,6 +12,7 @@ var lobby_scene_path: String = "res://lobby/Lobby.tscn"
 func _ready():
 	setup_character_signals();
 	select_character(characters_container.get_child(0))
+	
 
 func setup_character_signals():
 	for character in characters_container.get_children():

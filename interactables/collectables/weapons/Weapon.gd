@@ -30,7 +30,6 @@ func interact(interacting_body):
 func fire():		
 	fire_sound.play()
 	OnWeaponFired.emit(self)
-	print("emmited OnWeaponFired")
 	
 func play_hitpoint_effect(ray_cast: RayCast3D):
 	var effect: HitPointEffect = hit_point_effect.instantiate() as HitPointEffect

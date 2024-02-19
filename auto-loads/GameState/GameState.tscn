@@ -9,7 +9,3 @@ script = ExtResource("1_34wm6")
 [node name="SceneLoader" parent="." instance=ExtResource("2_breuc")]
 unique_name_in_owner = true
 visible = false
-
-[node name="PlayersContainer" type="Node3D" parent="."]
-unique_name_in_owner = true
-visible = false

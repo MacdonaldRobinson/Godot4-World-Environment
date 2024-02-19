@@ -70,15 +70,10 @@ func start_game(selected_world_index: int):
 		selected_world, 
 		func(world: World):
 			GameState.is_game_started = true
-			
-			for player in players:	
-				player.reparent(GameState.players_container)
-				
+							
 			for player_info in GameState.all_players_info:
 				player_info.is_in_game = true				
-				GameState.add_or_update_player_info(var_to_str(player_info))
-			
-				
+				GameState.add_or_update_player_info.rpc(var_to_str(player_info))
 	)
 
 func _on_start_game_pressed():	

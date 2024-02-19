@@ -8,4 +8,5 @@ var character_motion_state: Character.MotionState
 var character_photo: Texture
 var is_in_game: bool
 var position: Vector3
+var rotation: Vector3
 var health: int

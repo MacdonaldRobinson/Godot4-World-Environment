@@ -6,7 +6,6 @@ var chat_messages: Array[ChatMessage]
 
 @export var all_players_info: Array[PlayerInfo]
 @onready var scene_loader: SceneLoader = %SceneLoader
-@onready var players_container: Node3D = %PlayersContainer
 
 var player_scene: PackedScene = preload("res://player/Player.tscn")
 var character_selecter: PackedScene = preload("res://character-selector/CharacterSelector.tscn")
@@ -69,7 +68,9 @@ func remove_player(peer_id: int):
 @rpc("call_local","any_peer")
 func add_or_update_player_info(player_info_str: String):
 	var player_info: PlayerInfo = str_to_var(player_info_str)
-	_add_or_update_player_info(player_info)	
+	
+	if player_info:
+		_add_or_update_player_info(player_info)	
 
 func _add_or_update_player_info(player_info: PlayerInfo):
 	var found_existing_player_info: PlayerInfo = get_player_info(player_info.peer_id)
@@ -163,7 +164,7 @@ func add_or_update_player_in_container(player_info: PlayerInfo, players_containe
 		player = players_container.get_node(str_peer_id)	
 	
 	player.set_player_info(player_info)
-		
+			
 	return player
 				
 @rpc("call_local","any_peer")
@@ -181,10 +182,6 @@ func _process(delta):
 	pass
 
 func switch_to_character_selecter(players_container: Node3D):
-	
-	for player in players_container.get_children():
-		player.reparent(GameState.players_container)
-	
 	GameState.remove_player.rpc(multiplayer.get_unique_id())
 	GameState.all_players_info.clear()	
 	
@@ -203,3 +200,4 @@ func capture_mouse():
 			
 func release_mouse():
 	Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)	
+

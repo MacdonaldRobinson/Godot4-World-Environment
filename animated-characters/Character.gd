@@ -177,7 +177,6 @@ func jump():
 	is_foot_step = false
 	
 	var current_state = animation_tree["parameters/motion_state/current_state"];
-	print(current_state) 
 	
 	var current_motion_direction:Vector2 = animation_tree["parameters/"+current_state+"_motion_direction/blend_position"];
 

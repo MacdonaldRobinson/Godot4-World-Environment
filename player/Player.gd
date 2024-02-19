@@ -13,7 +13,6 @@ var enable_gravity: bool = true
 @onready var collision_shape: CollisionShape3D = $CollisionShape3D
 @onready var floor_check: Area3D = $FloorCheck
 @onready var collect_item_sound: AudioStreamPlayer = %CollectItemSound
-@onready var multiplayer_sync: MultiplayerSynchronizer = %MultiplayerSynchronizer
 
 @export var camera_controller: CameraController
 @export var overlays: Overlays
@@ -21,31 +20,33 @@ var enable_gravity: bool = true
 
 @export var character: Character
 var pause_mode: bool = false
+var current_position:Vector3 = Vector3(-1, -1, -1)
 
 func _ready():
-	if not is_multiplayer_authority():
-		return
+	pass
 		
 func set_player_info(player_info: PlayerInfo):
 	self.name = str(player_info.peer_id)
 	self.set_multiplayer_authority(player_info.peer_id)
-
-	if self.character:
-		return
+	
+	if not is_multiplayer_authority():
+		self.position = player_info.position
+		self.rotation = player_info.rotation
+	
+	var character: Character = self.character
+	
+	if not character:
+		character = ResourceLoader.load(player_info.character_scene_file_path).instantiate()
 		
-	var character: Character = ResourceLoader.load(player_info.character_scene_file_path).instantiate()
 	character.character_name = player_info.character_name
 	character.character_photo = player_info.character_photo
 
 	set_character(character, player_info)
 	
 func set_character(character: Character, player_info: PlayerInfo):	
-	for node in get_children():
-		if node is Character:
-			remove_child(node)
-	
-	self.add_child(character)
-	self.character = character
+	if not self.get_node(character.get_path()):
+		self.add_child(character)
+		self.character = character
 	
 	character.position = Vector3.ZERO
 	character.rotation = Vector3.ZERO	
@@ -55,7 +56,7 @@ func set_character(character: Character, player_info: PlayerInfo):
 	if not is_multiplayer_authority():
 		return
 	
-	character.OnCharacterDying.connect(_on_character_on_character_dying)
+	#character.OnCharacterDying.connect(_on_character_on_character_dying)
 	
 func _physics_process(delta):
 	if not is_multiplayer_authority():
@@ -135,11 +136,15 @@ func _physics_process(delta):
 			
 	move_and_slide()
 	
-#	var player_info: PlayerInfo = GameState.get_player_info(self.name.to_int())
-#	player_info.position = self.global_position
-#
-#	GameState.add_or_update_player_info(var_to_str(player_info))
+	var player_info: PlayerInfo = GameState.get_player_info(self.name.to_int())
 	
+	if player_info and self.position and current_position != self.position:
+		current_position = self.position
+		
+		player_info.position = self.position
+		player_info.rotation = self.rotation
+		
+		GameState.add_or_update_player_info.rpc(var_to_str(player_info))
 	
 
 func is_on_floor_custom():
@@ -191,6 +196,9 @@ func _on_weapon_fired(weapon: Weapon):
 					
 					hit_character.die.rpc()
 
+				hit_player_info.position = hit_player.position
+				hit_player_info.rotation = hit_player.rotation
+				
 				GameState.add_or_update_player_info.rpc(var_to_str(hit_player_info))
 				
 func _on_character_on_character_dying(character):

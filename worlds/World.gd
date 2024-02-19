@@ -60,15 +60,9 @@ func remove_player(player_info: PlayerInfo):
 
 func add_or_update_player(player_info: PlayerInfo):
 	
-	var player: Player = GameState.players_container.get_node(str(player_info.peer_id))	
+	var player: Player = GameState.add_or_update_player_in_container(player_info, players_container)
 	
 	overlays.chat_overlay.sync_with_game_state()
-
-	if not player: 
-		player = GameState.add_or_update_player_in_container(player_info, players_container)
-	else:
-		player.reparent(players_container)
-		player.set_multiplayer_authority(player_info.peer_id)
 
 	var my_player_info: PlayerInfo = GameState.get_my_player_info()
 	overlays.minmap_overlay.follow_node = player

@@ -21,7 +21,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6.3758, 5.73075, 0)
 [node name="Pistol" parent="WeaponDrop" instance=ExtResource("3_1bkh1")]
 
 [node name="PlayersContainer" type="Node3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6.49831, 24.4491, 10.791)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6.49831, 8.97986, 10.791)
 
 [node name="Player" parent="PlayersContainer" instance=ExtResource("3_8pabw")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -88.6797, 0)

@@ -21,7 +21,7 @@ GameState="*res://auto-loads/GameState/GameState.tscn"
 
 [display]
 
-window/size/viewport_width=1000
+window/size/viewport_width=900
 window/size/viewport_height=500
 window/stretch/mode="canvas_items"
 window/stretch/aspect="expand"
