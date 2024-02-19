@@ -180,7 +180,11 @@ func add_chat_message(sender_name: String, message: String):
 func _process(delta):
 	pass
 
-func leave():	
+func switch_to_character_selecter(players_container: Node3D):
+	
+	for player in players_container.get_children():
+		player.reparent(GameState.players_container)
+	
 	GameState.remove_player.rpc(multiplayer.get_unique_id())
 	GameState.all_players_info.clear()	
 	

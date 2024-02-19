@@ -68,6 +68,7 @@ func add_or_update_player(player_info: PlayerInfo):
 		player = GameState.add_or_update_player_in_container(player_info, players_container)
 	else:
 		player.reparent(players_container)
+		player.set_multiplayer_authority(player_info.peer_id)
 
 	var my_player_info: PlayerInfo = GameState.get_my_player_info()
 	overlays.minmap_overlay.follow_node = player

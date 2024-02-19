@@ -29,7 +29,7 @@ func _ready():
 func set_player_info(player_info: PlayerInfo):
 	self.name = str(player_info.peer_id)
 	self.set_multiplayer_authority(player_info.peer_id)
-			
+
 	if self.character:
 		return
 		

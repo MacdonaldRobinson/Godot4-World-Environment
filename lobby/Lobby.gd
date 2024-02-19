@@ -116,4 +116,4 @@ func _on_world_list_item_selected(index):
 	pass	
 
 func _on_character_selecter_pressed():	
-	GameState.leave()
+	GameState.switch_to_character_selecter(players_container)

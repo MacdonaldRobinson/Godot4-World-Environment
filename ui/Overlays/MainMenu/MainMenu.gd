@@ -17,4 +17,6 @@ func _on_quit_pressed():
 	get_tree().quit()
 
 func _on_character_selecter_pressed():
-	GameState.leave()
+	var current_scene = GameState.get_current_scene()
+	if current_scene is World:	
+		GameState.switch_to_character_selecter(current_scene.players_container)
