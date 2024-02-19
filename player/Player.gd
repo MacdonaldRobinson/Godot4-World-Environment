@@ -29,9 +29,10 @@ func _ready():
 func set_player_info(player_info: PlayerInfo):
 	self.name = str(player_info.peer_id)
 	self.set_multiplayer_authority(player_info.peer_id)
-	
-	self.current_motion_state = player_info.character_motion_state
 			
+	if self.character:
+		return
+		
 	var character: Character = ResourceLoader.load(player_info.character_scene_file_path).instantiate()
 	character.character_name = player_info.character_name
 	character.character_photo = player_info.character_photo
@@ -81,9 +82,6 @@ func _physics_process(delta):
 	var direction = (transform.basis * Vector3(input_dir.x, 0, input_dir.y)).normalized()
 	
 	if character and is_on_floor_custom():
-		if multiplayer.is_server() and current_motion_state:
-			print(Character.MotionState.find_key(current_motion_state))
-			
 		character.set_motion.rpc(current_motion_state, Vector2(input_dir.x, -input_dir.y))
 		
 		if (input_dir != Vector2.ZERO and camera_controller) or ( camera_controller and camera_controller.is_aiming ):
@@ -135,7 +133,13 @@ func _physics_process(delta):
 				
 			weapon.fire()	
 			
-	move_and_slide()	
+	move_and_slide()
+	
+#	var player_info: PlayerInfo = GameState.get_player_info(self.name.to_int())
+#	player_info.position = self.global_position
+#
+#	GameState.add_or_update_player_info(var_to_str(player_info))
+	
 	
 
 func is_on_floor_custom():

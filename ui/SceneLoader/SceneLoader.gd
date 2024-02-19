@@ -32,6 +32,6 @@ func _process(delta):
 		scene_container.add_child(scene_instance)
 		
 		scene_instance.reparent(get_tree().root)
-		
 		callback.call(scene_instance)
+		
 

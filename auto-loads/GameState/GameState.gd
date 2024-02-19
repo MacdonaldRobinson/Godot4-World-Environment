@@ -3,13 +3,14 @@ extends Node
 var is_game_started: bool = false
 var inventory: Inventory = Inventory.new() as Inventory
 var chat_messages: Array[ChatMessage]
-@export var all_players_info: Array[PlayerInfo]
 
+@export var all_players_info: Array[PlayerInfo]
 @onready var scene_loader: SceneLoader = %SceneLoader
+@onready var players_container: Node3D = %PlayersContainer
 
 var player_scene: PackedScene = preload("res://player/Player.tscn")
 var character_selecter: PackedScene = preload("res://character-selector/CharacterSelector.tscn")
-
+	
 signal OnPlayerAdded(player_info: PlayerInfo)
 signal OnPlayerRemoved(player_info: PlayerInfo)
 signal OnPlayerUpdated(player_info: PlayerInfo)
@@ -40,8 +41,8 @@ func set_my_player_character_name(my_character_name: String):
 	GameState.add_or_update_player_info(var_to_str(my_player_info))
 
 func switch_to_scene(new_scene_path: String, callback: Callable = func(arg): pass):
-	var current_scene: Node = get_current_scene()
-	current_scene.queue_free()
+	var current_scene: Node = get_current_scene()	
+	current_scene.hide()
 
 	scene_loader.show()
 	
@@ -53,6 +54,8 @@ func switch_to_scene(new_scene_path: String, callback: Callable = func(arg): pas
 			scene_loader.hide()
 			
 			callback.call(new_scene)
+			
+			current_scene.queue_free()
 	)	
 		
 @rpc("call_remote", "any_peer")
@@ -157,7 +160,7 @@ func add_or_update_player_in_container(player_info: PlayerInfo, players_containe
 		player = GameState.player_scene.instantiate()
 		players_container.add_child(player)		
 	else:
-		player = players_container.get_node(str_peer_id)
+		player = players_container.get_node(str_peer_id)	
 	
 	player.set_player_info(player_info)
 		
