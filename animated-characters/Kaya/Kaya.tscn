@@ -7,7 +7,7 @@
 [ext_resource type="PackedScene" uid="uid://boc84p052a8q2" path="res://animated-characters/HealthBar/HealthBar.tscn" id="3_hpc7p"]
 [ext_resource type="Texture2D" uid="uid://wo0luxmhhecu" path="res://particle-effects/PNG (Transparent)/dirt_02.png" id="4_enl1c"]
 
-[sub_resource type="ViewportTexture" id="ViewportTexture_r1kxr"]
+[sub_resource type="ViewportTexture" id="ViewportTexture_fce2b"]
 viewport_path = NodePath("SubViewport")
 
 [sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_s8qjf"]
@@ -859,7 +859,7 @@ text = "test"
 [node name="HealthBar" parent="." index="1" instance=ExtResource("3_hpc7p")]
 unique_name_in_owner = true
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.2963, 0)
-texture = SubResource("ViewportTexture_r1kxr")
+texture = SubResource("ViewportTexture_fce2b")
 
 [node name="GeneralSkeleton" parent="Armature" index="0"]
 bones/0/position = Vector3(0.00649036, 2.25157e-10, 0.00188875)

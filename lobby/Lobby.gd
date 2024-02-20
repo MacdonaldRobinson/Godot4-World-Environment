@@ -10,9 +10,12 @@ class_name Lobby
 @onready var host_container: Control = %HostContainer
 
 @onready var host_external_ip: TextEdit = %HostExternalIP
+@onready var host_port: TextEdit = %HostPort
 
 @onready var join_container: Control = %JoinContainer
 @onready var join_external_ip: TextEdit = %JoinExternalIP
+@onready var join_port: TextEdit = %JoinPort
+
 
 @onready var world_selecter: Control = %WorldSelecter
 @onready var worlds_list: ItemList = %WorldList as ItemList
@@ -93,8 +96,9 @@ func _on_start_game_pressed():
 
 
 func _on_host_pressed():
-	var external_ip: String = NetworkState.create_server()
-	
+	var port:int = host_port.text.to_int()
+	var external_ip: String = NetworkState.create_server(port)
+
 	GameState.add_chat_message("System", "Successfully hosting! on ip: "+ external_ip)
 	
 	chat_overlay.sync_with_game_state()
@@ -105,8 +109,9 @@ func _on_host_pressed():
 	
 
 func _on_join_pressed():
+	var port:int = join_port.text.to_int()	
 	var external_ip: String = join_external_ip.text
-	NetworkState.create_client(external_ip)
+	NetworkState.create_client(external_ip, port)
 	
 	chat_overlay.sync_with_game_state()
 

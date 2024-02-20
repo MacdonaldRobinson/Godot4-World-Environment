@@ -3,9 +3,8 @@ extends Node
 var is_server = false
 var peer: ENetMultiplayerPeer = null
 var upnp: UPNP = null
-var port: int = 5120
 
-func create_server():
+func create_server(port: int):
 	is_server = true
 	var my_player_info: PlayerInfo = GameState.get_my_player_info()		
 	peer = ENetMultiplayerPeer.new()
@@ -24,7 +23,7 @@ func create_server():
 	
 	return upup_setup(port)
 	
-func create_client(ip: String):
+func create_client(ip: String, port: int):
 	var my_player_info: PlayerInfo = GameState.get_my_player_info()		
 	peer = ENetMultiplayerPeer.new()
 		
@@ -59,14 +58,14 @@ func _on_connected_to_server():
 
 func upup_setup(port) -> String:
 	upnp = UPNP.new()	
-	var dicover_resuilt = upnp.discover()
+	var discover_resuilt = upnp.discover()
 	
-	assert(dicover_resuilt == UPNP.UPNP_RESULT_SUCCESS, "Error")
-	assert(upnp.get_gateway() and upnp.get_gateway().is_valid_gateway(), "Error")
+	assert(discover_resuilt == UPNP.UPNP_RESULT_SUCCESS, "discover_resuilt" + str(discover_resuilt))
+	assert(upnp.get_gateway() and upnp.get_gateway().is_valid_gateway(), "is_valid_gateway error")
 	
 	var map_result = upnp.add_port_mapping(port)
 	
-	assert(map_result == UPNP.UPNP_RESULT_SUCCESS, "Error")
+	assert(map_result == UPNP.UPNP_RESULT_SUCCESS, "map_result: "+ str(map_result))
 	
 	return upnp.query_external_address()
 		
