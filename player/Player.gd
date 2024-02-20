@@ -7,6 +7,7 @@ const JUMP_VELOCITY = 4.5
 # Get the gravity from the project settings to be synced with RigidBody nodes.
 var gravity = ProjectSettings.get_setting("physics/3d/default_gravity")
 @export var current_motion_state:Character.MotionState = Character.MotionState.standing
+
 var enable_gravity: bool = true
 
 @onready var currently_interacting_body: Interactable = null
@@ -29,10 +30,10 @@ func set_player_info(player_info: PlayerInfo):
 	self.name = str(player_info.peer_id)
 	self.set_multiplayer_authority(player_info.peer_id)
 	
-	if not is_multiplayer_authority():
+	if player_info.peer_id != multiplayer.get_unique_id():
 		self.position = player_info.position
 		self.rotation = player_info.rotation
-	
+
 	var character: Character = self.character
 	
 	if not character:
@@ -138,14 +139,14 @@ func _physics_process(delta):
 	
 	var player_info: PlayerInfo = GameState.get_player_info(self.name.to_int())
 	
-	if player_info and self.position and current_position != self.position:
+	if player_info and self.position and not current_position.is_equal_approx(self.position):
 		current_position = self.position
 		
 		player_info.position = self.position
 		player_info.rotation = self.rotation
+		player_info.character_motion_state = self.current_motion_state
 		
 		GameState.add_or_update_player_info.rpc(var_to_str(player_info))
-	
 
 func is_on_floor_custom():
 	var bodies = floor_check.get_overlapping_bodies()
@@ -192,10 +193,10 @@ func _on_weapon_fired(weapon: Weapon):
 				
 				if new_health == 0:
 					hit_player.current_motion_state = Character.MotionState.dying
-					hit_player_info.character_motion_state = hit_player.current_motion_state
 					
 					hit_character.die.rpc()
 
+				hit_player_info.character_motion_state = hit_player.current_motion_state
 				hit_player_info.position = hit_player.position
 				hit_player_info.rotation = hit_player.rotation
 				

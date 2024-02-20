@@ -68,7 +68,6 @@ visible = false
 layout_mode = 1
 
 [node name="ChatOverlay" parent="." instance=ExtResource("8_7ho4t")]
-visible = false
 layout_mode = 1
-offset_top = 385.0
-offset_right = -784.0
+offset_top = 283.0
+offset_right = -528.0

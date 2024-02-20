@@ -12,11 +12,8 @@ func _ready():
 	for child in players_container.get_children():
 		players_container.remove_child(child)	
 
-#	var player: Player = GameState.get_my_player_in_container(players_container)
-#
-#	overlays.minmap_overlay.follow_node = player
-#	overlays.minmap_overlay.show()
-#	overlays.player_overlay.show()
+	overlays.minmap_overlay.show()
+	overlays.player_overlay.show()
 
 	for player_info in GameState.all_players_info:
 		add_or_update_player(player_info)
@@ -59,18 +56,20 @@ func remove_player(player_info: PlayerInfo):
 			return
 
 func add_or_update_player(player_info: PlayerInfo):
-	
+	if not player_info.is_in_game:
+		return
+		
 	var player: Player = GameState.add_or_update_player_in_container(player_info, players_container)
 	
 	overlays.chat_overlay.sync_with_game_state()
 
 	var my_player_info: PlayerInfo = GameState.get_my_player_info()
-	overlays.minmap_overlay.follow_node = player
 	player.overlays = overlays
 
 	overlays.chat_overlay.show()
 
 	if player.name == str(my_player_info.peer_id):
+		overlays.minmap_overlay.follow_node = player
 		player.camera_controller = camera_controller
 		camera_controller.camera_look_at_point = player.character.camera_lookat_point
 

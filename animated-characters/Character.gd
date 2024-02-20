@@ -50,6 +50,7 @@ func _process(delta):
 func set_player_info(player_info: PlayerInfo):	
 	character_name_label.text = player_info.character_name
 	character_photo = player_info.character_photo
+	
 	set_health(player_info.health)
 			
 @rpc("call_local","any_peer")

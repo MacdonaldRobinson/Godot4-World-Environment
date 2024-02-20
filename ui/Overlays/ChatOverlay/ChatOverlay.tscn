@@ -71,8 +71,11 @@ text = "Chat Messages:"
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_vertical = 3
+focus_mode = 2
+bbcode_enabled = true
 text = "This is some text"
 scroll_following = true
+selection_enabled = true
 
 [node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/HBoxContainer/Chat/VBoxContainer"]
 layout_mode = 2

@@ -6,7 +6,14 @@ class_name Lobby
 @onready var join: Button = %Join
 @onready var spawn_area: Area3D = $SpawnArea
 
-@onready var host_join_buttons: Control = %Host_Join
+@onready var host_join_container: Control = %HostJoinContainer
+@onready var host_container: Control = %HostContainer
+
+@onready var host_external_ip: TextEdit = %HostExternalIP
+
+@onready var join_container: Control = %JoinContainer
+@onready var join_external_ip: TextEdit = %JoinExternalIP
+
 @onready var world_selecter: Control = %WorldSelecter
 @onready var worlds_list: ItemList = %WorldList as ItemList
 @onready var chat_overlay: ChatOverlay = %ChatOverlay
@@ -86,22 +93,26 @@ func _on_start_game_pressed():
 
 
 func _on_host_pressed():
-	NetworkState.start_network(true)
+	var external_ip: String = NetworkState.create_server()
+	
+	GameState.add_chat_message("System", "Successfully hosting! on ip: "+ external_ip)
+	
 	chat_overlay.sync_with_game_state()
 	
-	host_join_buttons.hide()
+	host_join_container.hide()
 	chat_overlay.show()
-	world_selecter.show()	
+	world_selecter.show()
 	
 
 func _on_join_pressed():
-	NetworkState.start_network(false)
+	var external_ip: String = join_external_ip.text
+	NetworkState.create_client(external_ip)
 	
 	chat_overlay.sync_with_game_state()
 
 	world_selecter.show()	
 	
-	host_join_buttons.hide()
+	host_join_container.hide()
 	chat_overlay.show()
 	
 
