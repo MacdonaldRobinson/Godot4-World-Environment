@@ -16,8 +16,15 @@ signal OnPlayerUpdated(player_info: PlayerInfo)
 signal OnChatMessageAdded(chat_message: ChatMessage)
 
 func _ready():
-	scene_loader.hide()	
+	scene_loader.hide()
 	
+	if is_headless_server():
+		print("headless server mode, starting server on port 54210 ...")
+		var character:Character = load("res://animated-characters/Clara/Clara.tscn").instantiate()
+		GameState.set_my_player_character(character, "Server")
+		var ip = NetworkState.create_server(54210)
+		print("Hosting on: " + str(ip))
+		
 func set_my_player_character(selected_character: Character, my_character_name: String):
 	var my_player_info: PlayerInfo = get_my_player_info()
 	
@@ -200,4 +207,6 @@ func capture_mouse():
 			
 func release_mouse():
 	Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)	
-
+	
+func is_headless_server():
+	return DisplayServer.get_name() == "headless"

@@ -76,9 +76,9 @@ func add_or_update_player(player_info: PlayerInfo):
 func _input(event):
 	if Input.is_action_just_pressed("mouse_capture_toggle"):
 		if Input.mouse_mode == Input.MOUSE_MODE_CAPTURED:
-			GameState.capture_mouse()
-		else:
 			GameState.release_mouse()
+		else:
+			GameState.capture_mouse()
 			
 	if Input.is_action_just_pressed("main_menu"):
 		var main_menu = overlays.main_menu_overlay as MainMenu

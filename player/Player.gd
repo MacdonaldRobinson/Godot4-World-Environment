@@ -27,6 +27,9 @@ func _ready():
 	pass
 		
 func set_player_info(player_info: PlayerInfo):
+	if GameState.is_headless_server():
+		return
+		
 	self.name = str(player_info.peer_id)
 	self.set_multiplayer_authority(player_info.peer_id)
 	
@@ -45,9 +48,24 @@ func set_player_info(player_info: PlayerInfo):
 	set_character(character, player_info)
 	
 func set_character(character: Character, player_info: PlayerInfo):	
-	if not self.get_node(character.get_path()):
+	if GameState.is_headless_server():
+		return
+		
+	var found_character: Character
+	for node in self.get_children():
+		if node is Character:
+			found_character = node
+			break
+			
+	if not found_character:
 		self.add_child(character)
 		self.character = character
+	else:
+		if character.get_path() != found_character.get_path():
+			self.remove_child(found_character)
+						
+			self.add_child(character)
+			self.character = character			
 	
 	character.position = Vector3.ZERO
 	character.rotation = Vector3.ZERO	
@@ -60,6 +78,10 @@ func set_character(character: Character, player_info: PlayerInfo):
 	#character.OnCharacterDying.connect(_on_character_on_character_dying)
 	
 func _physics_process(delta):
+	if GameState.is_headless_server():
+		return
+	
+	
 	if not is_multiplayer_authority():
 		return
 			
@@ -208,6 +230,9 @@ func _on_character_on_character_dying(character):
 
 
 func _on_interact_area_body_entered(body):
+	if GameState.is_headless_server():
+		return
+		
 	if not is_multiplayer_authority():
 		return
 			
@@ -241,6 +266,9 @@ func _on_interact_area_body_entered(body):
 
 
 func _on_interact_area_body_exited(body):
+	if GameState.is_headless_server():
+		return
+		
 	if not is_multiplayer_authority():
 		return
 			

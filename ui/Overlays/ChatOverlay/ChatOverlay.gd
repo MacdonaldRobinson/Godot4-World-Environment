@@ -1,4 +1,4 @@
-extends Overlays
+extends Control
 class_name ChatOverlay
 
 @onready var message: LineEdit = %Message as LineEdit

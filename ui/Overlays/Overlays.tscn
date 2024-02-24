@@ -41,7 +41,6 @@ visible = false
 layout_mode = 1
 
 [node name="JoystickOverlay" parent="." instance=ExtResource("5_57n0d")]
-visible = false
 layout_mode = 1
 
 [node name="MessageOverlay" parent="." instance=ExtResource("6_ktd1u")]
