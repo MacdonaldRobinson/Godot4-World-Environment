@@ -52,6 +52,11 @@ func _ready():
 			worlds_list.add_item(world)
 	pass
 	
+	if NetworkState.is_server:
+		_on_host_pressed()
+	elif NetworkState.peer:
+		_on_join_pressed()
+	
 func _on_player_added(player_info: PlayerInfo):
 	chat_overlay.sync_with_game_state()
 	if not player_info.is_in_game:
@@ -97,9 +102,12 @@ func _on_start_game_pressed():
 
 func _on_host_pressed():
 	var port:int = host_port.text.to_int()
-	var external_ip: String = NetworkState.create_server(port)
+	var external_ip: String = NetworkState.create_server(port)	
 
 	GameState.add_chat_message("System", "Successfully hosting! on ip: "+ external_ip)
+	
+	var my_player_info: PlayerInfo = GameState.get_my_player_info()		
+	GameState.add_or_update_player_info.rpc(var_to_str(my_player_info))
 	
 	chat_overlay.sync_with_game_state()
 	

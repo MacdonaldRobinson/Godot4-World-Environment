@@ -5,12 +5,15 @@ var peer: ENetMultiplayerPeer = null
 var upnp: UPNP = null
 
 func create_server(port: int):
+	if multiplayer.is_server() and upnp:
+		return upnp.query_external_address()
+		
 	is_server = true
-	var my_player_info: PlayerInfo = GameState.get_my_player_info()		
 	peer = ENetMultiplayerPeer.new()
 	
 	peer.create_server(port)
 	
+	var my_player_info: PlayerInfo = GameState.get_my_player_info()		
 	my_player_info.peer_id = multiplayer.get_unique_id()
 	
 	GameState.all_players_info.clear()
@@ -24,6 +27,10 @@ func create_server(port: int):
 	return upup_setup(port)
 	
 func create_client(ip: String, port: int):
+	if peer:
+		_on_connected_to_server()
+		return
+			
 	var my_player_info: PlayerInfo = GameState.get_my_player_info()		
 	peer = ENetMultiplayerPeer.new()
 		
