@@ -1,5 +1,7 @@
 # Godot4-World-Environment
 
+Demo: https://maconly.atwebpages.com/html/World-Environment-Test.html
+
 Shows how to use Root Motion in the Godot 4 game engine:
 - Shows how to use animation tree with AnimationNodeBlendTree
 - Shows how to transition between animation states
@@ -23,4 +25,21 @@ Shows how to use Root Motion in the Godot 4 game engine:
 - SPACE BAR to jump in the direction of the motion ( I could not find a left and right jump animation in miximo so I just used forward )
 - E to interact with items
 
-Demo: https://maconly.atwebpages.com/html/World-Environment-Test.html
+## Character Selecter
+![image](https://github.com/MacdonaldRobinson/Godot4-World-Environment/assets/18366446/48587d3d-e111-4672-88fa-4cc9b4f04c05)
+
+## Networking
+![image](https://github.com/MacdonaldRobinson/Godot4-World-Environment/assets/18366446/f2ef1a97-234e-43b0-8738-6d85b9824608)
+
+## Lobby
+![image](https://github.com/MacdonaldRobinson/Godot4-World-Environment/assets/18366446/efde1f20-6a0d-4643-8ac0-742e54497545)
+
+## Enter Game world
+![image](https://github.com/MacdonaldRobinson/Godot4-World-Environment/assets/18366446/9c34704b-a2aa-490b-8e16-407da948736d)
+
+## First person shooter
+![image](https://github.com/MacdonaldRobinson/Godot4-World-Environment/assets/18366446/6f18a9db-6ca4-4d1a-8843-4e4885182b5e)
+
+
+
+
